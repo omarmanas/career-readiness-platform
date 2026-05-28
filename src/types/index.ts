@@ -21,6 +21,8 @@ export type Priority = 'Low' | 'Medium' | 'High' | 'Critical'
 
 export type RiskLevel = 'Low' | 'Medium' | 'High' | 'Critical'
 
+export type ReadinessCategoryStatus = 'Ready' | 'Improving' | 'At Risk'
+
 export interface TrackRequirement {
   id: string
   title: string
@@ -55,9 +57,12 @@ export interface DocumentItem {
 
 export interface ReadinessCategory {
   id: string
-  label: string
+  name: string
+  description: string
   score: number
-  note: string
+  targetScore: number
+  status: ReadinessCategoryStatus
+  notes: string
 }
 
 export interface RiskFlag {

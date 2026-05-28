@@ -154,6 +154,11 @@
   margin: 6px 0 0;
 }
 
+.category-card small {
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
 .meta-list {
   display: flex;
   flex-wrap: wrap;
@@ -260,7 +265,9 @@
 
 .item-list,
 .data-table,
-.category-grid {
+.category-grid,
+.health-grid,
+.breakdown-list {
   display: grid;
   gap: 10px;
 }
@@ -397,6 +404,44 @@
   font-weight: 800;
 }
 
+.health-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.health-grid div {
+  background: #0f172a;
+  border: 1px solid #1f2937;
+  border-radius: 8px;
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+}
+
+.health-grid span,
+.breakdown-row span {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.health-grid strong,
+.breakdown-row strong {
+  color: var(--text-strong);
+}
+
+.mini-heading {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.breakdown-row {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
 .progress-bar {
   background: #1f2937;
   border-radius: 999px;
@@ -429,7 +474,8 @@
 
   .metric-grid,
   .card-grid,
-  .category-grid {
+  .category-grid,
+  .health-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -453,7 +499,8 @@
   .metric-grid,
   .card-grid,
   .two-column,
-  .category-grid {
+  .category-grid,
+  .health-grid {
     grid-template-columns: 1fr;
   }
 
