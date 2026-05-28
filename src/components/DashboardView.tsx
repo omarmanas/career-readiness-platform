@@ -1,5 +1,7 @@
 import type { CSSProperties } from 'react'
 import { Badge } from './Badge'
+import { GapAnalysisPanel } from './GapAnalysisPanel'
+import { HighestRoiActionPanel } from './HighestRoiActionPanel'
 import type { CareerTrack } from '../types'
 import {
   priorityTone,
@@ -126,7 +128,7 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
       <section className="two-column">
         <article className="panel">
           <div className="section-heading">
-            <h3>Top readiness gaps</h3>
+            <h3>Category gaps</h3>
             <span>{readinessGaps.length} shown</span>
           </div>
           <div className="item-list">
@@ -164,6 +166,11 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
             </div>
           </div>
         </article>
+      </section>
+
+      <section className="two-column">
+        <GapAnalysisPanel selectedTrack={selectedTrack} />
+        <HighestRoiActionPanel selectedTrack={selectedTrack} />
       </section>
 
       <section className="two-column">

@@ -148,6 +148,8 @@
 .metric-card p,
 .track-card p,
 .category-card p,
+.gap-card p,
+.roi-panel p,
 .list-row p,
 .table-row p {
   color: var(--text-soft);
@@ -267,7 +269,8 @@
 .data-table,
 .category-grid,
 .health-grid,
-.breakdown-list {
+.breakdown-list,
+.gap-list {
   display: grid;
   gap: 10px;
 }
@@ -280,7 +283,8 @@
 
 .list-row,
 .table-row,
-.category-card {
+.category-card,
+.gap-card {
   align-items: center;
   background: #0f172a;
   border: 1px solid #1f2937;
@@ -402,6 +406,54 @@
   color: #86efac;
   font-size: 1.4rem;
   font-weight: 800;
+}
+
+.gap-card {
+  align-items: stretch;
+  display: grid;
+}
+
+.gap-card-header {
+  align-items: start;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.gap-card strong,
+.gap-action strong,
+.roi-action strong {
+  color: var(--text-strong);
+}
+
+.gap-action,
+.roi-action {
+  display: grid;
+  gap: 4px;
+}
+
+.gap-action span,
+.gap-meta span,
+.roi-action span {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.gap-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gap-meta span {
+  background: #111827;
+  border: 1px solid #243244;
+  border-radius: 999px;
+  padding: 5px 8px;
+}
+
+.roi-panel {
+  align-content: start;
 }
 
 .health-grid {

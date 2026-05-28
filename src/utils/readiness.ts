@@ -30,7 +30,7 @@ const riskRank: Record<RiskFlag['level'], number> = {
   Low: 1,
 }
 
-export interface ReadinessGap {
+export interface CategoryReadinessGap {
   id: string
   title: string
   detail: string
@@ -98,7 +98,10 @@ export function calculateReadinessCategories(track: CareerTrack) {
   }))
 }
 
-export function getTopReadinessGaps(track: CareerTrack, limit = 3): ReadinessGap[] {
+export function getTopReadinessGaps(
+  track: CareerTrack,
+  limit = 3,
+): CategoryReadinessGap[] {
   return calculateReadinessCategories(track)
     .map((category) => {
       const gap = Math.max(0, category.targetScore - category.score)

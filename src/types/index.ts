@@ -23,6 +23,27 @@ export type RiskLevel = 'Low' | 'Medium' | 'High' | 'Critical'
 
 export type ReadinessCategoryStatus = 'Ready' | 'Improving' | 'At Risk'
 
+export type GapSeverity = 'Low' | 'Medium' | 'High' | 'Critical'
+
+export type GapCategory =
+  | 'Eligibility'
+  | 'Fitness'
+  | 'Testing'
+  | 'Documents'
+  | 'Interview'
+  | 'Background'
+  | 'Certification'
+  | 'Clinical Hours'
+  | 'Employment Readiness'
+  | 'Academy Readiness'
+  | 'Training'
+
+export type ActionImpact = 'Low' | 'Medium' | 'High'
+
+export type ActionEffort = 'Low' | 'Medium' | 'High'
+
+export type GapStatus = 'Open' | 'In Progress' | 'Resolved' | 'Deferred'
+
 export interface TrackRequirement {
   id: string
   title: string
@@ -80,6 +101,29 @@ export interface PriorityAction {
   priority: Priority
 }
 
+export interface RecommendedAction {
+  id: string
+  title: string
+  whyItMatters: string
+  impact: ActionImpact
+  effort: ActionEffort
+}
+
+export interface ReadinessGap {
+  id: string
+  trackId: string
+  title: string
+  category: GapCategory
+  severity: GapSeverity
+  reason: string
+  impact: ActionImpact
+  recommendedAction: RecommendedAction
+  relatedRequirementIds: string[]
+  relatedTrainingIds: string[]
+  relatedDocumentIds: string[]
+  status: GapStatus
+}
+
 export interface CareerTrack {
   id: string
   title: string
@@ -96,4 +140,5 @@ export interface CareerTrack {
   readinessCategories: ReadinessCategory[]
   riskFlags: RiskFlag[]
   priorityActions: PriorityAction[]
+  readinessGaps: ReadinessGap[]
 }

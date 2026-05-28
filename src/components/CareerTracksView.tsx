@@ -4,8 +4,8 @@ import { trackTone } from '../utils/display'
 import {
   calculateReadinessScore,
   getTopReadinessCategories,
-  getTopRiskFlags,
 } from '../utils/readiness'
+import { getHighestRoiAction, getTopUnresolvedGap } from '../utils/gaps'
 
 interface CareerTracksViewProps {
   careerTracks: CareerTrack[]
@@ -16,7 +16,8 @@ export function CareerTracksView({ careerTracks }: CareerTracksViewProps) {
     <section className="card-grid">
       {careerTracks.map((track) => {
         const readinessScore = calculateReadinessScore(track)
-        const topRiskFlag = getTopRiskFlags(track.riskFlags, 1)[0]
+        const topUnresolvedGap = getTopUnresolvedGap(track)
+        const highestRoiAction = getHighestRoiAction(track)
         const topCategories = getTopReadinessCategories(track)
 
         return (
@@ -37,8 +38,12 @@ export function CareerTracksView({ careerTracks }: CareerTracksViewProps) {
                 <dd>{track.market}</dd>
               </div>
               <div>
-                <dt>Top risk</dt>
-                <dd>{topRiskFlag?.title ?? 'None'}</dd>
+                <dt>Top unresolved gap</dt>
+                <dd>{topUnresolvedGap?.title ?? 'None'}</dd>
+              </div>
+              <div>
+                <dt>Highest ROI action</dt>
+                <dd>{highestRoiAction?.gap.recommendedAction.title ?? 'None'}</dd>
               </div>
             </dl>
             <div>

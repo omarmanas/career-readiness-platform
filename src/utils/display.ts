@@ -1,5 +1,7 @@
 import type {
   DocumentStatus,
+  GapSeverity,
+  GapStatus,
   Priority,
   ReadinessCategoryStatus,
   RiskLevel,
@@ -49,4 +51,18 @@ export const readinessCategoryTone: Record<
   Ready: 'success',
   Improving: 'warning',
   'At Risk': 'danger',
+}
+
+export const gapSeverityTone: Record<GapSeverity, BadgeTone> = {
+  Low: 'neutral',
+  Medium: 'info',
+  High: 'warning',
+  Critical: 'danger',
+}
+
+export const gapStatusTone: Record<GapStatus, BadgeTone> = {
+  Open: 'danger',
+  'In Progress': 'warning',
+  Resolved: 'success',
+  Deferred: 'neutral',
 }
