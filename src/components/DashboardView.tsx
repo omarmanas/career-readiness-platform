@@ -1,7 +1,11 @@
 import type { CSSProperties } from 'react'
 import { Badge } from './Badge'
+import { ExecutionSummaryPanel } from './ExecutionSummaryPanel'
 import { GapAnalysisPanel } from './GapAnalysisPanel'
 import { HighestRoiActionPanel } from './HighestRoiActionPanel'
+import { ImmediateActionPanel } from './ImmediateActionPanel'
+import { ReadinessNarrativePanel } from './ReadinessNarrativePanel'
+import { WeeklyPlanPanel } from './WeeklyPlanPanel'
 import type { CareerTrack } from '../types'
 import {
   priorityTone,
@@ -166,6 +170,16 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
             </div>
           </div>
         </article>
+      </section>
+
+      <section className="two-column">
+        <ImmediateActionPanel selectedTrack={selectedTrack} />
+        <WeeklyPlanPanel selectedTrack={selectedTrack} />
+      </section>
+
+      <section className="two-column">
+        <ExecutionSummaryPanel selectedTrack={selectedTrack} />
+        <ReadinessNarrativePanel selectedTrack={selectedTrack} />
       </section>
 
       <section className="two-column">

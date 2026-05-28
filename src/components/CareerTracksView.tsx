@@ -5,7 +5,8 @@ import {
   calculateReadinessScore,
   getTopReadinessCategories,
 } from '../utils/readiness'
-import { getHighestRoiAction, getTopUnresolvedGap } from '../utils/gaps'
+import { generateNextActions, getImmediateAction } from '../utils/actions'
+import { getTopUnresolvedGap } from '../utils/gaps'
 
 interface CareerTracksViewProps {
   careerTracks: CareerTrack[]
@@ -17,7 +18,10 @@ export function CareerTracksView({ careerTracks }: CareerTracksViewProps) {
       {careerTracks.map((track) => {
         const readinessScore = calculateReadinessScore(track)
         const topUnresolvedGap = getTopUnresolvedGap(track)
-        const highestRoiAction = getHighestRoiAction(track)
+        const immediateAction = getImmediateAction(track)
+        const actionQueueCount = generateNextActions(track).filter(
+          (action) => action.status !== 'Completed' && action.status !== 'Deferred',
+        ).length
         const topCategories = getTopReadinessCategories(track)
 
         return (
@@ -42,8 +46,12 @@ export function CareerTracksView({ careerTracks }: CareerTracksViewProps) {
                 <dd>{topUnresolvedGap?.title ?? 'None'}</dd>
               </div>
               <div>
-                <dt>Highest ROI action</dt>
-                <dd>{highestRoiAction?.gap.recommendedAction.title ?? 'None'}</dd>
+                <dt>Immediate action</dt>
+                <dd>{immediateAction?.title ?? 'None'}</dd>
+              </div>
+              <div>
+                <dt>Action queue count</dt>
+                <dd>{actionQueueCount}</dd>
               </div>
             </dl>
             <div>

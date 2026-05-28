@@ -44,6 +44,15 @@ export type ActionEffort = 'Low' | 'Medium' | 'High'
 
 export type GapStatus = 'Open' | 'In Progress' | 'Resolved' | 'Deferred'
 
+export type ActionStatus =
+  | 'Pending'
+  | 'Scheduled'
+  | 'In Progress'
+  | 'Completed'
+  | 'Deferred'
+
+export type ActionPriority = 'Low' | 'Medium' | 'High' | 'Critical'
+
 export interface TrackRequirement {
   id: string
   title: string
@@ -122,6 +131,19 @@ export interface ReadinessGap {
   relatedTrainingIds: string[]
   relatedDocumentIds: string[]
   status: GapStatus
+}
+
+export interface NextAction {
+  id: string
+  title: string
+  description: string
+  priority: ActionPriority
+  status: ActionStatus
+  estimatedEffort: ActionEffort
+  expectedImpact: ActionImpact
+  sourceGapId: string
+  dueWindow: string
+  category: GapCategory
 }
 
 export interface CareerTrack {

@@ -1,4 +1,6 @@
 import type {
+  ActionPriority,
+  ActionStatus,
   DocumentStatus,
   GapSeverity,
   GapStatus,
@@ -64,5 +66,20 @@ export const gapStatusTone: Record<GapStatus, BadgeTone> = {
   Open: 'danger',
   'In Progress': 'warning',
   Resolved: 'success',
+  Deferred: 'neutral',
+}
+
+export const actionPriorityTone: Record<ActionPriority, BadgeTone> = {
+  Low: 'neutral',
+  Medium: 'info',
+  High: 'warning',
+  Critical: 'danger',
+}
+
+export const actionStatusTone: Record<ActionStatus, BadgeTone> = {
+  Pending: 'warning',
+  Scheduled: 'info',
+  'In Progress': 'warning',
+  Completed: 'success',
   Deferred: 'neutral',
 }

@@ -150,6 +150,9 @@
 .category-card p,
 .gap-card p,
 .roi-panel p,
+.execution-panel p,
+.narrative-panel p,
+.action-plan-item p,
 .list-row p,
 .table-row p {
   color: var(--text-soft);
@@ -270,7 +273,8 @@
 .category-grid,
 .health-grid,
 .breakdown-list,
-.gap-list {
+.gap-list,
+.action-plan-list {
   display: grid;
   gap: 10px;
 }
@@ -284,7 +288,8 @@
 .list-row,
 .table-row,
 .category-card,
-.gap-card {
+.gap-card,
+.action-plan-item {
   align-items: center;
   background: #0f172a;
   border: 1px solid #1f2937;
@@ -456,6 +461,26 @@
   align-content: start;
 }
 
+.execution-panel,
+.narrative-panel {
+  align-content: start;
+}
+
+.action-plan-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.action-plan-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.action-plan-item strong {
+  color: var(--text-strong);
+}
+
 .health-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -558,7 +583,8 @@
 
   .list-row,
   .table-row,
-  .document-row {
+  .document-row,
+  .action-plan-item {
     grid-template-columns: 1fr;
   }
 
