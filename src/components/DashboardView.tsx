@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 import { Badge } from './Badge'
-import { ExecutionSummaryPanel } from './ExecutionSummaryPanel'
+import { CollapsibleSection } from './CollapsibleSection'
+import { CompactMetricRow } from './CompactMetricRow'
 import { GapAnalysisPanel } from './GapAnalysisPanel'
 import { HighestRoiActionPanel } from './HighestRoiActionPanel'
 import { ImmediateActionPanel } from './ImmediateActionPanel'
@@ -106,110 +107,128 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
         </article>
       </section>
 
-      <section className="panel">
-        <div className="section-heading">
-          <h3>Readiness categories</h3>
-          <span>Calculated demo scoring</span>
-        </div>
-        <div className="category-grid">
-          {readinessCategories.map((category) => (
-            <article className="category-card" key={category.id}>
-              <div className="card-header">
-                <strong>{category.name}</strong>
-                <Badge
-                  label={category.status}
-                  tone={readinessCategoryTone[category.status]}
-                />
-              </div>
-              <span>{category.score}%</span>
-              <p>{category.description}</p>
-              <small>Target {category.targetScore}% - {category.notes}</small>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="two-column">
-        <article className="panel">
-          <div className="section-heading">
-            <h3>Category gaps</h3>
-            <span>{readinessGaps.length} shown</span>
-          </div>
-          <div className="item-list">
-            {readinessGaps.map((gap) => (
-              <article className="list-row" key={gap.id}>
-                <div>
-                  <strong>{gap.title}</strong>
-                  <p>{gap.detail}</p>
-                </div>
-                <Badge label={`${gap.gap} pt gap`} tone="warning" />
-              </article>
-            ))}
-          </div>
-        </article>
-
-        <article className="panel">
-          <div className="section-heading">
-            <h3>Track health</h3>
-            <span>Category summary</span>
-          </div>
-          <div className="health-grid">
-            <div>
-              <span>Strongest Area</span>
-              <strong>{trackHealth.strongestArea.name}</strong>
-            </div>
-            <div>
-              <span>Weakest Area</span>
-              <strong>{trackHealth.weakestArea.name}</strong>
-            </div>
-            <div>
-              <span>Categories On Target</span>
-              <strong>
-                {trackHealth.categoriesOnTarget}/{trackHealth.totalCategories}
-              </strong>
-            </div>
-          </div>
-        </article>
-      </section>
+      <ReadinessNarrativePanel selectedTrack={selectedTrack} />
 
       <section className="two-column">
         <ImmediateActionPanel selectedTrack={selectedTrack} />
-        <WeeklyPlanPanel selectedTrack={selectedTrack} />
+        <WeeklyPlanPanel
+          selectedTrack={selectedTrack}
+          limit={3}
+          title="Weekly Plan Preview"
+        />
       </section>
 
-      <section className="two-column">
-        <ExecutionSummaryPanel selectedTrack={selectedTrack} />
-        <ReadinessNarrativePanel selectedTrack={selectedTrack} />
-      </section>
+      <CompactMetricRow selectedTrack={selectedTrack} />
 
-      <section className="two-column">
-        <GapAnalysisPanel selectedTrack={selectedTrack} />
-        <HighestRoiActionPanel selectedTrack={selectedTrack} />
-      </section>
-
-      <section className="two-column">
-        <article className="panel">
+      <CollapsibleSection
+        title="Readiness Diagnosis"
+        description="Open for full category scores, category gaps, and track health."
+      >
+        <section className="panel">
           <div className="section-heading">
-            <h3>Top risk flags</h3>
-            <span>{topRiskFlags.length} shown</span>
+            <h3>Readiness categories</h3>
+            <span>Calculated demo scoring</span>
           </div>
-          <div className="item-list">
-            {topRiskFlags.map((risk) => (
-              <article className="list-row" key={risk.id}>
-                <div>
-                  <strong>{risk.title}</strong>
-                  <p>{risk.detail}</p>
+          <div className="category-grid">
+            {readinessCategories.map((category) => (
+              <article className="category-card" key={category.id}>
+                <div className="card-header">
+                  <strong>{category.name}</strong>
+                  <Badge
+                    label={category.status}
+                    tone={readinessCategoryTone[category.status]}
+                  />
                 </div>
-                <Badge label={risk.level} tone={riskTone[risk.level]} />
+                <span>{category.score}%</span>
+                <p>{category.description}</p>
+                <small>Target {category.targetScore}% - {category.notes}</small>
               </article>
             ))}
           </div>
-        </article>
+        </section>
+
+        <div className="two-column">
+          <article className="panel">
+            <div className="section-heading">
+              <h3>Category gaps</h3>
+              <span>Target shortfalls</span>
+            </div>
+            <div className="item-list">
+              {readinessGaps.map((gap) => (
+                <article className="list-row" key={gap.id}>
+                  <div>
+                    <strong>{gap.title}</strong>
+                    <p>{gap.detail}</p>
+                  </div>
+                  <Badge label={`${gap.gap} pt gap`} tone="warning" />
+                </article>
+              ))}
+            </div>
+          </article>
+
+          <article className="panel">
+            <div className="section-heading">
+              <h3>Track health</h3>
+              <span>Category summary</span>
+            </div>
+            <div className="health-grid">
+              <div>
+                <span>Strongest Area</span>
+                <strong>{trackHealth.strongestArea.name}</strong>
+              </div>
+              <div>
+                <span>Weakest Area</span>
+                <strong>{trackHealth.weakestArea.name}</strong>
+              </div>
+              <div>
+                <span>Categories On Target</span>
+                <strong>
+                  {trackHealth.categoriesOnTarget}/{trackHealth.totalCategories}
+                </strong>
+              </div>
+            </div>
+          </article>
+        </div>
+      </CollapsibleSection>
+
+      <CollapsibleSection
+        title="Gap Analysis"
+        description="Open for actionable gaps and the highest ROI action details."
+      >
+        <div className="two-column">
+          <GapAnalysisPanel selectedTrack={selectedTrack} />
+          <HighestRoiActionPanel selectedTrack={selectedTrack} />
+        </div>
+      </CollapsibleSection>
+
+      <CollapsibleSection
+        title="Risk & Supporting Detail"
+        description="Open for risk flags and supporting priority actions retained for traceability."
+      >
+        <div className="two-column">
+          <article className="panel">
+            <div className="section-heading">
+              <h3>Top risk flags</h3>
+              <span>{topRiskFlags.length} shown</span>
+            </div>
+            <div className="item-list">
+              {topRiskFlags.map((risk) => (
+                <article className="list-row" key={risk.id}>
+                  <div>
+                    <strong>{risk.title}</strong>
+                    <p>{risk.detail}</p>
+                  </div>
+                  <Badge label={risk.level} tone={riskTone[risk.level]} />
+                </article>
+              ))}
+            </div>
+          </article>
+        </div>
 
         <article className="panel">
           <div className="section-heading">
-            <h3>Next priority actions</h3>
-            <span>{priorityActions.length} active</span>
+            <h3>Supporting priority actions</h3>
+            <span>Legacy action list</span>
           </div>
           <div className="item-list">
             {priorityActions.map((action) => (
@@ -228,7 +247,7 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
             ))}
           </div>
         </article>
-      </section>
+      </CollapsibleSection>
     </section>
   )
 }

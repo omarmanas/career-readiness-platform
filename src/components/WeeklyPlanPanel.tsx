@@ -5,15 +5,21 @@ import { getWeeklyPlan } from '../utils/actions'
 
 interface WeeklyPlanPanelProps {
   selectedTrack: CareerTrack
+  limit?: number
+  title?: string
 }
 
-export function WeeklyPlanPanel({ selectedTrack }: WeeklyPlanPanelProps) {
-  const weeklyPlan = getWeeklyPlan(selectedTrack)
+export function WeeklyPlanPanel({
+  selectedTrack,
+  limit,
+  title = 'Weekly Action Plan',
+}: WeeklyPlanPanelProps) {
+  const weeklyPlan = getWeeklyPlan(selectedTrack).slice(0, limit)
 
   return (
     <article className="panel">
       <div className="section-heading">
-        <h3>Weekly Action Plan</h3>
+        <h3>{title}</h3>
         <span>{weeklyPlan.length} actions</span>
       </div>
       <ol className="action-plan-list">
