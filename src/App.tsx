@@ -3,25 +3,23 @@ import type { CSSProperties } from 'react'
 import './App.css'
 import { Badge } from './components/Badge'
 import type { BadgeTone } from './components/Badge'
-import {
-  careerTracks,
-  documentItems,
-  milestones,
-  trainingItems,
-} from './data/sampleData'
+import { careerTracks } from './data/sampleData'
 import type {
   DocumentStatus,
   Priority,
+  RiskLevel,
   TrainingStatus,
   TrackStatus,
 } from './types'
 import {
+  calculateReadinessScore,
   getAvailableDocumentCount,
+  getCompletedMilestoneCount,
+  getCompletedRequirementCount,
   getCompletedTrainingCount,
-  getHighPriorityItems,
   getNextMilestone,
-  getTrackDocuments,
-  getTrackTrainings,
+  getPriorityActions,
+  getTopRiskFlags,
 } from './utils/readiness'
 
 type Screen = 'dashboard' | 'tracks' | 'training' | 'documents'
@@ -48,6 +46,13 @@ const priorityTone: Record<Priority, BadgeTone> = {
   Critical: 'danger',
 }
 
+const riskTone: Record<RiskLevel, BadgeTone> = {
+  Low: 'neutral',
+  Medium: 'info',
+  High: 'warning',
+  Critical: 'danger',
+}
+
 const documentTone: Record<DocumentStatus, BadgeTone> = {
   Available: 'success',
   Missing: 'danger',
@@ -67,16 +72,20 @@ function App() {
   const selectedTrack =
     careerTracks.find((track) => track.id === selectedTrackId) ?? careerTracks[0]
 
-  const selectedTrainings = useMemo(
-    () => getTrackTrainings(trainingItems, selectedTrack.id),
-    [selectedTrack.id],
+  const selectedReadinessScore = calculateReadinessScore(selectedTrack)
+  const nextMilestone = getNextMilestone(selectedTrack.milestones)
+  const topRiskFlags = getTopRiskFlags(selectedTrack.riskFlags)
+  const priorityActions = getPriorityActions(selectedTrack)
+
+  const trackCards = useMemo(
+    () =>
+      careerTracks.map((track) => ({
+        ...track,
+        calculatedReadinessScore: calculateReadinessScore(track),
+        topRiskFlag: getTopRiskFlags(track.riskFlags, 1)[0],
+      })),
+    [],
   )
-  const selectedDocuments = useMemo(
-    () => getTrackDocuments(documentItems, selectedTrack.id),
-    [selectedTrack.id],
-  )
-  const nextMilestone = getNextMilestone(milestones, selectedTrack.id)
-  const highPriorityItems = getHighPriorityItems(selectedTrainings)
 
   return (
     <div className="app-shell">
@@ -84,7 +93,7 @@ function App() {
         <div className="brand">
           <span className="brand-mark">CR</span>
           <div>
-            <p className="eyebrow">Sprint 0 MVP</p>
+            <p className="eyebrow">Sprint 1 MVP</p>
             <h1>Career Readiness</h1>
           </div>
         </div>
@@ -105,7 +114,7 @@ function App() {
       <main className="workspace">
         <header className="topbar">
           <div>
-            <p className="eyebrow">Single-user demo dashboard</p>
+            <p className="eyebrow">Track-driven demo dashboard</p>
             <h2>{navItems.find((item) => item.id === activeScreen)?.label}</h2>
           </div>
           <label className="track-picker">
@@ -116,7 +125,7 @@ function App() {
             >
               {careerTracks.map((track) => (
                 <option key={track.id} value={track.id}>
-                  {track.name}
+                  {track.title}
                 </option>
               ))}
             </select>
@@ -128,67 +137,121 @@ function App() {
             <article className="summary-panel">
               <div>
                 <Badge label={selectedTrack.status} tone={trackTone[selectedTrack.status]} />
-                <h3>{selectedTrack.name}</h3>
-                <p>{selectedTrack.summary}</p>
+                <h3>{selectedTrack.title}</h3>
+                <p>{selectedTrack.description}</p>
+                <div className="meta-list">
+                  <span>{selectedTrack.domain}</span>
+                  <span>{selectedTrack.market}</span>
+                  <span>{selectedTrack.targetRole}</span>
+                </div>
               </div>
               <div
                 className="score-ring"
                 style={
                   {
-                    '--score': `${selectedTrack.readinessPercentage}%`,
+                    '--score': `${selectedReadinessScore}%`,
                   } as CSSProperties
                 }
-                aria-label={`${selectedTrack.readinessPercentage}% ready`}
+                aria-label={`${selectedReadinessScore}% ready`}
               >
-                <span>{selectedTrack.readinessPercentage}%</span>
+                <span>{selectedReadinessScore}%</span>
               </div>
             </article>
 
             <section className="metric-grid" aria-label="Readiness metrics">
               <article className="metric-card">
                 <span>Readiness score</span>
-                <strong>{selectedTrack.readinessPercentage}%</strong>
-                <p>{selectedTrack.targetRole}</p>
+                <strong>{selectedReadinessScore}%</strong>
+                <p>Weighted by requirements, training, documents, milestones</p>
               </article>
               <article className="metric-card">
-                <span>Completed trainings</span>
+                <span>Requirements complete</span>
                 <strong>
-                  {getCompletedTrainingCount(selectedTrainings)} / {selectedTrainings.length}
+                  {getCompletedRequirementCount(selectedTrack.requirements)} /{' '}
+                  {selectedTrack.requirements.length}
                 </strong>
-                <p>Items finished for this track</p>
+                <p>40% of readiness score</p>
               </article>
               <article className="metric-card">
-                <span>Document coverage</span>
+                <span>Trainings complete</span>
                 <strong>
-                  {getAvailableDocumentCount(selectedDocuments)} / {selectedDocuments.length}
+                  {getCompletedTrainingCount(selectedTrack.trainingPlan)} /{' '}
+                  {selectedTrack.trainingPlan.length}
                 </strong>
-                <p>Demo inventory marked available</p>
+                <p>25% of readiness score</p>
               </article>
               <article className="metric-card">
-                <span>Next milestone</span>
-                <strong>{nextMilestone?.targetDateLabel ?? 'None'}</strong>
+                <span>Documents available</span>
+                <strong>
+                  {getAvailableDocumentCount(selectedTrack.documentChecklist)} /{' '}
+                  {selectedTrack.documentChecklist.length}
+                </strong>
+                <p>20% of readiness score</p>
+              </article>
+              <article className="metric-card">
+                <span>Milestones complete</span>
+                <strong>
+                  {getCompletedMilestoneCount(selectedTrack.milestones)} /{' '}
+                  {selectedTrack.milestones.length}
+                </strong>
                 <p>{nextMilestone?.title ?? 'No upcoming milestone'}</p>
+              </article>
+            </section>
+
+            <section className="two-column">
+              <article className="panel">
+                <div className="section-heading">
+                  <h3>Top risk flags</h3>
+                  <span>{topRiskFlags.length} shown</span>
+                </div>
+                <div className="item-list">
+                  {topRiskFlags.map((risk) => (
+                    <article className="list-row" key={risk.id}>
+                      <div>
+                        <strong>{risk.title}</strong>
+                        <p>{risk.detail}</p>
+                      </div>
+                      <Badge label={risk.level} tone={riskTone[risk.level]} />
+                    </article>
+                  ))}
+                </div>
+              </article>
+
+              <article className="panel">
+                <div className="section-heading">
+                  <h3>Next priority actions</h3>
+                  <span>{priorityActions.length} active</span>
+                </div>
+                <div className="item-list">
+                  {priorityActions.map((action) => (
+                    <article className="list-row" key={action.id}>
+                      <div>
+                        <strong>{action.title}</strong>
+                        <p>
+                          {action.ownerLabel} - {action.dueLabel}
+                        </p>
+                      </div>
+                      <Badge
+                        label={action.priority}
+                        tone={priorityTone[action.priority]}
+                      />
+                    </article>
+                  ))}
+                </div>
               </article>
             </section>
 
             <section className="panel">
               <div className="section-heading">
-                <h3>High-priority items</h3>
-                <span>{highPriorityItems.length} active</span>
+                <h3>Readiness categories</h3>
+                <span>Demo scoring notes</span>
               </div>
-              <div className="item-list">
-                {highPriorityItems.map((item) => (
-                  <article className="list-row" key={item.id}>
-                    <div>
-                      <strong>{item.title}</strong>
-                      <p>
-                        {item.category} - {item.dueLabel}
-                      </p>
-                    </div>
-                    <div className="badge-pair">
-                      <Badge label={item.status} tone={trainingTone[item.status]} />
-                      <Badge label={item.priority} tone={priorityTone[item.priority]} />
-                    </div>
+              <div className="category-grid">
+                {selectedTrack.readinessCategories.map((category) => (
+                  <article className="category-card" key={category.id}>
+                    <strong>{category.label}</strong>
+                    <span>{category.score}%</span>
+                    <p>{category.note}</p>
                   </article>
                 ))}
               </div>
@@ -198,16 +261,30 @@ function App() {
 
         {activeScreen === 'tracks' && (
           <section className="card-grid">
-            {careerTracks.map((track) => (
+            {trackCards.map((track) => (
               <article className="track-card" key={track.id}>
                 <div className="card-header">
                   <Badge label={track.status} tone={trackTone[track.status]} />
-                  <strong>{track.readinessPercentage}%</strong>
+                  <strong>{track.calculatedReadinessScore}%</strong>
                 </div>
-                <h3>{track.name}</h3>
+                <h3>{track.title}</h3>
                 <p>{track.targetRole}</p>
+                <dl className="track-facts">
+                  <div>
+                    <dt>Domain</dt>
+                    <dd>{track.domain}</dd>
+                  </div>
+                  <div>
+                    <dt>Market</dt>
+                    <dd>{track.market}</dd>
+                  </div>
+                  <div>
+                    <dt>Top risk</dt>
+                    <dd>{track.topRiskFlag?.title ?? 'None'}</dd>
+                  </div>
+                </dl>
                 <div className="progress-bar" aria-hidden="true">
-                  <span style={{ width: `${track.readinessPercentage}%` }} />
+                  <span style={{ width: `${track.calculatedReadinessScore}%` }} />
                 </div>
               </article>
             ))}
@@ -218,10 +295,10 @@ function App() {
           <section className="panel">
             <div className="section-heading">
               <h3>Training tracker</h3>
-              <span>{selectedTrack.name}</span>
+              <span>{selectedTrack.title}</span>
             </div>
             <div className="data-table">
-              {selectedTrainings.map((item) => (
+              {selectedTrack.trainingPlan.map((item) => (
                 <article className="table-row" key={item.id}>
                   <div>
                     <strong>{item.title}</strong>
@@ -243,7 +320,7 @@ function App() {
               <span>No uploads or real links</span>
             </div>
             <div className="data-table">
-              {selectedDocuments.map((item) => (
+              {selectedTrack.documentChecklist.map((item) => (
                 <article className="table-row document-row" key={item.id}>
                   <div>
                     <strong>{item.title}</strong>
