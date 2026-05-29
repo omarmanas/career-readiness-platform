@@ -78,6 +78,7 @@ export interface Blocker {
   description: string
   priority: Priority
   category: string
+  itemType: 'requirement'
 }
 
 export interface ActionReason {
@@ -94,6 +95,8 @@ export interface RecommendedAction {
   title: string
   description: string
   sourceType: 'requirement' | 'document'
+  itemId: string | null
+  itemType: 'requirement' | 'training' | 'document' | 'milestone' | null
   reason: ActionReason
 }
 
@@ -135,6 +138,7 @@ export function getRecommendationSet(
         description: req.description,
         priority: req.priority,
         category: req.category,
+        itemType: 'requirement',
       })
       continue
     }
@@ -150,6 +154,8 @@ export function getRecommendationSet(
         title: req.title,
         description: req.description,
         sourceType: 'requirement',
+        itemId: req.id,
+        itemType: 'requirement',
         reason: {
           impactPoints: req.readinessImpact,
           priorityLevel: req.priority,
@@ -186,6 +192,8 @@ export function getRecommendationSet(
         title: `Obtain: ${doc.title}`,
         description: doc.description,
         sourceType: 'document',
+        itemId: doc.id,
+        itemType: 'document',
         reason: {
           impactPoints: doc.readinessImpact,
           priorityLevel: importance,

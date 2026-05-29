@@ -84,7 +84,12 @@ function App() {
         </header>
 
         {activeScreen === 'dashboard' && (
-          <DashboardView selectedTrack={effectiveTrack} />
+          <DashboardView
+            selectedTrack={effectiveTrack}
+            isInteractive={isInteractive}
+            onReqStatusChange={setReqStatus}
+            onDocStatusChange={setDocStatus}
+          />
         )}
         {activeScreen === 'tracks' && (
           <CareerTracksView

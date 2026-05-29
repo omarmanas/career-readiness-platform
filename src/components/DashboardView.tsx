@@ -1,16 +1,15 @@
 import type { CSSProperties } from 'react'
+import { ActionCenterPanel } from './ActionCenterPanel'
 import { Badge } from './Badge'
-import { BlockersStrip } from './BlockersStrip'
 import { CollapsibleSection } from './CollapsibleSection'
 import { CompactMetricRow } from './CompactMetricRow'
 import { DocumentIntelligencePanel } from './DocumentIntelligencePanel'
 import { GapAnalysisPanel } from './GapAnalysisPanel'
-import { NextActionsPanel } from './NextActionsPanel'
 import { ReadinessBreakdownCard } from './ReadinessBreakdownCard'
 import { ReadinessNarrativePanel } from './ReadinessNarrativePanel'
 import { RecruiterReadinessCard } from './RecruiterReadinessCard'
 import { RequirementIntelligencePanel } from './RequirementIntelligencePanel'
-import type { CareerTrack } from '../types'
+import type { CareerTrack, DocumentStatus, RequirementStatus } from '../types'
 import {
   priorityTone,
   readinessCategoryTone,
@@ -33,9 +32,17 @@ import {
 
 interface DashboardViewProps {
   selectedTrack: CareerTrack
+  isInteractive: boolean
+  onReqStatusChange: (itemId: string, status: RequirementStatus) => void
+  onDocStatusChange: (itemId: string, status: DocumentStatus) => void
 }
 
-export function DashboardView({ selectedTrack }: DashboardViewProps) {
+export function DashboardView({
+  selectedTrack,
+  isInteractive,
+  onReqStatusChange,
+  onDocStatusChange,
+}: DashboardViewProps) {
   const readinessScore = calculateReadinessScore(selectedTrack)
   const nextMilestone = getNextMilestone(selectedTrack.milestones)
   const topRiskFlags = getTopRiskFlags(selectedTrack.riskFlags)
@@ -110,11 +117,13 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
         </article>
       </section>
 
-      {/* ── Zone 2: Blockers (gating items only) ──────────────────────── */}
-      <BlockersStrip selectedTrack={selectedTrack} />
-
-      {/* ── Zone 3: Ranked next actions + projected improvement ───────── */}
-      <NextActionsPanel selectedTrack={selectedTrack} limit={5} />
+      {/* ── Zone 2 & 3: Action Center — blockers strip + ranked next actions ── */}
+      <ActionCenterPanel
+        selectedTrack={selectedTrack}
+        isInteractive={isInteractive}
+        onReqStatusChange={onReqStatusChange}
+        onDocStatusChange={onDocStatusChange}
+      />
 
       {/* ── Zone 4: Progress by category ──────────────────────────────── */}
       <ReadinessBreakdownCard selectedTrack={selectedTrack} />
