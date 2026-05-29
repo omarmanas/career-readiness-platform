@@ -30,7 +30,6 @@ function App() {
         <div className="brand">
           <span className="brand-mark">CR</span>
           <div>
-            <p className="eyebrow">Sprint 2 MVP</p>
             <h1>Career Readiness</h1>
           </div>
         </div>
@@ -51,7 +50,6 @@ function App() {
       <main className="workspace">
         <header className="topbar">
           <div>
-            <p className="eyebrow">Readiness category engine</p>
             <h2>{navItems.find((item) => item.id === activeScreen)?.label}</h2>
           </div>
           {activeScreen !== 'tracks' && (
@@ -63,7 +61,7 @@ function App() {
               >
                 {careerTracks.map((track) => (
                   <option key={track.id} value={track.id}>
-                    {track.title}
+                    {track.maturity === 'preview' ? `${track.title} (Preview)` : track.title}
                   </option>
                 ))}
               </select>

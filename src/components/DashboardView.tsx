@@ -1,18 +1,15 @@
 import type { CSSProperties } from 'react'
 import { Badge } from './Badge'
+import { BlockersStrip } from './BlockersStrip'
 import { CollapsibleSection } from './CollapsibleSection'
 import { CompactMetricRow } from './CompactMetricRow'
 import { DocumentIntelligencePanel } from './DocumentIntelligencePanel'
 import { GapAnalysisPanel } from './GapAnalysisPanel'
-import { HighestRoiActionPanel } from './HighestRoiActionPanel'
-import { ImmediateActionPanel } from './ImmediateActionPanel'
+import { NextActionsPanel } from './NextActionsPanel'
 import { ReadinessBreakdownCard } from './ReadinessBreakdownCard'
-import { ReadinessIntelligencePanel } from './ReadinessIntelligencePanel'
 import { ReadinessNarrativePanel } from './ReadinessNarrativePanel'
 import { RecruiterReadinessCard } from './RecruiterReadinessCard'
 import { RequirementIntelligencePanel } from './RequirementIntelligencePanel'
-import { WeeklyFocusPanel } from './WeeklyFocusPanel'
-import { WeeklyPlanPanel } from './WeeklyPlanPanel'
 import type { CareerTrack } from '../types'
 import {
   priorityTone,
@@ -49,9 +46,13 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
 
   return (
     <section className="screen-stack">
+      {/* ── Zone 1: Readiness header ───────────────────────────────────── */}
       <article className="summary-panel">
         <div>
           <Badge label={selectedTrack.status} tone={trackTone[selectedTrack.status]} />
+          {selectedTrack.maturity === 'preview' && (
+            <Badge label="Preview" tone="neutral" />
+          )}
           <h3>{selectedTrack.title}</h3>
           <p>{selectedTrack.description}</p>
           <div className="meta-list">
@@ -62,22 +63,18 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
         </div>
         <div
           className="score-ring"
-          style={
-            {
-              '--score': `${readinessScore}%`,
-            } as CSSProperties
-          }
+          style={{ '--score': `${readinessScore}%` } as CSSProperties}
           aria-label={`${readinessScore}% ready`}
         >
           <span>{readinessScore}%</span>
         </div>
       </article>
 
-      <section className="metric-grid" aria-label="Readiness metrics">
+      <section className="metric-grid" aria-label="Readiness weighting">
         <article className="metric-card">
           <span>Readiness score</span>
           <strong>{readinessScore}%</strong>
-          <p>Weighted by requirements, training, documents, milestones</p>
+          <p>Weighted: requirements 40 / training 25 / documents 20 / milestones 15</p>
         </article>
         <article className="metric-card">
           <span>Requirements complete</span>
@@ -113,40 +110,34 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
         </article>
       </section>
 
-      {/* ── Readiness Intelligence Layer ── */}
-      <div className="intel-layout">
-        <ReadinessBreakdownCard selectedTrack={selectedTrack} />
-        <ReadinessIntelligencePanel selectedTrack={selectedTrack} />
-      </div>
+      {/* ── Zone 2: Blockers (gating items only) ──────────────────────── */}
+      <BlockersStrip selectedTrack={selectedTrack} />
 
+      {/* ── Zone 3: Ranked next actions + projected improvement ───────── */}
+      <NextActionsPanel selectedTrack={selectedTrack} limit={5} />
+
+      {/* ── Zone 4: Progress by category ──────────────────────────────── */}
+      <ReadinessBreakdownCard selectedTrack={selectedTrack} />
+
+      {/* ── Secondary: narrative + recruiter readiness ────────────────── */}
       <div className="two-column">
-        <WeeklyFocusPanel selectedTrack={selectedTrack} />
+        <ReadinessNarrativePanel selectedTrack={selectedTrack} />
         <RecruiterReadinessCard selectedTrack={selectedTrack} />
       </div>
 
-      <ReadinessNarrativePanel selectedTrack={selectedTrack} />
-
-      <section className="two-column">
-        <ImmediateActionPanel selectedTrack={selectedTrack} />
-        <WeeklyPlanPanel
-          selectedTrack={selectedTrack}
-          limit={3}
-          title="Weekly Plan Preview"
-        />
-      </section>
-
       <CompactMetricRow selectedTrack={selectedTrack} />
 
+      {/* ── Collapsibles: detailed analysis (kept, not removed) ───────── */}
       <CollapsibleSection
         title="Readiness Diagnosis"
-        description="Open for requirement intelligence, category scores, category gaps, and track health."
+        description="Requirement intelligence, category scores, category gaps, and track health."
       >
         <RequirementIntelligencePanel selectedTrack={selectedTrack} />
 
         <section className="panel">
           <div className="section-heading">
             <h3>Readiness categories</h3>
-            <span>Calculated demo scoring</span>
+            <span>Calculated scoring</span>
           </div>
           <div className="category-grid">
             {readinessCategories.map((category) => (
@@ -160,7 +151,7 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
                 </div>
                 <span>{category.score}%</span>
                 <p>{category.description}</p>
-                <small>Target {category.targetScore}% - {category.notes}</small>
+                <small>Target {category.targetScore}% — {category.notes}</small>
               </article>
             ))}
           </div>
@@ -192,15 +183,15 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
             </div>
             <div className="health-grid">
               <div>
-                <span>Strongest Area</span>
+                <span>Strongest area</span>
                 <strong>{trackHealth.strongestArea.name}</strong>
               </div>
               <div>
-                <span>Weakest Area</span>
+                <span>Weakest area</span>
                 <strong>{trackHealth.weakestArea.name}</strong>
               </div>
               <div>
-                <span>Categories On Target</span>
+                <span>Categories on target</span>
                 <strong>
                   {trackHealth.categoriesOnTarget}/{trackHealth.totalCategories}
                 </strong>
@@ -212,17 +203,14 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
 
       <CollapsibleSection
         title="Gap Analysis"
-        description="Open for actionable gaps and the highest ROI action details."
+        description="Actionable gaps and supporting detail."
       >
-        <div className="two-column">
-          <GapAnalysisPanel selectedTrack={selectedTrack} />
-          <HighestRoiActionPanel selectedTrack={selectedTrack} />
-        </div>
+        <GapAnalysisPanel selectedTrack={selectedTrack} />
       </CollapsibleSection>
 
       <CollapsibleSection
         title="Risk & Supporting Detail"
-        description="Open for document intelligence, risk flags, and supporting priority actions retained for traceability."
+        description="Document intelligence, risk flags, and supporting priority actions."
       >
         <div className="two-column">
           <DocumentIntelligencePanel selectedTrack={selectedTrack} />
@@ -248,7 +236,7 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
         <article className="panel">
           <div className="section-heading">
             <h3>Supporting priority actions</h3>
-            <span>Legacy action list</span>
+            <span>Traceability reference</span>
           </div>
           <div className="item-list">
             {priorityActions.map((action) => (
@@ -256,7 +244,7 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
                 <div>
                   <strong>{action.title}</strong>
                   <p>
-                    {action.ownerLabel} - {action.dueLabel}
+                    {action.ownerLabel} — {action.dueLabel}
                   </p>
                 </div>
                 <Badge

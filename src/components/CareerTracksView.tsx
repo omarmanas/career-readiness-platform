@@ -29,6 +29,7 @@ export function CareerTracksView({
         {careerTracks.map((track) => {
           const score = calculateReadinessScore(track)
           const isSelected = track.id === selectedTrackId
+          const isPreview = track.maturity === 'preview'
 
           return (
             <button
@@ -40,6 +41,7 @@ export function CareerTracksView({
             >
               <span className="track-list-name">{track.title}</span>
               <span className="track-list-meta">
+                {isPreview && <Badge label="Preview" tone="neutral" />}
                 <Badge label={track.status} tone={trackTone[track.status]} />
                 <strong className="track-list-score">{score}%</strong>
               </span>
@@ -74,12 +76,20 @@ function TrackDetailPanel({ track }: { track: CareerTrack }) {
   const actionQueueCount = generateNextActions(track).filter(
     (a) => a.status !== 'Completed' && a.status !== 'Deferred',
   ).length
+  const isPreview = track.maturity === 'preview'
 
   return (
     <div className="track-detail-panel">
+      {isPreview && (
+        <div className="preview-banner" role="note">
+          Preview track — placeholder data, not yet validated.
+        </div>
+      )}
+
       <div className="track-detail-header">
         <div className="track-detail-title-row">
           <Badge label={track.status} tone={trackTone[track.status]} />
+          {isPreview && <Badge label="Preview" tone="neutral" />}
           <h3 className="track-detail-title">{track.title}</h3>
         </div>
         {track.description && (
@@ -180,7 +190,7 @@ function TrackDetailPanel({ track }: { track: CareerTrack }) {
       )}
 
       <p className="track-source-note">
-        Verify with official source. Demo requirements are not final.
+        Verify with official source and recruiter. Requirements may change.
       </p>
     </div>
   )

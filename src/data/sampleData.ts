@@ -188,6 +188,7 @@ export const careerTracks: CareerTrack[] = [
     description:
       'Official-source-aware readiness plan covering recruiter contact, eligibility review, ASVAB preparation, MEPS processing, background readiness, fitness, and recruiter packet organization. Verify all requirements with official source and recruiter. Requirements may change.',
     status: 'Preparing',
+    maturity: 'live',
     readinessScore: 0,
     requirements: [
       makeRequirement({
@@ -413,7 +414,7 @@ export const careerTracks: CareerTrack[] = [
         id: 'uscg-doc-resume',
         trackId: 'uscg-candidate',
         title: 'Resume / candidate overview',
-        description: 'Demo resume and candidate overview for recruiter review.',
+        description: 'Candidate resume and overview for recruiter review. Evidence record — no document contents stored.',
         category: 'Application',
         status: 'Verified',
         importance: 'Critical',
@@ -425,14 +426,14 @@ export const careerTracks: CareerTrack[] = [
         relatedTrainingIds: ['uscg-train-interview'],
         readinessImpact: 16,
         privacyLevel: 'Recruiter Visible',
-        notes: 'Verify recruiter format requirements. Demo document — no real personal data included.',
+        notes: 'Verify recruiter format and content requirements. Verify with official source and recruiter.',
       },
       {
         ...uscgEligibilitySource,
         id: 'uscg-doc-id',
         trackId: 'uscg-candidate',
-        title: 'Identification / legal status placeholder',
-        description: 'Government-issued ID and citizenship / legal status documentation placeholder for recruiter packet.',
+        title: 'Identification / legal status record',
+        description: 'Government-issued ID and citizenship / legal status evidence record for recruiter packet. Record tracks readiness status only — no document contents stored.',
         category: 'Eligibility',
         status: 'Needs Review',
         importance: 'Critical',
@@ -444,7 +445,7 @@ export const careerTracks: CareerTrack[] = [
         relatedTrainingIds: [],
         readinessImpact: 14,
         privacyLevel: 'Sensitive',
-        notes: 'Demo placeholder only. Do not enter real document details. Verify ID and citizenship documentation requirements with recruiter.',
+        notes: 'Evidence record only — no actual document contents stored here. Verify ID and citizenship documentation requirements with official source and recruiter.',
       },
       {
         ...uscgEligibilitySource,
@@ -456,7 +457,7 @@ export const careerTracks: CareerTrack[] = [
         status: 'Pending',
         importance: 'High',
         evidenceType: 'Training Record',
-        issuer: 'Demo school registrar',
+        issuer: 'Issuing school registrar',
         issueDate: 'Pending',
         expirationDate: 'None',
         relatedRequirementIds: ['uscg-req-eligibility', 'uscg-req-packet'],
@@ -482,14 +483,14 @@ export const careerTracks: CareerTrack[] = [
         relatedTrainingIds: [],
         readinessImpact: 22,
         privacyLevel: 'Sensitive',
-        notes: 'Highest-impact missing document for this track. Discuss medical history items with recruiter before MEPS. Demo placeholder — do not include real medical details.',
+        notes: 'Highest-impact missing document for this track. Discuss medical history items with recruiter before MEPS scheduling. Evidence record only — no medical details stored here. Verify with official source and recruiter.',
       },
       {
         ...uscgEligibilitySource,
         id: 'uscg-doc-asvab',
         trackId: 'uscg-candidate',
-        title: 'ASVAB prep record / score placeholder',
-        description: 'Demo placeholder for ASVAB diagnostic results or practice test tracking.',
+        title: 'ASVAB prep record / score tracking',
+        description: 'Tracking record for ASVAB diagnostic results and practice test scores. No actual test scores stored — status tracks readiness progress only.',
         category: 'Testing',
         status: 'Missing',
         importance: 'High',
@@ -501,7 +502,7 @@ export const careerTracks: CareerTrack[] = [
         relatedTrainingIds: ['uscg-train-asvab'],
         readinessImpact: 14,
         privacyLevel: 'Private',
-        notes: 'Demo placeholder. No real ASVAB scores stored. Use to track study progress and practice test results.',
+        notes: 'Use to track study progress and practice test results. Verify ASVAB minimum score requirements with official source and recruiter before testing.',
       },
       {
         ...uscgGetStartedSource,
@@ -520,14 +521,14 @@ export const careerTracks: CareerTrack[] = [
         relatedTrainingIds: [],
         readinessImpact: 10,
         privacyLevel: 'Recruiter Visible',
-        notes: 'Confirm exact packet format and checklist requirements with recruiter. Demo document only.',
+        notes: 'Confirm exact packet format and checklist requirements with recruiter. Verify with official source and recruiter.',
       },
       {
         ...uscgEnlistingSource,
         id: 'uscg-doc-fitness',
         trackId: 'uscg-candidate',
         title: 'Fitness baseline log',
-        description: 'Demo fitness baseline log for physical readiness tracking and conditioning reference.',
+        description: 'Fitness baseline log for physical readiness tracking and conditioning reference. Self-maintained evidence record.',
         category: 'Fitness',
         status: 'Available',
         importance: 'Medium',
@@ -542,42 +543,51 @@ export const careerTracks: CareerTrack[] = [
         notes: 'Not a formal credentialing document. Used for self-tracking only.',
       },
       {
-        ...trainingProviderSource,
+        sourceName: 'FEMA Emergency Management Institute — IS-100.C',
+        sourceUrl: 'https://training.fema.gov/is/courseoverview.aspx?code=IS-100.C',
+        sourceType: 'Official',
+        lastReviewed: '2026-05-28',
+        jurisdiction: 'United States',
+        confidenceLevel: 'High',
         id: 'uscg-doc-fema',
         trackId: 'uscg-candidate',
         title: 'FEMA IS-100 certificate',
-        description: 'Incident command introduction certificate. Supporting readiness credential.',
+        description: 'Introduction to ICS certificate (IS-100.C). Supporting readiness credential relevant to emergency operations awareness.',
         category: 'Training',
         status: 'Available',
         importance: 'Medium',
         evidenceType: 'Certificate',
-        issuer: 'FEMA',
+        issuer: 'FEMA Emergency Management Institute',
         issueDate: '2026-04-15',
         expirationDate: 'None',
         relatedRequirementIds: ['uscg-req-me'],
         relatedTrainingIds: ['uscg-train-fema'],
         readinessImpact: 6,
         privacyLevel: 'Public Summary',
-        notes: 'Useful supporting readiness evidence for service research context.',
+        notes: 'Supporting readiness evidence for service research context. Verify with official source and recruiter.',
       },
       {
-        ...trainingProviderSource,
+        sourceName: 'Certified first aid training provider',
+        sourceType: 'Training Provider',
+        lastReviewed: '2026-05-28',
+        jurisdiction: 'United States',
+        confidenceLevel: 'Medium',
         id: 'uscg-doc-cpr',
         trackId: 'uscg-candidate',
         title: 'CPR/AED certificate',
-        description: 'CPR/AED safety credential. Supporting readiness evidence.',
+        description: 'CPR/AED safety credential from a recognized provider (e.g., American Red Cross, American Heart Association). Supporting readiness evidence.',
         category: 'Certification',
         status: 'Needs Review',
         importance: 'Medium',
         evidenceType: 'Certificate',
-        issuer: 'Demo training provider',
+        issuer: 'Certified training provider',
         issueDate: '2025-08-01',
         expirationDate: 'Next 30 days',
         relatedRequirementIds: ['uscg-req-fitness'],
         relatedTrainingIds: ['uscg-train-fitness'],
         readinessImpact: 8,
         privacyLevel: 'Recruiter Visible',
-        notes: 'Expiration window needs review before packet completion.',
+        notes: 'Expiration window needs review before packet completion. Renew through a recognized provider.',
       },
       {
         ...uscgGetStartedSource,
@@ -596,7 +606,7 @@ export const careerTracks: CareerTrack[] = [
         relatedTrainingIds: [],
         readinessImpact: 4,
         privacyLevel: 'Public Summary',
-        notes: 'Optional supporting credential in this demo track. Verify relevance to your intended rating with recruiter.',
+        notes: 'Optional supporting credential. Verify relevance to your intended rating with official source and recruiter.',
       },
     ],
     readinessCategories: [
@@ -801,6 +811,7 @@ export const careerTracks: CareerTrack[] = [
     description:
       'Demo readiness plan for maritime credential research, TWIC awareness, medical certificate awareness, sea service documentation, and safety training.',
     status: 'Exploring',
+    maturity: 'preview',
     readinessScore: 0,
     requirements: [
       makeRequirement({
@@ -1207,6 +1218,7 @@ export const careerTracks: CareerTrack[] = [
     description:
       'Demo readiness plan for fire service application, physical ability, academy readiness, EMS awareness, and interview preparation.',
     status: 'Preparing',
+    maturity: 'preview',
     readinessScore: 0,
     requirements: [
       makeRequirement({
@@ -1659,6 +1671,7 @@ export const careerTracks: CareerTrack[] = [
     description:
       'Demo readiness plan for academy application, background preparation, testing, and fitness standards.',
     status: 'Application Ready',
+    maturity: 'preview',
     readinessScore: 0,
     requirements: [
       makeRequirement({
@@ -2075,6 +2088,7 @@ export const careerTracks: CareerTrack[] = [
     description:
       'Demo readiness plan for EMT prerequisites, program selection, CPR certification, and application documents.',
     status: 'Exploring',
+    maturity: 'preview',
     readinessScore: 0,
     requirements: [
       makeRequirement({
@@ -2491,6 +2505,7 @@ export const careerTracks: CareerTrack[] = [
     description:
       'Demo readiness plan for ICS/NIMS foundations, FEMA independent study, volunteer exposure, documentation, and public safety communication.',
     status: 'Exploring',
+    maturity: 'preview',
     readinessScore: 0,
     requirements: [
       makeRequirement({
@@ -2897,6 +2912,7 @@ export const careerTracks: CareerTrack[] = [
     description:
       'Demo readiness plan for licensing awareness, background readiness, first aid awareness, report writing, de-escalation, and application preparation.',
     status: 'Preparing',
+    maturity: 'preview',
     readinessScore: 0,
     requirements: [
       makeRequirement({

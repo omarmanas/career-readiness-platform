@@ -1,5 +1,7 @@
 export type TrackStatus = 'Exploring' | 'Preparing' | 'Application Ready'
 
+export type TrackMaturity = 'live' | 'preview'
+
 export type CompletionStatus =
   | 'Completed'
   | 'In Progress'
@@ -229,6 +231,7 @@ export interface CareerTrack {
   market: string
   description: string
   status: TrackStatus
+  maturity: TrackMaturity
   readinessScore: number
   requirements: TrackRequirement[]
   milestones: TrackMilestone[]
