@@ -89,7 +89,7 @@ export function DocumentInventoryView({
                   <span>Confidence</span>
                   <strong>{item.confidenceLevel ?? 'Low'}</strong>
                 </div>
-                <p>Verify with official source. Demo requirements are not final.</p>
+                <p>Verify with official source and recruiter. Requirements may change.</p>
               </div>
             )}
             <p className="document-notes">{item.notes}</p>

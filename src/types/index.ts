@@ -66,6 +66,12 @@ export interface SourceAttribution {
   confidenceLevel?: ConfidenceLevel
 }
 
+export interface SourceEntry extends SourceAttribution {
+  id: string
+  publisher: string
+  notes?: string
+}
+
 export type Priority = 'Low' | 'Medium' | 'High' | 'Critical'
 
 export type RiskLevel = 'Low' | 'Medium' | 'High' | 'Critical'

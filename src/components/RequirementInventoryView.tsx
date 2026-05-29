@@ -20,7 +20,7 @@ export function RequirementInventoryView({
     <section className="panel">
       <div className="section-heading">
         <h3>Readiness Requirements</h3>
-        <span>Verify with official source</span>
+        <span>Verify with official source and recruiter</span>
       </div>
       <div className="requirement-list">
         {selectedTrack.requirements.map((requirement) => {
@@ -82,7 +82,7 @@ export function RequirementInventoryView({
                   </small>
                   {requirement.sourceUrl && (
                     <a href={requirement.sourceUrl} target="_blank" rel="noreferrer">
-                      Verify with official source
+                      Verify with official source and recruiter
                     </a>
                   )}
                 </div>
