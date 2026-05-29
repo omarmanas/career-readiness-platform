@@ -1,5 +1,19 @@
 # React + TypeScript + Vite
 
+## MVP Status
+
+The Career Readiness Platform MVP is complete from an engineering perspective
+and ready for controlled review as a local-only demo app. It does not include
+backend services, authentication, or database persistence.
+
+The `portfolio.json` contract exists in `docs/05_Portfolio_JSON_Contract.md`,
+with an example file at `public/examples/portfolio.example.json`. Developers can
+validate the example import pipeline with:
+
+```bash
+npm run validate:portfolio
+```
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
