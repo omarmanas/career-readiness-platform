@@ -52,63 +52,73 @@ export function DashboardView({
   const trackHealth = getTrackHealthSummary(selectedTrack)
 
   return (
-    <section className="screen-stack">
-      {/* ── Zone 1: Readiness header ───────────────────────────────────── */}
-      <article className="summary-panel">
-        <div>
-          <Badge label={selectedTrack.status} tone={trackTone[selectedTrack.status]} />
-          {selectedTrack.maturity === 'preview' && (
-            <Badge label="Preview" tone="neutral" />
-          )}
+    <section className="screen-stack dashboard-stack">
+      <article className="summary-panel summary-panel--compact">
+        <div className="summary-panel-main">
+          <div className="badge-pair badge-pair--start">
+            <Badge label={selectedTrack.status} tone={trackTone[selectedTrack.status]} />
+            {selectedTrack.maturity === 'preview' && (
+              <Badge label="Preview" tone="neutral" />
+            )}
+          </div>
           <h3>{selectedTrack.title}</h3>
           <p>{selectedTrack.description}</p>
-          <div className="meta-list">
+          <div className="meta-list meta-list--compact">
             <span>{selectedTrack.domain}</span>
             <span>{selectedTrack.market}</span>
             <span>{selectedTrack.targetRole}</span>
           </div>
         </div>
-        <div
-          className="score-ring"
-          style={{ '--score': `${readinessScore}%` } as CSSProperties}
-          aria-label={`${readinessScore}% ready`}
-        >
-          <span>{readinessScore}%</span>
+        <div className="summary-score-group">
+          <div
+            className="score-ring score-ring--compact"
+            style={{ '--score': `${readinessScore}%` } as CSSProperties}
+            aria-label={`${readinessScore}% ready`}
+          >
+            <span>{readinessScore}%</span>
+          </div>
+          <div className="summary-score-copy">
+            <span>Readiness score</span>
+            <strong>{readinessScore}% ready</strong>
+          </div>
         </div>
       </article>
 
-      <section className="metric-grid" aria-label="Readiness weighting">
+      <section
+        className="metric-grid metric-grid--compact"
+        aria-label="Readiness weighting"
+      >
         <article className="metric-card">
-          <span>Readiness score</span>
+          <span>Score</span>
           <strong>{readinessScore}%</strong>
-          <p>Weighted: requirements 40 / training 25 / documents 20 / milestones 15</p>
+          <p>Weighted model</p>
         </article>
         <article className="metric-card">
-          <span>Requirements complete</span>
+          <span>Requirements</span>
           <strong>
             {getCompletedRequirementCount(selectedTrack.requirements)} /{' '}
             {selectedTrack.requirements.length}
           </strong>
-          <p>40% of readiness score</p>
+          <p>40% weight</p>
         </article>
         <article className="metric-card">
-          <span>Trainings complete</span>
+          <span>Training</span>
           <strong>
             {getCompletedTrainingCount(selectedTrack.trainingPlan)} /{' '}
             {selectedTrack.trainingPlan.length}
           </strong>
-          <p>25% of readiness score</p>
+          <p>25% weight</p>
         </article>
         <article className="metric-card">
-          <span>Documents available</span>
+          <span>Documents</span>
           <strong>
             {getAvailableDocumentCount(selectedTrack.documentChecklist)} /{' '}
             {selectedTrack.documentChecklist.length}
           </strong>
-          <p>20% of readiness score</p>
+          <p>20% weight</p>
         </article>
         <article className="metric-card">
-          <span>Milestones complete</span>
+          <span>Milestones</span>
           <strong>
             {getCompletedMilestoneCount(selectedTrack.milestones)} /{' '}
             {selectedTrack.milestones.length}
@@ -117,7 +127,6 @@ export function DashboardView({
         </article>
       </section>
 
-      {/* ── Zone 2 & 3: Action Center — blockers strip + ranked next actions ── */}
       <ActionCenterPanel
         selectedTrack={selectedTrack}
         isInteractive={isInteractive}
@@ -125,22 +134,17 @@ export function DashboardView({
         onDocStatusChange={onDocStatusChange}
       />
 
-      {/* ── Zone 4: Progress by category ──────────────────────────────── */}
-      <ReadinessBreakdownCard selectedTrack={selectedTrack} />
-
-      {/* ── Secondary: narrative + recruiter readiness ────────────────── */}
-      <div className="two-column">
-        <ReadinessNarrativePanel selectedTrack={selectedTrack} />
-        <RecruiterReadinessCard selectedTrack={selectedTrack} />
-      </div>
-
-      <CompactMetricRow selectedTrack={selectedTrack} />
-
-      {/* ── Collapsibles: detailed analysis (kept, not removed) ───────── */}
       <CollapsibleSection
-        title="Readiness Diagnosis"
-        description="Requirement intelligence, category scores, category gaps, and track health."
+        title="Advanced Analysis"
+        description="Readiness breakdown, intelligence, gaps, risks, and supporting detail."
       >
+        <ReadinessBreakdownCard selectedTrack={selectedTrack} />
+
+        <div className="two-column">
+          <ReadinessNarrativePanel selectedTrack={selectedTrack} />
+          <RecruiterReadinessCard selectedTrack={selectedTrack} />
+        </div>
+
         <RequirementIntelligencePanel selectedTrack={selectedTrack} />
 
         <section className="panel">
@@ -160,7 +164,7 @@ export function DashboardView({
                 </div>
                 <span>{category.score}%</span>
                 <p>{category.description}</p>
-                <small>Target {category.targetScore}% — {category.notes}</small>
+                <small>Target {category.targetScore}% - {category.notes}</small>
               </article>
             ))}
           </div>
@@ -208,19 +212,9 @@ export function DashboardView({
             </div>
           </article>
         </div>
-      </CollapsibleSection>
 
-      <CollapsibleSection
-        title="Gap Analysis"
-        description="Actionable gaps and supporting detail."
-      >
         <GapAnalysisPanel selectedTrack={selectedTrack} />
-      </CollapsibleSection>
 
-      <CollapsibleSection
-        title="Risk & Supporting Detail"
-        description="Document intelligence, risk flags, and supporting priority actions."
-      >
         <div className="two-column">
           <DocumentIntelligencePanel selectedTrack={selectedTrack} />
           <article className="panel">
@@ -253,7 +247,7 @@ export function DashboardView({
                 <div>
                   <strong>{action.title}</strong>
                   <p>
-                    {action.ownerLabel} — {action.dueLabel}
+                    {action.ownerLabel} - {action.dueLabel}
                   </p>
                 </div>
                 <Badge
@@ -264,6 +258,8 @@ export function DashboardView({
             ))}
           </div>
         </article>
+
+        <CompactMetricRow selectedTrack={selectedTrack} />
       </CollapsibleSection>
     </section>
   )
