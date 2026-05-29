@@ -66,9 +66,6 @@ export function DocumentInventoryView({
                     />
                     <Badge label={item.evidenceType} tone="neutral" />
                     <Badge label={`${item.readinessImpact} pts`} tone="success" />
-                    {hasSource && (
-                      <Badge label="Verify source" tone="warning" />
-                    )}
                   </div>
                 </div>
 
@@ -109,6 +106,9 @@ export function DocumentInventoryView({
               {/* ── Secondary tier (expanded on demand) ── */}
               {isExpanded && (
                 <div className="card-secondary-tier">
+                  {hasSource && (
+                    <Badge label="Verify source" tone="warning" />
+                  )}
                   <p className="card-item-desc">{item.description}</p>
 
                   <div className="document-detail-grid">

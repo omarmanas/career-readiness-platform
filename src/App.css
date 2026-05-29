@@ -1701,17 +1701,21 @@
 
 .card-toggle {
   background: transparent;
-  border: none;
+  border: 1px solid #334155;
+  border-radius: 6px;
   color: var(--text-muted);
   cursor: pointer;
   font: inherit;
-  font-size: 0.74rem;
-  padding: 2px 0;
-  transition: color 120ms ease;
+  font-size: 0.85rem;
+  min-width: 162px;
+  padding: 5px 10px;
+  text-align: center;
+  transition: border-color 120ms ease, color 120ms ease;
 }
 
 .card-toggle:hover,
 .card-toggle:focus-visible {
+  border-color: #4b5e78;
   color: var(--text-soft);
   outline: none;
 }
