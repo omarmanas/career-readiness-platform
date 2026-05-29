@@ -278,6 +278,7 @@
 .execution-panel p,
 .narrative-panel p,
 .action-plan-item p,
+.requirement-card p,
 .list-row p,
 .table-row p {
   color: var(--text-soft);
@@ -405,7 +406,8 @@
 .breakdown-list,
 .gap-list,
 .action-plan-list,
-.document-inventory-list {
+.document-inventory-list,
+.requirement-list {
   display: grid;
   gap: 10px;
 }
@@ -448,7 +450,8 @@
 .category-card,
 .gap-card,
 .action-plan-item,
-.document-card {
+.document-card,
+.requirement-card {
   align-items: center;
   background: #0f172a;
   border: 1px solid #1f2937;
@@ -723,6 +726,87 @@
   align-content: start;
 }
 
+.context-note {
+  background: rgba(14, 165, 233, 0.09);
+  border: 1px solid rgba(56, 189, 248, 0.26);
+  border-radius: 8px;
+  color: var(--text-soft);
+  padding: 14px 16px;
+}
+
+.requirement-card {
+  align-items: stretch;
+  display: grid;
+}
+
+.requirement-card-header {
+  align-items: start;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+}
+
+.requirement-card-header strong {
+  color: var(--text-strong);
+  font-size: 1rem;
+}
+
+.requirement-body {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) 360px;
+}
+
+.requirement-why,
+.requirement-support div {
+  background: #111827;
+  border: 1px solid #243244;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.requirement-why span,
+.requirement-support span,
+.requirement-source-row span {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.requirement-why p {
+  margin-top: 4px;
+}
+
+.requirement-support {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.requirement-support strong {
+  color: var(--text-strong);
+}
+
+.requirement-source-row {
+  align-items: center;
+  background: rgba(17, 24, 39, 0.72);
+  border: 1px solid #243244;
+  border-radius: 8px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  padding: 10px 12px;
+}
+
+.requirement-source-row small {
+  color: var(--text-muted);
+}
+
+.requirement-source-row a {
+  color: var(--text-strong);
+  font-size: 0.84rem;
+  text-decoration-color: rgba(134, 239, 172, 0.5);
+}
+
 .health-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -784,7 +868,7 @@
   }
 
   .nav-list {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   }
 
   .nav-item {
@@ -796,6 +880,8 @@
   .document-summary-grid,
   .document-detail-grid,
   .source-attribution,
+  .requirement-body,
+  .requirement-support,
   .category-grid,
   .health-grid,
   .compact-metric-row {
@@ -824,6 +910,9 @@
   .document-summary-grid,
   .document-detail-grid,
   .source-attribution,
+  .requirement-body,
+  .requirement-support,
+  .requirement-source-row,
   .two-column,
   .category-grid,
   .health-grid,

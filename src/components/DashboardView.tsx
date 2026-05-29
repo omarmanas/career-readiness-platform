@@ -7,6 +7,7 @@ import { GapAnalysisPanel } from './GapAnalysisPanel'
 import { HighestRoiActionPanel } from './HighestRoiActionPanel'
 import { ImmediateActionPanel } from './ImmediateActionPanel'
 import { ReadinessNarrativePanel } from './ReadinessNarrativePanel'
+import { RequirementIntelligencePanel } from './RequirementIntelligencePanel'
 import { WeeklyPlanPanel } from './WeeklyPlanPanel'
 import type { CareerTrack } from '../types'
 import {
@@ -123,8 +124,10 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
 
       <CollapsibleSection
         title="Readiness Diagnosis"
-        description="Open for full category scores, category gaps, and track health."
+        description="Open for requirement intelligence, category scores, category gaps, and track health."
       >
+        <RequirementIntelligencePanel selectedTrack={selectedTrack} />
+
         <section className="panel">
           <div className="section-heading">
             <h3>Readiness categories</h3>

@@ -10,10 +10,18 @@ export type CompletionStatus =
 export type TrainingStatus = CompletionStatus
 
 export type RequirementStatus =
+  | 'Not Started'
   | 'Completed'
   | 'In Progress'
-  | 'Pending'
-  | 'Blocked'
+  | 'Missing'
+  | 'Needs Review'
+  | 'Waived'
+
+export type RequirementType =
+  | 'Required'
+  | 'Recommended'
+  | 'Optional'
+  | 'Blocking'
 
 export type DocumentStatus =
   | 'Available'
@@ -96,10 +104,19 @@ export type ActionPriority = 'Low' | 'Medium' | 'High' | 'Critical'
 
 export interface TrackRequirement extends SourceAttribution {
   id: string
+  trackId: string
   title: string
+  description: string
   category: string
+  requirementType: RequirementType
   status: RequirementStatus
   priority: Priority
+  readinessImpact: number
+  relatedDocumentIds: string[]
+  relatedTrainingIds: string[]
+  relatedGapIds: string[]
+  relatedActionIds: string[]
+  notes: string
 }
 
 export interface TrackMilestone {

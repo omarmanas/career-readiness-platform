@@ -1,4 +1,4 @@
-import type { CareerTrack } from '../types'
+import type { CareerTrack, TrackRequirement } from '../types'
 
 const uscgOfficialSource = {
   sourceName: 'Demo official U.S. Coast Guard recruiting source',
@@ -36,6 +36,34 @@ const trainingProviderSource = {
   confidenceLevel: 'Low',
 } as const
 
+const makeRequirement = (
+  requirement: Omit<
+    TrackRequirement,
+    | 'relatedDocumentIds'
+    | 'relatedTrainingIds'
+    | 'relatedGapIds'
+    | 'relatedActionIds'
+    | 'notes'
+  > &
+    Partial<
+      Pick<
+        TrackRequirement,
+        | 'relatedDocumentIds'
+        | 'relatedTrainingIds'
+        | 'relatedGapIds'
+        | 'relatedActionIds'
+        | 'notes'
+      >
+    >,
+): TrackRequirement => ({
+  relatedDocumentIds: [],
+  relatedTrainingIds: [],
+  relatedGapIds: [],
+  relatedActionIds: [],
+  notes: 'Verify with official source. Demo requirements are not final.',
+  ...requirement,
+})
+
 export const careerTracks: CareerTrack[] = [
   {
     id: 'uscg-candidate',
@@ -48,43 +76,91 @@ export const careerTracks: CareerTrack[] = [
     status: 'Preparing',
     readinessScore: 0,
     requirements: [
-      {
+      makeRequirement({
         ...uscgOfficialSource,
         id: 'uscg-req-1',
-        title: 'Confirm basic eligibility checklist',
+        trackId: 'uscg-candidate',
+        title: 'Meet baseline eligibility',
+        description: 'Demo baseline eligibility readiness for Coast Guard candidate planning.',
         category: 'Eligibility',
+        requirementType: 'Required',
         status: 'Completed',
         priority: 'Critical',
-      },
-      {
+        readinessImpact: 24,
+        relatedDocumentIds: ['uscg-doc-1', 'uscg-doc-2'],
+        relatedGapIds: ['uscg-gap-3'],
+      }),
+      makeRequirement({
+        ...uscgOfficialSource,
         id: 'uscg-req-2',
-        title: 'Build weekly fitness baseline',
+        trackId: 'uscg-candidate',
+        title: 'Maintain physical readiness baseline',
+        description: 'Demo recurring physical readiness baseline for candidate preparedness.',
         category: 'Fitness',
+        requirementType: 'Recommended',
         status: 'In Progress',
         priority: 'High',
-      },
-      {
+        readinessImpact: 14,
+        relatedDocumentIds: ['uscg-doc-5'],
+        relatedTrainingIds: ['uscg-train-1'],
+      }),
+      makeRequirement({
+        ...uscgOfficialSource,
         id: 'uscg-req-3',
-        title: 'Prepare ASVAB study targets',
+        trackId: 'uscg-candidate',
+        title: 'Prepare for ASVAB / aptitude testing',
+        description: 'Demo aptitude testing preparation requirement.',
         category: 'Testing',
-        status: 'Pending',
+        requirementType: 'Required',
+        status: 'Not Started',
         priority: 'High',
-      },
-      {
+        readinessImpact: 20,
+        relatedTrainingIds: ['uscg-train-3'],
+        relatedGapIds: ['uscg-gap-1'],
+      }),
+      makeRequirement({
+        ...uscgOfficialSource,
         id: 'uscg-req-4',
-        title: 'Review service commitment options',
+        trackId: 'uscg-candidate',
+        title: 'Complete recruiter readiness review',
+        description: 'Demo readiness review before application timing decisions.',
         category: 'Research',
+        requirementType: 'Required',
         status: 'Completed',
         priority: 'Medium',
-      },
-      {
+        readinessImpact: 12,
+        relatedDocumentIds: ['uscg-doc-4'],
+        relatedTrainingIds: ['uscg-train-4'],
+      }),
+      makeRequirement({
         ...uscgOfficialSource,
         id: 'uscg-req-5',
+        trackId: 'uscg-candidate',
         title: 'Resolve medical prescreen questions',
+        description: 'Demo blocking prescreen item that must be verified with an official source.',
         category: 'Medical',
-        status: 'Blocked',
+        requirementType: 'Blocking',
+        status: 'Missing',
         priority: 'Critical',
-      },
+        readinessImpact: 30,
+        relatedDocumentIds: ['uscg-doc-3'],
+        relatedGapIds: ['uscg-gap-2'],
+      }),
+      makeRequirement({
+        ...uscgOfficialSource,
+        id: 'uscg-req-6',
+        trackId: 'uscg-candidate',
+        title: 'Organize recruiter packet',
+        description: 'Demo packet organization requirement for recruiter review.',
+        category: 'Documents',
+        requirementType: 'Required',
+        status: 'Needs Review',
+        priority: 'High',
+        readinessImpact: 18,
+        relatedDocumentIds: ['uscg-doc-1', 'uscg-doc-2', 'uscg-doc-3'],
+        relatedGapIds: ['uscg-gap-3'],
+        relatedActionIds: ['uscg-action-3'],
+      }),
     ],
     milestones: [
       {
@@ -446,43 +522,93 @@ export const careerTracks: CareerTrack[] = [
     status: 'Application Ready',
     readinessScore: 0,
     requirements: [
-      {
+      makeRequirement({
         ...policeOfficialSource,
         id: 'police-req-1',
+        trackId: 'police-academy-candidate',
         title: 'Complete academy application packet',
+        description: 'Demo application packet requirement for academy candidacy.',
         category: 'Application',
+        requirementType: 'Required',
         status: 'Completed',
         priority: 'Critical',
-      },
-      {
+        readinessImpact: 24,
+        relatedDocumentIds: ['police-doc-1'],
+        relatedGapIds: ['police-gap-3'],
+      }),
+      makeRequirement({
         ...policeOfficialSource,
         id: 'police-req-2',
+        trackId: 'police-academy-candidate',
         title: 'Prepare background investigation worksheet',
+        description: 'Demo background packet preparation requirement.',
         category: 'Background',
+        requirementType: 'Blocking',
         status: 'In Progress',
         priority: 'High',
-      },
-      {
+        readinessImpact: 28,
+        relatedDocumentIds: ['police-doc-2', 'police-doc-3', 'police-doc-5'],
+        relatedTrainingIds: ['police-train-3'],
+        relatedGapIds: ['police-gap-2'],
+        relatedActionIds: ['police-action-1'],
+      }),
+      makeRequirement({
+        ...policeOfficialSource,
         id: 'police-req-3',
+        trackId: 'police-academy-candidate',
         title: 'Pass written exam benchmark',
+        description: 'Demo written exam benchmark requirement.',
         category: 'Testing',
+        requirementType: 'Required',
         status: 'Completed',
         priority: 'High',
-      },
-      {
+        readinessImpact: 16,
+        relatedTrainingIds: ['police-train-1'],
+      }),
+      makeRequirement({
+        ...policeOfficialSource,
         id: 'police-req-4',
-        title: 'Maintain physical agility plan',
+        trackId: 'police-academy-candidate',
+        title: 'Meet physical agility baseline',
+        description: 'Demo physical agility baseline requirement.',
         category: 'Fitness',
+        requirementType: 'Blocking',
         status: 'In Progress',
         priority: 'Critical',
-      },
-      {
+        readinessImpact: 26,
+        relatedDocumentIds: ['police-doc-4'],
+        relatedTrainingIds: ['police-train-2'],
+        relatedGapIds: ['police-gap-1'],
+        relatedActionIds: ['police-action-2'],
+      }),
+      makeRequirement({
+        ...policeOfficialSource,
         id: 'police-req-5',
-        title: 'Confirm interview prep materials',
+        trackId: 'police-academy-candidate',
+        title: 'Prepare interview responses',
+        description: 'Demo oral board and interview readiness requirement.',
         category: 'Interview',
+        requirementType: 'Recommended',
         status: 'Completed',
         priority: 'Medium',
-      },
+        readinessImpact: 10,
+        relatedTrainingIds: ['police-train-4'],
+        relatedGapIds: ['police-gap-4'],
+      }),
+      makeRequirement({
+        ...policeOfficialSource,
+        id: 'police-req-6',
+        trackId: 'police-academy-candidate',
+        title: 'Review academy eligibility requirements',
+        description: 'Demo eligibility review to confirm local academy requirements.',
+        category: 'Eligibility',
+        requirementType: 'Required',
+        status: 'Needs Review',
+        priority: 'High',
+        readinessImpact: 18,
+        relatedDocumentIds: ['police-doc-1', 'police-doc-5'],
+        relatedGapIds: ['police-gap-3'],
+      }),
     ],
     milestones: [
       {
@@ -812,36 +938,95 @@ export const careerTracks: CareerTrack[] = [
     status: 'Exploring',
     readinessScore: 0,
     requirements: [
-      {
+      makeRequirement({
+        ...emtOfficialSource,
         id: 'emt-req-1',
-        title: 'Shortlist EMT-B programs',
-        category: 'Research',
+        trackId: 'emt-candidate',
+        title: 'Enroll in approved EMT program',
+        description: 'Demo approved EMT program enrollment requirement.',
+        category: 'Training',
+        requirementType: 'Required',
         status: 'In Progress',
         priority: 'High',
-      },
-      {
+        readinessImpact: 22,
+        relatedDocumentIds: ['emt-doc-3'],
+        relatedGapIds: ['emt-gap-3'],
+      }),
+      makeRequirement({
         ...emtOfficialSource,
         id: 'emt-req-2',
-        title: 'Complete CPR prerequisite',
+        trackId: 'emt-candidate',
+        title: 'Maintain CPR certification',
+        description: 'Demo CPR certification requirement for EMT readiness.',
         category: 'Certification',
-        status: 'Pending',
+        requirementType: 'Blocking',
+        status: 'Missing',
         priority: 'Critical',
-      },
-      {
+        readinessImpact: 30,
+        relatedDocumentIds: ['emt-doc-1'],
+        relatedTrainingIds: ['emt-train-1'],
+        relatedGapIds: ['emt-gap-1'],
+        relatedActionIds: ['emt-action-1'],
+      }),
+      makeRequirement({
         ...emtOfficialSource,
         id: 'emt-req-3',
+        trackId: 'emt-candidate',
         title: 'Confirm immunization expectations',
+        description: 'Demo medical requirement checklist for EMT program entry.',
         category: 'Medical',
-        status: 'Pending',
+        requirementType: 'Required',
+        status: 'Needs Review',
         priority: 'High',
-      },
-      {
+        readinessImpact: 18,
+        relatedDocumentIds: ['emt-doc-2'],
+        relatedGapIds: ['emt-gap-4'],
+        relatedActionIds: ['emt-action-3'],
+      }),
+      makeRequirement({
+        ...trainingProviderSource,
         id: 'emt-req-4',
-        title: 'Review program schedule fit',
-        category: 'Planning',
-        status: 'Completed',
+        trackId: 'emt-candidate',
+        title: 'Complete required course modules',
+        description: 'Demo course module progress requirement.',
+        category: 'Training',
+        requirementType: 'Required',
+        status: 'In Progress',
         priority: 'Medium',
-      },
+        readinessImpact: 16,
+        relatedTrainingIds: ['emt-train-2', 'emt-train-4'],
+        relatedGapIds: ['emt-gap-3'],
+      }),
+      makeRequirement({
+        ...trainingProviderSource,
+        id: 'emt-req-5',
+        trackId: 'emt-candidate',
+        title: 'Track clinical hours',
+        description: 'Demo clinical exposure tracking requirement.',
+        category: 'Clinical Hours',
+        requirementType: 'Required',
+        status: 'Needs Review',
+        priority: 'High',
+        readinessImpact: 16,
+        relatedDocumentIds: ['emt-doc-4'],
+        relatedTrainingIds: ['emt-train-3'],
+        relatedGapIds: ['emt-gap-2'],
+      }),
+      makeRequirement({
+        ...emtOfficialSource,
+        id: 'emt-req-6',
+        trackId: 'emt-candidate',
+        title: 'Prepare for certification exam',
+        description: 'Demo certification exam preparation requirement.',
+        category: 'Testing',
+        requirementType: 'Required',
+        status: 'Not Started',
+        priority: 'High',
+        readinessImpact: 20,
+        relatedDocumentIds: ['emt-doc-5'],
+        relatedTrainingIds: ['emt-train-2', 'emt-train-4'],
+        relatedGapIds: ['emt-gap-3'],
+      }),
     ],
     milestones: [
       {

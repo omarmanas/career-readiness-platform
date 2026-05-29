@@ -3,14 +3,16 @@ import './App.css'
 import { CareerTracksView } from './components/CareerTracksView'
 import { DashboardView } from './components/DashboardView'
 import { DocumentsView } from './components/DocumentsView'
+import { RequirementsView } from './components/RequirementsView'
 import { TrainingTrackerView } from './components/TrainingTrackerView'
 import { careerTracks } from './data/sampleData'
 
-type Screen = 'dashboard' | 'tracks' | 'training' | 'documents'
+type Screen = 'dashboard' | 'tracks' | 'requirements' | 'training' | 'documents'
 
 const navItems: { id: Screen; label: string }[] = [
   { id: 'dashboard', label: 'Dashboard' },
   { id: 'tracks', label: 'Career Tracks' },
+  { id: 'requirements', label: 'Requirements' },
   { id: 'training', label: 'Training Tracker' },
   { id: 'documents', label: 'Documents' },
 ]
@@ -75,6 +77,9 @@ function App() {
         )}
         {activeScreen === 'training' && (
           <TrainingTrackerView selectedTrack={selectedTrack} />
+        )}
+        {activeScreen === 'requirements' && (
+          <RequirementsView selectedTrack={selectedTrack} />
         )}
         {activeScreen === 'documents' && (
           <DocumentsView selectedTrack={selectedTrack} />

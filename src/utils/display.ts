@@ -7,6 +7,8 @@ import type {
   GapSeverity,
   GapStatus,
   Priority,
+  RequirementStatus,
+  RequirementType,
   ReadinessCategoryStatus,
   RiskLevel,
   TrainingStatus,
@@ -27,6 +29,22 @@ export const priorityTone: Record<Priority, BadgeTone> = {
   Medium: 'info',
   High: 'warning',
   Critical: 'danger',
+}
+
+export const requirementStatusTone: Record<RequirementStatus, BadgeTone> = {
+  'Not Started': 'neutral',
+  'In Progress': 'warning',
+  Completed: 'success',
+  Missing: 'danger',
+  'Needs Review': 'warning',
+  Waived: 'info',
+}
+
+export const requirementTypeTone: Record<RequirementType, BadgeTone> = {
+  Required: 'warning',
+  Recommended: 'info',
+  Optional: 'neutral',
+  Blocking: 'danger',
 }
 
 export const riskTone: Record<RiskLevel, BadgeTone> = {
