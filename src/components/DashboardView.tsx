@@ -6,8 +6,12 @@ import { DocumentIntelligencePanel } from './DocumentIntelligencePanel'
 import { GapAnalysisPanel } from './GapAnalysisPanel'
 import { HighestRoiActionPanel } from './HighestRoiActionPanel'
 import { ImmediateActionPanel } from './ImmediateActionPanel'
+import { ReadinessBreakdownCard } from './ReadinessBreakdownCard'
+import { ReadinessIntelligencePanel } from './ReadinessIntelligencePanel'
 import { ReadinessNarrativePanel } from './ReadinessNarrativePanel'
+import { RecruiterReadinessCard } from './RecruiterReadinessCard'
 import { RequirementIntelligencePanel } from './RequirementIntelligencePanel'
+import { WeeklyFocusPanel } from './WeeklyFocusPanel'
 import { WeeklyPlanPanel } from './WeeklyPlanPanel'
 import type { CareerTrack } from '../types'
 import {
@@ -108,6 +112,17 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
           <p>{nextMilestone?.title ?? 'No upcoming milestone'}</p>
         </article>
       </section>
+
+      {/* ── Readiness Intelligence Layer ── */}
+      <div className="intel-layout">
+        <ReadinessBreakdownCard selectedTrack={selectedTrack} />
+        <ReadinessIntelligencePanel selectedTrack={selectedTrack} />
+      </div>
+
+      <div className="two-column">
+        <WeeklyFocusPanel selectedTrack={selectedTrack} />
+        <RecruiterReadinessCard selectedTrack={selectedTrack} />
+      </div>
 
       <ReadinessNarrativePanel selectedTrack={selectedTrack} />
 
