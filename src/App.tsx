@@ -7,20 +7,22 @@ import { RequirementsView } from './components/RequirementsView'
 import { TrainingTrackerView } from './components/TrainingTrackerView'
 import { careerTracks } from './data/sampleData'
 import { useProgress } from './hooks/useProgress'
+import { getText, type Language, type TranslationKey } from './i18n'
 
 type Screen = 'dashboard' | 'tracks' | 'requirements' | 'training' | 'documents'
 
-const navItems: { id: Screen; label: string }[] = [
-  { id: 'dashboard', label: 'Dashboard' },
-  { id: 'tracks', label: 'Career Tracks' },
-  { id: 'requirements', label: 'Requirements' },
-  { id: 'training', label: 'Training Tracker' },
-  { id: 'documents', label: 'Documents' },
+const navItems: { id: Screen; labelKey: TranslationKey }[] = [
+  { id: 'dashboard', labelKey: 'dashboard' },
+  { id: 'tracks', labelKey: 'careerTracks' },
+  { id: 'requirements', labelKey: 'requirements' },
+  { id: 'training', labelKey: 'trainingTracker' },
+  { id: 'documents', labelKey: 'documents' },
 ]
 
 function App() {
   const [activeScreen, setActiveScreen] = useState<Screen>('dashboard')
   const [selectedTrackId, setSelectedTrackId] = useState(careerTracks[0].id)
+  const [language, setLanguage] = useState<Language>('en')
 
   const seedTrack =
     careerTracks.find((track) => track.id === selectedTrackId) ?? careerTracks[0]
@@ -53,16 +55,38 @@ function App() {
               onClick={() => setActiveScreen(item.id)}
               type="button"
             >
-              {item.label}
+              {getText(language, item.labelKey)}
             </button>
           ))}
         </nav>
+        <div className="language-selector" aria-label="Language selector">
+          <button
+            className={language === 'en' ? 'language-option active' : 'language-option'}
+            onClick={() => setLanguage('en')}
+            type="button"
+          >
+            {getText(language, 'languageEnglish')}
+          </button>
+          <button
+            className={language === 'tr' ? 'language-option active' : 'language-option'}
+            onClick={() => setLanguage('tr')}
+            type="button"
+          >
+            {getText(language, 'languageTurkish')}
+          </button>
+        </div>
       </aside>
 
       <main className="workspace">
         <header className="topbar">
           <div>
-            <h2>{navItems.find((item) => item.id === activeScreen)?.label}</h2>
+            <h2>
+              {getText(
+                language,
+                navItems.find((item) => item.id === activeScreen)?.labelKey ??
+                  'dashboard',
+              )}
+            </h2>
           </div>
           {activeScreen !== 'tracks' && (
             <label className="track-picker">

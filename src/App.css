@@ -75,6 +75,33 @@
   color: var(--text-strong);
 }
 
+.language-selector {
+  border: 1px solid #334155;
+  border-radius: 8px;
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 18px;
+  overflow: hidden;
+}
+
+.language-option {
+  background: #111827;
+  border: 0;
+  color: var(--text-muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 9px 10px;
+}
+
+.language-option:hover,
+.language-option.active {
+  background: #1f2937;
+  color: var(--text-strong);
+}
+
 .workspace {
   background:
     linear-gradient(180deg, rgba(30, 41, 59, 0.72), rgba(15, 23, 42, 0)),
