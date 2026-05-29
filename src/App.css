@@ -1275,6 +1275,53 @@
   padding: 3px 9px;
 }
 
+/* ── Status controls (interactive progress tracking) ────────────── */
+
+.status-control {
+  appearance: none;
+  background: #111827;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: var(--text-strong);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  min-width: 140px;
+  padding: 5px 10px;
+  transition: border-color 120ms ease;
+}
+
+.status-control:hover {
+  border-color: #4b5e78;
+}
+
+.status-control:focus-visible {
+  border-color: rgba(134, 239, 172, 0.6);
+  outline: none;
+}
+
+.status-control-row {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.status-control-label {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  flex: 0 0 auto;
+}
+
+.status-control-note {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  margin: 8px 0 0;
+}
+
+.training-table-row {
+  grid-template-columns: minmax(220px, 1fr) 160px 110px auto;
+}
+
 /* ── Preview track banner ────────────────────────────────────────── */
 
 .preview-banner {

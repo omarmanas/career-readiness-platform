@@ -1,17 +1,30 @@
 import { Badge } from './Badge'
-import type { CareerTrack } from '../types'
+import type { CareerTrack, DocumentStatus } from '../types'
 import {
   documentImportanceTone,
   documentTone,
   privacyTone,
 } from '../utils/display'
 
+const DOCUMENT_STATUSES: DocumentStatus[] = [
+  'Missing',
+  'Pending',
+  'Needs Review',
+  'Available',
+  'Verified',
+  'Expired',
+]
+
 interface DocumentInventoryViewProps {
   selectedTrack: CareerTrack
+  isInteractive: boolean
+  onStatusChange: (itemId: string, status: DocumentStatus) => void
 }
 
 export function DocumentInventoryView({
   selectedTrack,
+  isInteractive,
+  onStatusChange,
 }: DocumentInventoryViewProps) {
   return (
     <section className="panel">
@@ -28,13 +41,35 @@ export function DocumentInventoryView({
                 <p>{item.description}</p>
               </div>
               <div className="badge-pair">
-                <Badge label={item.status} tone={documentTone[item.status]} />
                 <Badge
                   label={item.importance}
                   tone={documentImportanceTone[item.importance]}
                 />
               </div>
             </div>
+
+            <div className="status-control-row">
+              <span className="status-control-label">Status</span>
+              {isInteractive ? (
+                <select
+                  className="status-control"
+                  value={item.status}
+                  onChange={(e) =>
+                    onStatusChange(item.id, e.target.value as DocumentStatus)
+                  }
+                  aria-label={`Status for ${item.title}`}
+                >
+                  {DOCUMENT_STATUSES.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <Badge label={item.status} tone={documentTone[item.status]} />
+              )}
+            </div>
+
             <div className="document-detail-grid">
               <div>
                 <span>Evidence</span>
@@ -61,6 +96,7 @@ export function DocumentInventoryView({
                 <strong>{item.expirationDate}</strong>
               </div>
             </div>
+
             {item.sourceName && (
               <div className="source-attribution">
                 <div>
@@ -96,6 +132,11 @@ export function DocumentInventoryView({
           </article>
         ))}
       </div>
+      {!isInteractive && (
+        <p className="status-control-note">
+          Status controls are read-only for preview tracks.
+        </p>
+      )}
     </section>
   )
 }
