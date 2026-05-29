@@ -54,19 +54,21 @@ function App() {
             <p className="eyebrow">Readiness category engine</p>
             <h2>{navItems.find((item) => item.id === activeScreen)?.label}</h2>
           </div>
-          <label className="track-picker">
-            <span>Choose Career Track</span>
-            <select
-              onChange={(event) => setSelectedTrackId(event.target.value)}
-              value={selectedTrack.id}
-            >
-              {careerTracks.map((track) => (
-                <option key={track.id} value={track.id}>
-                  {track.title}
-                </option>
-              ))}
-            </select>
-          </label>
+          {activeScreen !== 'tracks' && (
+            <label className="track-picker">
+              <span>Choose Career Track</span>
+              <select
+                onChange={(event) => setSelectedTrackId(event.target.value)}
+                value={selectedTrack.id}
+              >
+                {careerTracks.map((track) => (
+                  <option key={track.id} value={track.id}>
+                    {track.title}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
         </header>
 
         {activeScreen === 'dashboard' && (

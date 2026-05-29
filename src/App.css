@@ -549,7 +549,7 @@
 .track-master-detail {
   display: grid;
   gap: 0;
-  grid-template-columns: 300px minmax(0, 1fr);
+  grid-template-columns: 340px minmax(0, 1fr);
   min-height: 600px;
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -699,9 +699,9 @@
 }
 
 .track-detail-score-number {
-  color: #86efac;
-  font-size: 1.6rem;
-  font-weight: 800;
+  color: var(--text-strong);
+  font-size: 1.1rem;
+  font-weight: 700;
 }
 
 .track-detail-body {
@@ -724,22 +724,26 @@
 
 .track-detail-action-item {
   background: rgba(15, 23, 42, 0.55);
-  border: 1px solid var(--border);
+  border: 1px solid #334155;
+  border-top: 2px solid #22c55e;
   border-radius: 8px;
   display: grid;
   align-content: start;
-  gap: 6px;
-  padding: 14px;
+  gap: 8px;
+  padding: 16px;
 }
 
 .track-detail-action-item strong {
   color: var(--text-strong);
-  font-size: 0.95rem;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
 }
 
 .track-detail-action-item p {
   color: var(--text-soft);
-  font-size: 0.85rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
   margin: 0;
 }
 
