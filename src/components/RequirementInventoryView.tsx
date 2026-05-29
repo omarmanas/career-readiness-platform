@@ -1,5 +1,11 @@
 import { useState } from 'react'
 import { Badge } from './Badge'
+import {
+  getPriorityText,
+  getStatusText,
+  getText,
+  type Language,
+} from '../i18n'
 import type { CareerTrack, RequirementStatus } from '../types'
 import {
   priorityTone,
@@ -19,12 +25,14 @@ const REQUIREMENT_STATUSES: RequirementStatus[] = [
 interface RequirementInventoryViewProps {
   selectedTrack: CareerTrack
   isInteractive: boolean
+  language: Language
   onStatusChange: (itemId: string, status: RequirementStatus) => void
 }
 
 export function RequirementInventoryView({
   selectedTrack,
   isInteractive,
+  language,
   onStatusChange,
 }: RequirementInventoryViewProps) {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
@@ -41,8 +49,8 @@ export function RequirementInventoryView({
   return (
     <section className="panel">
       <div className="section-heading">
-        <h3>Readiness Requirements</h3>
-        <span>Verify with official source and recruiter</span>
+        <h3>{getText(language, 'requirements')}</h3>
+        <span>{getText(language, 'verifyOfficialSourceRecruiter')}</span>
       </div>
       <div className="requirement-list">
         {selectedTrack.requirements.map((req) => {
@@ -56,11 +64,10 @@ export function RequirementInventoryView({
               : null,
           ]
             .filter(Boolean)
-            .join(' · ')
+            .join(' / ')
 
           return (
             <article className="requirement-card" key={req.id}>
-              {/* ── Primary tier (always visible) ── */}
               <div className="card-primary-tier">
                 <div className="card-left-col">
                   <strong className="card-item-title">{req.title}</strong>
@@ -70,13 +77,11 @@ export function RequirementInventoryView({
                       tone={requirementTypeTone[req.requirementType]}
                     />
                     <Badge
-                      label={req.priority}
+                      label={getPriorityText(language, req.priority)}
                       tone={priorityTone[req.priority]}
                     />
                     <Badge label={`+${req.readinessImpact} pts`} tone="success" />
-                    {counts && (
-                      <span className="card-count-text">{counts}</span>
-                    )}
+                    {counts && <span className="card-count-text">{counts}</span>}
                   </div>
                 </div>
 
@@ -93,13 +98,13 @@ export function RequirementInventoryView({
                     >
                       {REQUIREMENT_STATUSES.map((s) => (
                         <option key={s} value={s}>
-                          {s}
+                          {getStatusText(language, s)}
                         </option>
                       ))}
                     </select>
                   ) : (
                     <Badge
-                      label={req.status}
+                      label={getStatusText(language, req.status)}
                       tone={requirementStatusTone[req.status]}
                     />
                   )}
@@ -109,47 +114,48 @@ export function RequirementInventoryView({
                     onClick={() => toggleExpand(req.id)}
                     aria-expanded={isExpanded}
                   >
-                    {isExpanded ? '▲ Less' : '▶ Details'}
+                    {isExpanded
+                      ? `^ ${getText(language, 'less')}`
+                      : `> ${getText(language, 'details')}`}
                   </button>
                 </div>
               </div>
 
-              {/* ── Secondary tier (expanded on demand) ── */}
               {isExpanded && (
                 <div className="card-secondary-tier">
                   <p className="card-item-desc">{req.description}</p>
 
                   <div className="requirement-why">
-                    <span>Why it matters</span>
+                    <span>{getText(language, 'whyItMatters')}</span>
                     <p>{req.notes}</p>
                   </div>
 
                   <div className="requirement-support">
                     <div>
-                      <span>Readiness impact</span>
+                      <span>{getText(language, 'readinessImpact')}</span>
                       <strong>{req.readinessImpact} pts</strong>
                     </div>
                     <div>
-                      <span>Related docs</span>
+                      <span>{getText(language, 'relatedDocuments')}</span>
                       <strong>{req.relatedDocumentIds.length}</strong>
                     </div>
                     <div>
-                      <span>Related trainings</span>
+                      <span>{getText(language, 'relatedTrainings')}</span>
                       <strong>{req.relatedTrainingIds.length}</strong>
                     </div>
                   </div>
 
                   {req.sourceName && (
                     <div className="requirement-source-row">
-                      <span>Source</span>
+                      <span>{getText(language, 'source')}</span>
                       <small>
-                        {req.sourceName} — {req.sourceType} — Last reviewed{' '}
-                        {req.lastReviewed} — {req.jurisdiction} — Confidence{' '}
+                        {req.sourceName} - {req.sourceType} - Last reviewed{' '}
+                        {req.lastReviewed} - {req.jurisdiction} - Confidence{' '}
                         {req.confidenceLevel}
                       </small>
                       {req.sourceUrl && (
                         <a href={req.sourceUrl} target="_blank" rel="noreferrer">
-                          Verify with official source and recruiter
+                          {getText(language, 'verifyOfficialSourceRecruiter')}
                         </a>
                       )}
                     </div>

@@ -1,17 +1,22 @@
 import type { CareerTrack } from '../types'
+import { getText, type Language } from '../i18n'
 import { getReadinessBreakdown } from '../utils/intelligence'
 
 interface ReadinessBreakdownCardProps {
   selectedTrack: CareerTrack
+  language: Language
 }
 
-export function ReadinessBreakdownCard({ selectedTrack }: ReadinessBreakdownCardProps) {
+export function ReadinessBreakdownCard({
+  selectedTrack,
+  language,
+}: ReadinessBreakdownCardProps) {
   const { components, overall } = getReadinessBreakdown(selectedTrack)
 
   return (
     <article className="panel">
       <div className="section-heading">
-        <h3>Readiness Breakdown</h3>
+        <h3>{getText(language, 'readinessBreakdown')}</h3>
         <span>{overall}% overall</span>
       </div>
       <div className="breakdown-bar-list">

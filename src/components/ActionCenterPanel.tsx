@@ -1,5 +1,16 @@
 import { Badge } from './Badge'
-import type { CareerTrack, DocumentStatus, RequirementStatus } from '../types'
+import {
+  getPriorityText,
+  getStatusText,
+  getText,
+  type Language,
+} from '../i18n'
+import type {
+  CareerTrack,
+  DocumentStatus,
+  Priority,
+  RequirementStatus,
+} from '../types'
 import {
   documentTone,
   priorityTone,
@@ -29,6 +40,7 @@ const DOCUMENT_STATUSES: DocumentStatus[] = [
 interface ActionCenterPanelProps {
   selectedTrack: CareerTrack
   isInteractive: boolean
+  language: Language
   onReqStatusChange: (itemId: string, status: RequirementStatus) => void
   onDocStatusChange: (itemId: string, status: DocumentStatus) => void
 }
@@ -36,6 +48,7 @@ interface ActionCenterPanelProps {
 export function ActionCenterPanel({
   selectedTrack,
   isInteractive,
+  language,
   onReqStatusChange,
   onDocStatusChange,
 }: ActionCenterPanelProps) {
@@ -44,20 +57,25 @@ export function ActionCenterPanel({
   const currentScore = calculateReadinessScore(selectedTrack)
   const projectedScore = Math.min(100, currentScore + projectedImprovementPts)
 
-  // ── Blocker strip ──────────────────────────────────────────────────────────
-
   const blockerStrip =
     blockers.length === 0 ? (
-      <section className="blockers-strip blockers-strip--clear" aria-label="Blockers">
-        <span className="blockers-strip-label">Blockers</span>
+      <section
+        className="blockers-strip blockers-strip--clear"
+        aria-label={getText(language, 'blockers')}
+      >
+        <span className="blockers-strip-label">
+          {getText(language, 'blockers')}
+        </span>
         <span className="blockers-strip-clear">
-          No blocking items — track is clear to advance.
+          No blocking items - track is clear to advance.
         </span>
       </section>
     ) : (
-      <section className="blockers-strip" aria-label="Blockers">
+      <section className="blockers-strip" aria-label={getText(language, 'blockers')}>
         <div className="blockers-strip-header">
-          <span className="blockers-strip-label">Blockers</span>
+          <span className="blockers-strip-label">
+            {getText(language, 'blockers')}
+          </span>
           <Badge label={`${blockers.length} gating`} tone="danger" />
         </div>
         <div className="blockers-list">
@@ -70,7 +88,7 @@ export function ActionCenterPanel({
                   <span className="blocker-item-title">{blocker.title}</span>
                   <div className="badge-pair">
                     <Badge
-                      label={blocker.priority}
+                      label={getPriorityText(language, blocker.priority)}
                       tone={
                         blocker.priority === 'Critical' ? 'danger' : 'warning'
                       }
@@ -80,7 +98,9 @@ export function ActionCenterPanel({
                 </div>
                 <p className="blocker-item-desc">{blocker.description}</p>
                 <div className="status-control-row">
-                  <span className="status-control-label">Status</span>
+                  <span className="status-control-label">
+                    {getText(language, 'status')}
+                  </span>
                   {isInteractive ? (
                     <select
                       className="status-control"
@@ -95,20 +115,21 @@ export function ActionCenterPanel({
                     >
                       {REQUIREMENT_STATUSES.map((s) => (
                         <option key={s} value={s}>
-                          {s}
+                          {getStatusText(language, s)}
                         </option>
                       ))}
                     </select>
                   ) : (
                     <Badge
-                      label={currentStatus}
+                      label={getStatusText(language, currentStatus)}
                       tone={requirementStatusTone[currentStatus]}
                     />
                   )}
                 </div>
                 <p className="blocker-item-footer">
-                  Category: {blocker.category} — Verify with official source and
-                  recruiter. Requirements may change.
+                  {getText(language, 'category')}: {blocker.category} -{' '}
+                  {getText(language, 'verifyOfficialSourceRecruiter')}.{' '}
+                  {getText(language, 'requirementsMayChange')}.
                 </p>
               </article>
             )
@@ -117,12 +138,10 @@ export function ActionCenterPanel({
       </section>
     )
 
-  // ── Next actions queue ─────────────────────────────────────────────────────
-
   const actionsQueue = (
     <article className="panel">
       <div className="section-heading">
-        <h3>Next Actions</h3>
+        <h3>{getText(language, 'nextActions')}</h3>
         <span>{nextActions.length} ranked</span>
       </div>
 
@@ -136,7 +155,6 @@ export function ActionCenterPanel({
             {nextActions.map((action, idx) => {
               const isGapOnly = action.itemId === null
 
-              // Resolve current status from the track for display
               let currentStatus: string | null = null
               if (action.itemType === 'requirement' && action.itemId) {
                 const req = selectedTrack.requirements.find(
@@ -150,12 +168,11 @@ export function ActionCenterPanel({
                 currentStatus = doc?.status ?? null
               }
 
+              const priority = action.reason.priorityLevel as Priority
+
               return (
                 <li className="next-action-item" key={action.id}>
-                  <div
-                    className="next-action-rank"
-                    aria-hidden="true"
-                  >
+                  <div className="next-action-rank" aria-hidden="true">
                     {idx + 1}
                   </div>
                   <div className="next-action-body">
@@ -171,16 +188,10 @@ export function ActionCenterPanel({
                           }
                         />
                         <Badge
-                          label={action.reason.priorityLevel}
-                          tone={
-                            priorityTone[
-                              action.reason.priorityLevel as keyof typeof priorityTone
-                            ] ?? 'neutral'
-                          }
+                          label={getPriorityText(language, priority)}
+                          tone={priorityTone[priority] ?? 'neutral'}
                         />
-                        {isGapOnly && (
-                          <Badge label="Info" tone="neutral" />
-                        )}
+                        {isGapOnly && <Badge label="Info" tone="neutral" />}
                       </div>
                     </div>
 
@@ -191,7 +202,7 @@ export function ActionCenterPanel({
                       <span className="next-action-impact">
                         +{action.reason.scoreContributionPts} pt
                         {action.reason.scoreContributionPts !== 1 ? 's' : ''}{' '}
-                        readiness
+                        {getText(language, 'readiness')}
                       </span>
                       {action.reason.unblocksCategory && (
                         <span className="next-action-unlocks">
@@ -200,10 +211,11 @@ export function ActionCenterPanel({
                       )}
                     </div>
 
-                    {/* Status control — same pattern as sub-pages */}
                     {!isGapOnly && (
                       <div className="status-control-row">
-                        <span className="status-control-label">Status</span>
+                        <span className="status-control-label">
+                          {getText(language, 'status')}
+                        </span>
                         {isInteractive ? (
                           action.itemType === 'requirement' ? (
                             <select
@@ -219,7 +231,7 @@ export function ActionCenterPanel({
                             >
                               {REQUIREMENT_STATUSES.map((s) => (
                                 <option key={s} value={s}>
-                                  {s}
+                                  {getStatusText(language, s)}
                                 </option>
                               ))}
                             </select>
@@ -237,7 +249,7 @@ export function ActionCenterPanel({
                             >
                               {DOCUMENT_STATUSES.map((s) => (
                                 <option key={s} value={s}>
-                                  {s}
+                                  {getStatusText(language, s)}
                                 </option>
                               ))}
                             </select>
@@ -246,7 +258,10 @@ export function ActionCenterPanel({
                           currentStatus && (
                             action.itemType === 'requirement' ? (
                               <Badge
-                                label={currentStatus}
+                                label={getStatusText(
+                                  language,
+                                  currentStatus as RequirementStatus,
+                                )}
                                 tone={
                                   requirementStatusTone[
                                     currentStatus as RequirementStatus
@@ -255,7 +270,10 @@ export function ActionCenterPanel({
                               />
                             ) : (
                               <Badge
-                                label={currentStatus}
+                                label={getStatusText(
+                                  language,
+                                  currentStatus as DocumentStatus,
+                                )}
                                 tone={
                                   documentTone[currentStatus as DocumentStatus]
                                 }
@@ -276,7 +294,7 @@ export function ActionCenterPanel({
               <span>Current readiness</span>
               <strong>{currentScore}%</strong>
               <span className="next-actions-arrow" aria-hidden="true">
-                →
+                {'->'}
               </span>
               <span>After these {nextActions.length} actions</span>
               <strong className="next-actions-projected">
@@ -289,8 +307,8 @@ export function ActionCenterPanel({
             <p className="intel-note">
               Estimate based on completion of shown items using the readiness
               weighting schema (requirements 40% / training 25% / documents 20%
-              / milestones 15%). Verify with official source and recruiter.
-              Requirements may change.
+              / milestones 15%). {getText(language, 'verifyOfficialSourceRecruiter')}.
+              {getText(language, 'requirementsMayChange')}.
             </p>
           </div>
         </>

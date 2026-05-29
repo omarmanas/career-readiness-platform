@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Badge } from './Badge'
+import { getStatusText, getText, type Language } from '../i18n'
 import type { CareerTrack, DocumentStatus } from '../types'
 import {
   documentImportanceTone,
@@ -19,12 +20,14 @@ const DOCUMENT_STATUSES: DocumentStatus[] = [
 interface DocumentInventoryViewProps {
   selectedTrack: CareerTrack
   isInteractive: boolean
+  language: Language
   onStatusChange: (itemId: string, status: DocumentStatus) => void
 }
 
 export function DocumentInventoryView({
   selectedTrack,
   isInteractive,
+  language,
   onStatusChange,
 }: DocumentInventoryViewProps) {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
@@ -41,7 +44,7 @@ export function DocumentInventoryView({
   return (
     <section className="panel">
       <div className="section-heading">
-        <h3>Document inventory</h3>
+        <h3>{getText(language, 'documents')}</h3>
         <span>No uploads or real links</span>
       </div>
       <div className="document-inventory-list">
@@ -51,7 +54,6 @@ export function DocumentInventoryView({
 
           return (
             <article className="document-card" key={item.id}>
-              {/* ── Primary tier (always visible) ── */}
               <div className="card-primary-tier">
                 <div className="card-left-col">
                   <strong className="card-item-title">{item.title}</strong>
@@ -82,13 +84,13 @@ export function DocumentInventoryView({
                     >
                       {DOCUMENT_STATUSES.map((s) => (
                         <option key={s} value={s}>
-                          {s}
+                          {getStatusText(language, s)}
                         </option>
                       ))}
                     </select>
                   ) : (
                     <Badge
-                      label={item.status}
+                      label={getStatusText(language, item.status)}
                       tone={documentTone[item.status]}
                     />
                   )}
@@ -98,45 +100,46 @@ export function DocumentInventoryView({
                     onClick={() => toggleExpand(item.id)}
                     aria-expanded={isExpanded}
                   >
-                    {isExpanded ? '▲ Less' : '▶ Details'}
+                    {isExpanded
+                      ? `^ ${getText(language, 'less')}`
+                      : `> ${getText(language, 'details')}`}
                   </button>
                 </div>
               </div>
 
-              {/* ── Secondary tier (expanded on demand) ── */}
               {isExpanded && (
                 <div className="card-secondary-tier">
                   {hasSource && (
-                    <Badge label="Verify source" tone="warning" />
+                    <Badge label={getText(language, 'verifySource')} tone="warning" />
                   )}
                   <p className="card-item-desc">{item.description}</p>
 
                   <div className="document-detail-grid">
                     <div>
-                      <span>Evidence</span>
+                      <span>{getText(language, 'evidence')}</span>
                       <strong>{item.evidenceType}</strong>
                     </div>
                     <div>
-                      <span>Privacy</span>
+                      <span>{getText(language, 'privacy')}</span>
                       <Badge
                         label={item.privacyLevel}
                         tone={privacyTone[item.privacyLevel]}
                       />
                     </div>
                     <div>
-                      <span>Issuer</span>
+                      <span>{getText(language, 'issuer')}</span>
                       <strong>{item.issuer}</strong>
                     </div>
                     <div>
-                      <span>Readiness impact</span>
+                      <span>{getText(language, 'readinessImpact')}</span>
                       <strong>{item.readinessImpact} pts</strong>
                     </div>
                     <div>
-                      <span>Issued</span>
+                      <span>{getText(language, 'issued')}</span>
                       <strong>{item.issueDate}</strong>
                     </div>
                     <div>
-                      <span>Expires</span>
+                      <span>{getText(language, 'expires')}</span>
                       <strong>{item.expirationDate}</strong>
                     </div>
                   </div>
@@ -144,7 +147,7 @@ export function DocumentInventoryView({
                   {item.sourceName && (
                     <div className="source-attribution">
                       <div>
-                        <span>Source</span>
+                        <span>{getText(language, 'source')}</span>
                         {item.sourceUrl ? (
                           <a href={item.sourceUrl} target="_blank" rel="noreferrer">
                             {item.sourceName}
@@ -169,11 +172,17 @@ export function DocumentInventoryView({
                         <span>Confidence</span>
                         <strong>{item.confidenceLevel ?? 'Low'}</strong>
                       </div>
-                      <p>Verify with official source and recruiter. Requirements may change.</p>
+                      <p>
+                        {getText(language, 'verifyOfficialSourceRecruiter')}.{' '}
+                        {getText(language, 'requirementsMayChange')}.
+                      </p>
                     </div>
                   )}
 
-                  <p className="document-notes">{item.notes}</p>
+                  <p className="document-notes">
+                    <strong>{getText(language, 'notes')}: </strong>
+                    {item.notes}
+                  </p>
                 </div>
               )}
             </article>

@@ -9,6 +9,7 @@ import { ReadinessBreakdownCard } from './ReadinessBreakdownCard'
 import { ReadinessNarrativePanel } from './ReadinessNarrativePanel'
 import { RecruiterReadinessCard } from './RecruiterReadinessCard'
 import { RequirementIntelligencePanel } from './RequirementIntelligencePanel'
+import { getText, type Language } from '../i18n'
 import type { CareerTrack, DocumentStatus, RequirementStatus } from '../types'
 import {
   priorityTone,
@@ -33,6 +34,7 @@ import {
 interface DashboardViewProps {
   selectedTrack: CareerTrack
   isInteractive: boolean
+  language: Language
   onReqStatusChange: (itemId: string, status: RequirementStatus) => void
   onDocStatusChange: (itemId: string, status: DocumentStatus) => void
 }
@@ -40,6 +42,7 @@ interface DashboardViewProps {
 export function DashboardView({
   selectedTrack,
   isInteractive,
+  language,
   onReqStatusChange,
   onDocStatusChange,
 }: DashboardViewProps) {
@@ -78,8 +81,10 @@ export function DashboardView({
             <span>{readinessScore}%</span>
           </div>
           <div className="summary-score-copy">
-            <span>Readiness score</span>
-            <strong>{readinessScore}% ready</strong>
+            <span>{getText(language, 'readinessScore')}</span>
+            <strong>
+              {readinessScore}% {getText(language, 'readySuffix')}
+            </strong>
           </div>
         </div>
       </article>
@@ -89,12 +94,12 @@ export function DashboardView({
         aria-label="Readiness weighting"
       >
         <article className="metric-card">
-          <span>Score</span>
+          <span>{getText(language, 'readiness')}</span>
           <strong>{readinessScore}%</strong>
           <p>Weighted model</p>
         </article>
         <article className="metric-card">
-          <span>Requirements</span>
+          <span>{getText(language, 'requirementsComplete')}</span>
           <strong>
             {getCompletedRequirementCount(selectedTrack.requirements)} /{' '}
             {selectedTrack.requirements.length}
@@ -102,7 +107,7 @@ export function DashboardView({
           <p>40% weight</p>
         </article>
         <article className="metric-card">
-          <span>Training</span>
+          <span>{getText(language, 'trainingsComplete')}</span>
           <strong>
             {getCompletedTrainingCount(selectedTrack.trainingPlan)} /{' '}
             {selectedTrack.trainingPlan.length}
@@ -110,7 +115,7 @@ export function DashboardView({
           <p>25% weight</p>
         </article>
         <article className="metric-card">
-          <span>Documents</span>
+          <span>{getText(language, 'documentsAvailable')}</span>
           <strong>
             {getAvailableDocumentCount(selectedTrack.documentChecklist)} /{' '}
             {selectedTrack.documentChecklist.length}
@@ -118,7 +123,7 @@ export function DashboardView({
           <p>20% weight</p>
         </article>
         <article className="metric-card">
-          <span>Milestones</span>
+          <span>{getText(language, 'milestonesComplete')}</span>
           <strong>
             {getCompletedMilestoneCount(selectedTrack.milestones)} /{' '}
             {selectedTrack.milestones.length}
@@ -130,19 +135,20 @@ export function DashboardView({
       <ActionCenterPanel
         selectedTrack={selectedTrack}
         isInteractive={isInteractive}
+        language={language}
         onReqStatusChange={onReqStatusChange}
         onDocStatusChange={onDocStatusChange}
       />
 
       <CollapsibleSection
-        title="Advanced Analysis"
-        description="Readiness breakdown, intelligence, gaps, risks, and supporting detail."
+        title={getText(language, 'advancedAnalysis')}
+        description={getText(language, 'advancedAnalysisDescription')}
       >
-        <ReadinessBreakdownCard selectedTrack={selectedTrack} />
+        <ReadinessBreakdownCard selectedTrack={selectedTrack} language={language} />
 
         <div className="two-column">
-          <ReadinessNarrativePanel selectedTrack={selectedTrack} />
-          <RecruiterReadinessCard selectedTrack={selectedTrack} />
+          <ReadinessNarrativePanel selectedTrack={selectedTrack} language={language} />
+          <RecruiterReadinessCard selectedTrack={selectedTrack} language={language} />
         </div>
 
         <RequirementIntelligencePanel selectedTrack={selectedTrack} />

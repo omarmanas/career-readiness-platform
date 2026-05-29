@@ -118,7 +118,7 @@ function App() {
                 {careerTracks.map((track) => (
                   <option key={track.id} value={track.id}>
                     {track.maturity === 'preview'
-                      ? `${track.title} (Preview)`
+                      ? `${track.title} (${getText(language, 'preview')})`
                       : track.title}
                   </option>
                 ))}
@@ -131,6 +131,7 @@ function App() {
           <DashboardView
             selectedTrack={effectiveTrack}
             isInteractive={isInteractive}
+            language={language}
             onReqStatusChange={setReqStatus}
             onDocStatusChange={setDocStatus}
           />
@@ -138,6 +139,7 @@ function App() {
         {activeScreen === 'tracks' && (
           <CareerTracksView
             careerTracks={effectiveTracks}
+            language={language}
             selectedTrackId={effectiveTrack.id}
             onSelectTrack={handleSelectedTrackChange}
           />
@@ -146,6 +148,7 @@ function App() {
           <TrainingTrackerView
             selectedTrack={effectiveTrack}
             isInteractive={isInteractive}
+            language={language}
             onStatusChange={setTrainStatus}
           />
         )}
@@ -153,6 +156,7 @@ function App() {
           <RequirementsView
             selectedTrack={effectiveTrack}
             isInteractive={isInteractive}
+            language={language}
             onStatusChange={setReqStatus}
           />
         )}
@@ -160,6 +164,7 @@ function App() {
           <DocumentsView
             selectedTrack={effectiveTrack}
             isInteractive={isInteractive}
+            language={language}
             onStatusChange={setDocStatus}
           />
         )}

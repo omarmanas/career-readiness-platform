@@ -1,4 +1,10 @@
 import { Badge } from './Badge'
+import {
+  getPriorityText,
+  getStatusText,
+  getText,
+  type Language,
+} from '../i18n'
 import type { CareerTrack, TrainingStatus } from '../types'
 import { priorityTone, trainingTone } from '../utils/display'
 
@@ -13,18 +19,20 @@ const TRAINING_STATUSES: TrainingStatus[] = [
 interface TrainingTrackerViewProps {
   selectedTrack: CareerTrack
   isInteractive: boolean
+  language: Language
   onStatusChange: (itemId: string, status: TrainingStatus) => void
 }
 
 export function TrainingTrackerView({
   selectedTrack,
   isInteractive,
+  language,
   onStatusChange,
 }: TrainingTrackerViewProps) {
   return (
     <section className="panel">
       <div className="section-heading">
-        <h3>Training tracker</h3>
+        <h3>{getText(language, 'trainingTracker')}</h3>
         <span>{selectedTrack.title}</span>
       </div>
       <div className="data-table">
@@ -35,7 +43,10 @@ export function TrainingTrackerView({
               <p>{item.category}</p>
             </div>
             <span>{item.dueLabel}</span>
-            <Badge label={item.priority} tone={priorityTone[item.priority]} />
+            <Badge
+              label={getPriorityText(language, item.priority)}
+              tone={priorityTone[item.priority]}
+            />
             {isInteractive ? (
               <select
                 className="status-control"
@@ -47,12 +58,15 @@ export function TrainingTrackerView({
               >
                 {TRAINING_STATUSES.map((s) => (
                   <option key={s} value={s}>
-                    {s}
+                    {getStatusText(language, s)}
                   </option>
                 ))}
               </select>
             ) : (
-              <Badge label={item.status} tone={trainingTone[item.status]} />
+              <Badge
+                label={getStatusText(language, item.status)}
+                tone={trainingTone[item.status]}
+              />
             )}
           </article>
         ))}

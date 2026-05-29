@@ -1,4 +1,5 @@
 import { Badge } from './Badge'
+import { getText, type Language } from '../i18n'
 import type { CareerTrack, RiskFlag } from '../types'
 import { trackTone } from '../utils/display'
 import {
@@ -11,12 +12,14 @@ import { getTopGaps, getTopUnresolvedGap } from '../utils/gaps'
 
 interface CareerTracksViewProps {
   careerTracks: CareerTrack[]
+  language: Language
   selectedTrackId: string
   onSelectTrack: (trackId: string) => void
 }
 
 export function CareerTracksView({
   careerTracks,
+  language,
   selectedTrackId,
   onSelectTrack,
 }: CareerTracksViewProps) {
@@ -41,7 +44,9 @@ export function CareerTracksView({
             >
               <span className="track-list-name">{track.title}</span>
               <span className="track-list-meta">
-                {isPreview && <Badge label="Preview" tone="neutral" />}
+                {isPreview && (
+                  <Badge label={getText(language, 'preview')} tone="neutral" />
+                )}
                 <Badge label={track.status} tone={trackTone[track.status]} />
                 <strong className="track-list-score">{score}%</strong>
               </span>
@@ -50,13 +55,17 @@ export function CareerTracksView({
         })}
       </nav>
 
-      {selectedTrack && <TrackDetailPanel track={selectedTrack} />}
+      {selectedTrack && (
+        <TrackDetailPanel track={selectedTrack} language={language} />
+      )}
     </div>
   )
 }
 
 function riskTone(level: RiskFlag['level']): 'danger' | 'warning' | 'neutral' {
-  if (level === 'Critical' || level === 'High') return level === 'Critical' ? 'danger' : 'warning'
+  if (level === 'Critical' || level === 'High') {
+    return level === 'Critical' ? 'danger' : 'warning'
+  }
   return 'neutral'
 }
 
@@ -66,7 +75,13 @@ function gapSeverityTone(severity: string): 'danger' | 'warning' | 'neutral' {
   return 'neutral'
 }
 
-function TrackDetailPanel({ track }: { track: CareerTrack }) {
+function TrackDetailPanel({
+  track,
+  language,
+}: {
+  track: CareerTrack
+  language: Language
+}) {
   const readinessScore = calculateReadinessScore(track)
   const topUnresolvedGap = getTopUnresolvedGap(track)
   const immediateAction = getImmediateAction(track)
@@ -82,14 +97,18 @@ function TrackDetailPanel({ track }: { track: CareerTrack }) {
     <div className="track-detail-panel">
       {isPreview && (
         <div className="preview-banner" role="note">
-          Preview track — placeholder data, not yet validated.
+          {getText(language, 'previewTrack')} -{' '}
+          {getText(language, 'placeholderData')},{' '}
+          {getText(language, 'notYetValidated')}.
         </div>
       )}
 
       <div className="track-detail-header">
         <div className="track-detail-title-row">
           <Badge label={track.status} tone={trackTone[track.status]} />
-          {isPreview && <Badge label="Preview" tone="neutral" />}
+          {isPreview && (
+            <Badge label={getText(language, 'preview')} tone="neutral" />
+          )}
           <h3 className="track-detail-title">{track.title}</h3>
         </div>
         {track.description && (
@@ -107,18 +126,20 @@ function TrackDetailPanel({ track }: { track: CareerTrack }) {
           <strong>{track.market}</strong>
         </div>
         <div>
-          <span>Target role</span>
+          <span>{getText(language, 'targetRole')}</span>
           <strong>{track.targetRole}</strong>
         </div>
         <div>
-          <span>Action queue</span>
+          <span>{getText(language, 'actionQueue')}</span>
           <strong>{actionQueueCount}</strong>
         </div>
       </div>
 
       <div className="track-detail-readiness">
         <div className="track-detail-score-row">
-          <span className="track-detail-score-label">Overall readiness</span>
+          <span className="track-detail-score-label">
+            {getText(language, 'readiness')}
+          </span>
           <strong className="track-detail-score-number">{readinessScore}%</strong>
         </div>
         <div className="progress-bar" aria-hidden="true">
@@ -190,7 +211,8 @@ function TrackDetailPanel({ track }: { track: CareerTrack }) {
       )}
 
       <p className="track-source-note">
-        Verify with official source and recruiter. Requirements may change.
+        {getText(language, 'verifyOfficialSourceRecruiter')}.{' '}
+        {getText(language, 'requirementsMayChange')}.
       </p>
     </div>
   )
