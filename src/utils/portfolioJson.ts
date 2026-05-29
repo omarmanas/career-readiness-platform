@@ -1,26 +1,26 @@
 /**
  * portfolio.json validation helpers.
  *
- * NOT wired into the app runtime. Intended for use by the Sprint 15
- * import pipeline. No side effects, no imports from app state.
+ * NOT wired into the app runtime. Intended for use by the import pipeline.
+ * No side effects, no imports from app state.
  */
-
-// ── Supported versions ────────────────────────────────────────────────────
 
 export const SUPPORTED_SCHEMA_VERSIONS = ['1.0'] as const
 export type SupportedSchemaVersion = (typeof SUPPORTED_SCHEMA_VERSIONS)[number]
-
-// ── Validation result ─────────────────────────────────────────────────────
 
 export interface PortfolioValidationResult {
   valid: boolean
   /** Hard errors that must block import. */
   errors: string[]
-  /** Advisory warnings — import may proceed with user confirmation. */
+  /** Advisory warnings; import may proceed with user confirmation. */
   warnings: string[]
 }
 
-// ── Version check ─────────────────────────────────────────────────────────
+export type PortfolioIdCollectionName =
+  | 'requirements'
+  | 'documents'
+  | 'trainings'
+  | 'milestones'
 
 export function isSupportedSchemaVersion(v: unknown): v is SupportedSchemaVersion {
   return (
@@ -28,8 +28,6 @@ export function isSupportedSchemaVersion(v: unknown): v is SupportedSchemaVersio
     (SUPPORTED_SCHEMA_VERSIONS as readonly string[]).includes(v)
   )
 }
-
-// ── Shape validation (hard errors only — rules 1–4 per contract) ──────────
 
 export function validatePortfolioJsonShape(
   raw: unknown,
@@ -47,7 +45,6 @@ export function validatePortfolioJsonShape(
 
   const obj = raw as Record<string, unknown>
 
-  // Rule 1 — schemaVersion present and supported
   if (!isSupportedSchemaVersion(obj.schemaVersion)) {
     errors.push(
       `Unsupported or missing schemaVersion. ` +
@@ -56,12 +53,10 @@ export function validatePortfolioJsonShape(
     )
   }
 
-  // Rule 2 — exportedAt present
   if (typeof obj.exportedAt !== 'string' || !obj.exportedAt) {
     errors.push('Missing or invalid exportedAt (expected non-empty ISO 8601 string).')
   }
 
-  // Rule 3 — track object with id and title
   if (typeof obj.track !== 'object' || obj.track === null || Array.isArray(obj.track)) {
     errors.push('Missing or invalid track (expected a non-null object).')
   } else {
@@ -74,47 +69,45 @@ export function validatePortfolioJsonShape(
     }
   }
 
-  // Rule 4 — arrays present
   for (const field of ['requirements', 'documents', 'trainings', 'milestones']) {
     if (!Array.isArray(obj[field])) {
       errors.push(`${field} must be an array (may be empty []).`)
     }
   }
 
-  // Advisory warnings (rules 5–10 per contract)
   if (errors.length === 0) {
     const requirements = obj.requirements as unknown[]
     const documents = obj.documents as unknown[]
     const trainings = obj.trainings as unknown[]
+    const milestones = obj.milestones as unknown[]
 
-    const reqIds = _collectIds(requirements)
-    const docIds = _collectIds(documents)
-    const trainIds = _collectIds(trainings)
+    const reqIds = collectIds(requirements)
+    const docIds = collectIds(documents)
+    const trainIds = collectIds(trainings)
 
-    _checkDuplicateIds(reqIds, 'requirements', warnings)
-    _checkDuplicateIds(docIds, 'documents', warnings)
-    _checkDuplicateIds(trainIds, 'trainings', warnings)
+    checkDuplicateIds(
+      {
+        requirements,
+        documents,
+        trainings,
+        milestones,
+      },
+      errors,
+    )
 
-    _checkDanglingRefs(requirements, 'relatedDocumentIds', docIds, warnings)
-    _checkDanglingRefs(requirements, 'relatedTrainingIds', trainIds, warnings)
-    _checkDanglingRefs(documents, 'relatedRequirementIds', reqIds, warnings)
-    _checkDanglingRefs(documents, 'relatedTrainingIds', trainIds, warnings)
+    checkDanglingRefs(requirements, 'relatedDocumentIds', docIds, warnings)
+    checkDanglingRefs(requirements, 'relatedTrainingIds', trainIds, warnings)
+    checkDanglingRefs(documents, 'relatedRequirementIds', reqIds, warnings)
+    checkDanglingRefs(documents, 'relatedTrainingIds', trainIds, warnings)
   }
 
   return { valid: errors.length === 0, errors, warnings }
 }
 
-// ── Google Sheets helper ──────────────────────────────────────────────────
-
 /**
  * Google Sheets stores related-ID lists as a comma-separated string in one
  * cell. This normalizer accepts either a CSV string or an already-parsed
  * string[], trims whitespace, and removes empty entries.
- *
- * Examples:
- *   "uscg-doc-id, uscg-doc-transcript"  → ["uscg-doc-id", "uscg-doc-transcript"]
- *   ["uscg-doc-id", ""]                 → ["uscg-doc-id"]
- *   undefined                           → []
  */
 export function normalizeCommaSeparatedIds(
   value: string | string[] | undefined,
@@ -129,9 +122,38 @@ export function normalizeCommaSeparatedIds(
     .filter(Boolean)
 }
 
-// ── Private helpers ───────────────────────────────────────────────────────
+export function checkDuplicateIds(
+  collections: Record<PortfolioIdCollectionName, unknown[]>,
+  errors: string[] = [],
+): string[] {
+  const seen = new Map<string, string>()
 
-function _collectIds(items: unknown[]): Set<string> {
+  for (const [collection, items] of Object.entries(collections)) {
+    items.forEach((item, index) => {
+      if (typeof item !== 'object' || item === null) return
+
+      const id = (item as Record<string, unknown>).id
+      if (typeof id !== 'string' || !id.trim()) return
+
+      const trimmedId = id.trim()
+      const location = `${collection}[${index}]`
+      const firstLocation = seen.get(trimmedId)
+
+      if (firstLocation) {
+        errors.push(
+          `Duplicate id "${trimmedId}" found at ${location}; first seen at ${firstLocation}.`,
+        )
+        return
+      }
+
+      seen.set(trimmedId, location)
+    })
+  }
+
+  return errors
+}
+
+function collectIds(items: unknown[]): Set<string> {
   const ids = new Set<string>()
   for (const item of items) {
     if (typeof item === 'object' && item !== null) {
@@ -142,24 +164,7 @@ function _collectIds(items: unknown[]): Set<string> {
   return ids
 }
 
-function _checkDuplicateIds(
-  ids: Set<string>,
-  label: string,
-  warnings: string[],
-): void {
-  // Duplicates would mean the same ID appeared twice — re-collect with a count map
-  // (the Set already deduplicates; to detect duplicates we need a full pass)
-  // This is a second pass on the caller's array so we keep it internal.
-  // The Set approach above already removes duplicates — if two items have the
-  // same ID the Set would have a smaller size. We note this is advisory only.
-  void ids
-  void label
-  void warnings
-  // Full duplicate detection is deferred to Sprint 15 where raw arrays are
-  // available. This placeholder satisfies the interface contract.
-}
-
-function _checkDanglingRefs(
+function checkDanglingRefs(
   items: unknown[],
   refField: string,
   validIds: Set<string>,
