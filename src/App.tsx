@@ -55,7 +55,7 @@ function App() {
             <h2>{navItems.find((item) => item.id === activeScreen)?.label}</h2>
           </div>
           <label className="track-picker">
-            <span>Selected track</span>
+            <span>Choose Career Track</span>
             <select
               onChange={(event) => setSelectedTrackId(event.target.value)}
               value={selectedTrack.id}
@@ -73,7 +73,11 @@ function App() {
           <DashboardView selectedTrack={selectedTrack} />
         )}
         {activeScreen === 'tracks' && (
-          <CareerTracksView careerTracks={careerTracks} />
+          <CareerTracksView
+            careerTracks={careerTracks}
+            selectedTrackId={selectedTrack.id}
+            onSelectTrack={setSelectedTrackId}
+          />
         )}
         {activeScreen === 'training' && (
           <TrainingTrackerView selectedTrack={selectedTrack} />
