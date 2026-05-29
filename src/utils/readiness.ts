@@ -61,7 +61,9 @@ export function getCompletedTrainingCount(trainingItems: TrainingItem[]) {
 }
 
 export function getAvailableDocumentCount(documentItems: DocumentItem[]) {
-  return documentItems.filter((item) => item.status === 'Available').length
+  return documentItems.filter(
+    (item) => item.status === 'Available' || item.status === 'Verified',
+  ).length
 }
 
 export function getCompletedMilestoneCount(milestones: TrackMilestone[]) {
@@ -78,7 +80,7 @@ export function calculateReadinessScore(track: CareerTrack) {
   const documents =
     completionRatio(
       track.documentChecklist,
-      (item) => item.status === 'Available',
+      (item) => item.status === 'Available' || item.status === 'Verified',
     ) * readinessWeights.documents
   const milestones =
     completionRatio(track.milestones, (item) => item.status === 'Completed') *

@@ -340,7 +340,8 @@
 }
 
 .metric-grid,
-.card-grid {
+.card-grid,
+.document-summary-grid {
   display: grid;
   gap: 14px;
 }
@@ -351,6 +352,10 @@
 
 .card-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.document-summary-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .metric-card,
@@ -399,7 +404,8 @@
 .health-grid,
 .breakdown-list,
 .gap-list,
-.action-plan-list {
+.action-plan-list,
+.document-inventory-list {
   display: grid;
   gap: 10px;
 }
@@ -441,7 +447,8 @@
 .table-row,
 .category-card,
 .gap-card,
-.action-plan-item {
+.action-plan-item,
+.document-card {
   align-items: center;
   background: #0f172a;
   border: 1px solid #1f2937;
@@ -633,6 +640,89 @@
   color: var(--text-strong);
 }
 
+.document-card {
+  align-items: stretch;
+  display: grid;
+}
+
+.document-card-main {
+  align-items: start;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+}
+
+.document-card strong,
+.document-detail-grid strong {
+  color: var(--text-strong);
+}
+
+.document-card p,
+.document-notes {
+  color: var(--text-soft);
+  margin: 6px 0 0;
+}
+
+.document-detail-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.document-detail-grid div {
+  background: #111827;
+  border: 1px solid #243244;
+  border-radius: 8px;
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+}
+
+.document-detail-grid span {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.source-attribution {
+  background: rgba(17, 24, 39, 0.72);
+  border: 1px solid #243244;
+  border-radius: 8px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  padding: 12px;
+}
+
+.source-attribution div {
+  display: grid;
+  gap: 4px;
+}
+
+.source-attribution span {
+  color: var(--text-muted);
+  font-size: 0.76rem;
+}
+
+.source-attribution strong,
+.source-attribution a {
+  color: var(--text-strong);
+  font-size: 0.88rem;
+}
+
+.source-attribution a {
+  text-decoration-color: rgba(134, 239, 172, 0.5);
+}
+
+.source-attribution p {
+  color: #fcd34d;
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.document-intelligence-panel {
+  align-content: start;
+}
+
 .health-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -703,6 +793,9 @@
 
   .metric-grid,
   .card-grid,
+  .document-summary-grid,
+  .document-detail-grid,
+  .source-attribution,
   .category-grid,
   .health-grid,
   .compact-metric-row {
@@ -728,6 +821,9 @@
   .nav-list,
   .metric-grid,
   .card-grid,
+  .document-summary-grid,
+  .document-detail-grid,
+  .source-attribution,
   .two-column,
   .category-grid,
   .health-grid,

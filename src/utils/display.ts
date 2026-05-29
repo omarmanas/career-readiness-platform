@@ -1,7 +1,9 @@
 import type {
   ActionPriority,
   ActionStatus,
+  DocumentImportance,
   DocumentStatus,
+  PrivacyLevel,
   GapSeverity,
   GapStatus,
   Priority,
@@ -38,6 +40,23 @@ export const documentTone: Record<DocumentStatus, BadgeTone> = {
   Available: 'success',
   Missing: 'danger',
   Pending: 'warning',
+  'Needs Review': 'warning',
+  Verified: 'success',
+  Expired: 'danger',
+}
+
+export const documentImportanceTone: Record<DocumentImportance, BadgeTone> = {
+  Low: 'neutral',
+  Medium: 'info',
+  High: 'warning',
+  Critical: 'danger',
+}
+
+export const privacyTone: Record<PrivacyLevel, BadgeTone> = {
+  'Public Summary': 'neutral',
+  'Recruiter Visible': 'info',
+  Private: 'warning',
+  Sensitive: 'danger',
 }
 
 export const trackTone: Record<TrackStatus, BadgeTone> = {

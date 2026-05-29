@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react'
 import { Badge } from './Badge'
 import { CollapsibleSection } from './CollapsibleSection'
 import { CompactMetricRow } from './CompactMetricRow'
+import { DocumentIntelligencePanel } from './DocumentIntelligencePanel'
 import { GapAnalysisPanel } from './GapAnalysisPanel'
 import { HighestRoiActionPanel } from './HighestRoiActionPanel'
 import { ImmediateActionPanel } from './ImmediateActionPanel'
@@ -203,9 +204,10 @@ export function DashboardView({ selectedTrack }: DashboardViewProps) {
 
       <CollapsibleSection
         title="Risk & Supporting Detail"
-        description="Open for risk flags and supporting priority actions retained for traceability."
+        description="Open for document intelligence, risk flags, and supporting priority actions retained for traceability."
       >
         <div className="two-column">
+          <DocumentIntelligencePanel selectedTrack={selectedTrack} />
           <article className="panel">
             <div className="section-heading">
               <h3>Top risk flags</h3>

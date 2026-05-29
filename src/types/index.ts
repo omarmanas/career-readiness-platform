@@ -15,7 +15,48 @@ export type RequirementStatus =
   | 'Pending'
   | 'Blocked'
 
-export type DocumentStatus = 'Available' | 'Missing' | 'Pending'
+export type DocumentStatus =
+  | 'Available'
+  | 'Missing'
+  | 'Pending'
+  | 'Needs Review'
+  | 'Verified'
+  | 'Expired'
+
+export type DocumentImportance = 'Low' | 'Medium' | 'High' | 'Critical'
+
+export type EvidenceType =
+  | 'Certificate'
+  | 'License'
+  | 'Resume'
+  | 'ID'
+  | 'Training Record'
+  | 'Medical'
+  | 'Application Packet'
+  | 'Other'
+
+export type PrivacyLevel =
+  | 'Public Summary'
+  | 'Recruiter Visible'
+  | 'Private'
+  | 'Sensitive'
+
+export type SourceType =
+  | 'Official'
+  | 'Training Provider'
+  | 'Internal'
+  | 'User Provided'
+
+export type ConfidenceLevel = 'High' | 'Medium' | 'Low'
+
+export interface SourceAttribution {
+  sourceName?: string
+  sourceUrl?: string
+  sourceType?: SourceType
+  lastReviewed?: string
+  jurisdiction?: string
+  confidenceLevel?: ConfidenceLevel
+}
 
 export type Priority = 'Low' | 'Medium' | 'High' | 'Critical'
 
@@ -53,7 +94,7 @@ export type ActionStatus =
 
 export type ActionPriority = 'Low' | 'Medium' | 'High' | 'Critical'
 
-export interface TrackRequirement {
+export interface TrackRequirement extends SourceAttribution {
   id: string
   title: string
   category: string
@@ -77,12 +118,23 @@ export interface TrainingItem {
   dueLabel: string
 }
 
-export interface DocumentItem {
+export interface DocumentItem extends SourceAttribution {
   id: string
+  trackId: string
   title: string
+  description: string
   category: string
   status: DocumentStatus
-  label: string
+  importance: DocumentImportance
+  evidenceType: EvidenceType
+  issuer: string
+  issueDate: string
+  expirationDate: string
+  relatedRequirementIds: string[]
+  relatedTrainingIds: string[]
+  readinessImpact: number
+  privacyLevel: PrivacyLevel
+  notes: string
 }
 
 export interface ReadinessCategory {
