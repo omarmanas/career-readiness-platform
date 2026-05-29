@@ -14,6 +14,9 @@ validate the example import pipeline with:
 npm run validate:portfolio
 ```
 
+Language and selected career track preferences persist locally in
+localStorage. They are not synced to an account or backend.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

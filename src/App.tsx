@@ -8,6 +8,12 @@ import { TrainingTrackerView } from './components/TrainingTrackerView'
 import { careerTracks } from './data/sampleData'
 import { useProgress } from './hooks/useProgress'
 import { getText, type Language, type TranslationKey } from './i18n'
+import {
+  getStoredLanguage,
+  getStoredSelectedTrackId,
+  setStoredLanguage,
+  setStoredSelectedTrackId,
+} from './utils/preferences'
 
 type Screen = 'dashboard' | 'tracks' | 'requirements' | 'training' | 'documents'
 
@@ -21,8 +27,12 @@ const navItems: { id: Screen; labelKey: TranslationKey }[] = [
 
 function App() {
   const [activeScreen, setActiveScreen] = useState<Screen>('dashboard')
-  const [selectedTrackId, setSelectedTrackId] = useState(careerTracks[0].id)
-  const [language, setLanguage] = useState<Language>('en')
+  const [selectedTrackId, setSelectedTrackId] = useState(
+    () =>
+      getStoredSelectedTrackId(careerTracks.map((track) => track.id)) ??
+      careerTracks[0].id,
+  )
+  const [language, setLanguage] = useState<Language>(() => getStoredLanguage())
 
   const seedTrack =
     careerTracks.find((track) => track.id === selectedTrackId) ?? careerTracks[0]
@@ -37,6 +47,16 @@ function App() {
   const effectiveTracks = careerTracks.map((t) =>
     t.id === effectiveTrack.id ? effectiveTrack : t,
   )
+
+  function handleLanguageChange(nextLanguage: Language) {
+    setLanguage(nextLanguage)
+    setStoredLanguage(nextLanguage)
+  }
+
+  function handleSelectedTrackChange(nextTrackId: string) {
+    setSelectedTrackId(nextTrackId)
+    setStoredSelectedTrackId(nextTrackId)
+  }
 
   return (
     <div className="app-shell">
@@ -62,14 +82,14 @@ function App() {
         <div className="language-selector" aria-label="Language selector">
           <button
             className={language === 'en' ? 'language-option active' : 'language-option'}
-            onClick={() => setLanguage('en')}
+            onClick={() => handleLanguageChange('en')}
             type="button"
           >
             {getText(language, 'languageEnglish')}
           </button>
           <button
             className={language === 'tr' ? 'language-option active' : 'language-option'}
-            onClick={() => setLanguage('tr')}
+            onClick={() => handleLanguageChange('tr')}
             type="button"
           >
             {getText(language, 'languageTurkish')}
@@ -92,7 +112,7 @@ function App() {
             <label className="track-picker">
               <span>Choose Career Track</span>
               <select
-                onChange={(event) => setSelectedTrackId(event.target.value)}
+                onChange={(event) => handleSelectedTrackChange(event.target.value)}
                 value={effectiveTrack.id}
               >
                 {careerTracks.map((track) => (
@@ -119,7 +139,7 @@ function App() {
           <CareerTracksView
             careerTracks={effectiveTracks}
             selectedTrackId={effectiveTrack.id}
-            onSelectTrack={setSelectedTrackId}
+            onSelectTrack={handleSelectedTrackChange}
           />
         )}
         {activeScreen === 'training' && (
