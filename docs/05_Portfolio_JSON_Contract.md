@@ -236,6 +236,42 @@ Rules 1–4 are hard failures that must block import.
 
 ---
 
+## Sprint 17 Dev-Only Validation
+
+Sprint 17 adds a developer-only validation path for the checked-in example file:
+
+```bash
+npm run validate:portfolio
+```
+
+This command validates `public/examples/portfolio.example.json` through the
+Sprint 15 import pipeline (`loadPortfolioJson`) and prints the import report.
+
+Expected clean output:
+
+```text
+valid: true
+schemaVersion: 1.0
+errors: []
+warnings: []
+stats: {
+  "requirements": 5,
+  "documents": 5,
+  "trainings": 4,
+  "milestones": 4
+}
+```
+
+The app also exposes `runPortfolioImportDevTest()` in
+`src/utils/portfolioImportDevTest.ts` for manual developer checks in a Vite dev
+session. It fetches `/examples/portfolio.example.json`, runs `loadPortfolioJson`,
+and returns the validation report.
+
+This is not user-facing import UI. It does not add upload controls, Google
+Sheets integration, backend/auth/database behavior, or runtime app state writes.
+
+---
+
 ## What Is Intentionally Out of Scope
 
 These fields are **not** included in portfolio.json because they are derived
