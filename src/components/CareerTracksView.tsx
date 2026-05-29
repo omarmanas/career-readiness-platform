@@ -1,10 +1,10 @@
-import { useState } from 'react'
 import { Badge } from './Badge'
-import type { CareerTrack } from '../types'
+import type { CareerTrack, RiskFlag } from '../types'
 import { trackTone } from '../utils/display'
 import {
   calculateReadinessScore,
   getTopReadinessCategories,
+  getTopRiskFlags,
 } from '../utils/readiness'
 import { generateNextActions, getImmediateAction } from '../utils/actions'
 import { getTopGaps, getTopUnresolvedGap } from '../utils/gaps'
@@ -20,98 +20,168 @@ export function CareerTracksView({
   selectedTrackId,
   onSelectTrack,
 }: CareerTracksViewProps) {
-  const [expandedTrackId, setExpandedTrackId] = useState<string | null>(null)
+  const selectedTrack =
+    careerTracks.find((t) => t.id === selectedTrackId) ?? careerTracks[0]
 
   return (
-    <section className="card-grid track-selection-grid">
-      {careerTracks.map((track) => {
-        const readinessScore = calculateReadinessScore(track)
-        const topUnresolvedGap = getTopUnresolvedGap(track)
-        const immediateAction = getImmediateAction(track)
-        const actionQueueCount = generateNextActions(track).filter(
-          (action) => action.status !== 'Completed' && action.status !== 'Deferred',
-        ).length
-        const topCategories = getTopReadinessCategories(track)
-        const topGap = getTopGaps(track, 1)[0]
-        const isSelected = track.id === selectedTrackId
-        const isExpanded = track.id === expandedTrackId
+    <div className="track-master-detail">
+      <nav className="track-list-panel" aria-label="Career tracks">
+        {careerTracks.map((track) => {
+          const score = calculateReadinessScore(track)
+          const isSelected = track.id === selectedTrackId
 
-        return (
-          <article
-            className={isSelected ? 'track-card selected' : 'track-card'}
-            key={track.id}
-            onClick={() => onSelectTrack(track.id)}
-          >
-            <div className="track-card-top">
-              <Badge label={track.status} tone={trackTone[track.status]} />
-              <strong>{readinessScore}%</strong>
-            </div>
-            <div>
-              <h3>{track.title}</h3>
-              <p>{track.targetRole}</p>
-            </div>
-            <dl className="track-facts compact">
-              <div>
-                <dt>Domain</dt>
-                <dd>{track.domain}</dd>
-              </div>
-              <div>
-                <dt>Market</dt>
-                <dd>{track.market}</dd>
-              </div>
-              <div>
-                <dt>Top unresolved gap</dt>
-                <dd>{topUnresolvedGap?.title ?? 'None'}</dd>
-              </div>
-              <div>
-                <dt>Immediate action</dt>
-                <dd>{immediateAction?.title ?? 'None'}</dd>
-              </div>
-            </dl>
-            <div className="progress-bar" aria-hidden="true">
-              <span style={{ width: `${readinessScore}%` }} />
-            </div>
+          return (
             <button
-              className="track-detail-toggle"
+              key={track.id}
               type="button"
-              onClick={(event) => {
-                event.stopPropagation()
-                setExpandedTrackId(isExpanded ? null : track.id)
-                onSelectTrack(track.id)
-              }}
-              aria-expanded={isExpanded}
+              className={`track-list-item${isSelected ? ' selected' : ''}`}
+              onClick={() => onSelectTrack(track.id)}
+              aria-pressed={isSelected}
             >
-              {isExpanded ? 'Hide details' : 'Show details'}
+              <span className="track-list-name">{track.title}</span>
+              <span className="track-list-meta">
+                <Badge label={track.status} tone={trackTone[track.status]} />
+                <strong className="track-list-score">{score}%</strong>
+              </span>
             </button>
-            {isExpanded && (
-              <div className="track-card-details">
-                <div>
-                  <h4 className="mini-heading">Top Categories</h4>
-                  <div className="breakdown-list">
-                    {topCategories.map((category) => (
-                      <div className="breakdown-row" key={category.id}>
-                        <span>{category.name}</span>
-                        <strong>{category.score}%</strong>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="track-detail-row">
-                  <span>Action queue count</span>
-                  <strong>{actionQueueCount}</strong>
-                </div>
-                <div className="track-detail-row">
-                  <span>Top gap details</span>
-                  <strong>{topGap?.reason ?? 'No open gap details'}</strong>
-                </div>
-                <p className="track-source-note">
-                  Verify with official source. Demo requirements are not final.
-                </p>
+          )
+        })}
+      </nav>
+
+      {selectedTrack && <TrackDetailPanel track={selectedTrack} />}
+    </div>
+  )
+}
+
+function riskTone(level: RiskFlag['level']): 'danger' | 'warning' | 'neutral' {
+  if (level === 'Critical' || level === 'High') return level === 'Critical' ? 'danger' : 'warning'
+  return 'neutral'
+}
+
+function gapSeverityTone(severity: string): 'danger' | 'warning' | 'neutral' {
+  if (severity === 'Critical') return 'danger'
+  if (severity === 'High') return 'warning'
+  return 'neutral'
+}
+
+function TrackDetailPanel({ track }: { track: CareerTrack }) {
+  const readinessScore = calculateReadinessScore(track)
+  const topUnresolvedGap = getTopUnresolvedGap(track)
+  const immediateAction = getImmediateAction(track)
+  const topCategories = getTopReadinessCategories(track)
+  const topGaps = getTopGaps(track, 3)
+  const riskFlags = getTopRiskFlags(track.riskFlags, 3)
+  const actionQueueCount = generateNextActions(track).filter(
+    (a) => a.status !== 'Completed' && a.status !== 'Deferred',
+  ).length
+
+  return (
+    <div className="track-detail-panel">
+      <div className="track-detail-header">
+        <div className="track-detail-title-row">
+          <Badge label={track.status} tone={trackTone[track.status]} />
+          <h3 className="track-detail-title">{track.title}</h3>
+        </div>
+        {track.description && (
+          <p className="track-detail-description">{track.description}</p>
+        )}
+      </div>
+
+      <div className="track-detail-meta-row">
+        <div>
+          <span>Domain</span>
+          <strong>{track.domain}</strong>
+        </div>
+        <div>
+          <span>Market</span>
+          <strong>{track.market}</strong>
+        </div>
+        <div>
+          <span>Target role</span>
+          <strong>{track.targetRole}</strong>
+        </div>
+        <div>
+          <span>Action queue</span>
+          <strong>{actionQueueCount}</strong>
+        </div>
+      </div>
+
+      <div className="track-detail-readiness">
+        <div className="track-detail-score-row">
+          <span className="track-detail-score-label">Overall readiness</span>
+          <strong className="track-detail-score-number">{readinessScore}%</strong>
+        </div>
+        <div className="progress-bar" aria-hidden="true">
+          <span style={{ width: `${readinessScore}%` }} />
+        </div>
+      </div>
+
+      <div className="track-detail-body">
+        <div className="track-detail-col">
+          <h4 className="mini-heading">Top readiness categories</h4>
+          <div className="breakdown-list">
+            {topCategories.map((category) => (
+              <div className="breakdown-row" key={category.id}>
+                <span>{category.name}</span>
+                <strong>{category.score}%</strong>
               </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="track-detail-col">
+          <h4 className="mini-heading">Gap summary</h4>
+          <div className="breakdown-list">
+            {topGaps.length > 0 ? (
+              topGaps.map((gap) => (
+                <div className="breakdown-row" key={gap.id}>
+                  <span>{gap.title}</span>
+                  <Badge
+                    label={gap.severity}
+                    tone={gapSeverityTone(gap.severity)}
+                  />
+                </div>
+              ))
+            ) : (
+              <span className="track-detail-empty">No open gaps</span>
             )}
-          </article>
-        )
-      })}
-    </section>
+          </div>
+        </div>
+      </div>
+
+      <div className="track-detail-actions">
+        <div className="track-detail-action-item">
+          <h4 className="mini-heading">Immediate action</h4>
+          <strong>{immediateAction?.title ?? 'None'}</strong>
+          {immediateAction?.description && (
+            <p>{immediateAction.description}</p>
+          )}
+        </div>
+
+        <div className="track-detail-action-item">
+          <h4 className="mini-heading">Top unresolved gap</h4>
+          <strong>{topUnresolvedGap?.title ?? 'None'}</strong>
+          {topUnresolvedGap?.reason && <p>{topUnresolvedGap.reason}</p>}
+        </div>
+      </div>
+
+      {riskFlags.length > 0 && (
+        <div className="track-detail-risks">
+          <h4 className="mini-heading">Risk indicators</h4>
+          <div className="breakdown-list">
+            {riskFlags.map((flag) => (
+              <div className="breakdown-row" key={flag.id}>
+                <span>{flag.title}</span>
+                <Badge label={flag.level} tone={riskTone(flag.level)} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <p className="track-source-note">
+        Verify with official source. Demo requirements are not final.
+      </p>
+    </div>
   )
 }
