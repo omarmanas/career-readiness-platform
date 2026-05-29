@@ -1,4 +1,5 @@
 import type { CareerTrack } from '../types'
+import { getText, type Language } from '../i18n'
 import {
   getDocumentCoverage,
   getDocumentsNeedingReview,
@@ -9,10 +10,12 @@ import {
 
 interface DocumentSummaryPanelProps {
   selectedTrack: CareerTrack
+  language: Language
 }
 
 export function DocumentSummaryPanel({
   selectedTrack,
+  language,
 }: DocumentSummaryPanelProps) {
   const coverage = getDocumentCoverage(selectedTrack)
   const verified = getVerifiedDocuments(selectedTrack)
@@ -21,31 +24,36 @@ export function DocumentSummaryPanel({
   const expiringSoon = getExpiringDocuments(selectedTrack)
 
   return (
-    <section className="document-summary-grid" aria-label="Document summary">
+    <section
+      className="document-summary-grid"
+      aria-label={getText(language, 'documents')}
+    >
       <article className="metric-card">
-        <span>Total documents</span>
+        <span>{getText(language, 'totalDocuments')}</span>
         <strong>{coverage.total}</strong>
-        <p>{coverage.percentage}% coverage</p>
+        <p>
+          {coverage.percentage}% {getText(language, 'coverage')}
+        </p>
       </article>
       <article className="metric-card">
-        <span>Verified / Available</span>
+        <span>{getText(language, 'verifiedAvailable')}</span>
         <strong>{verified.length}</strong>
-        <p>Positive coverage documents</p>
+        <p>{getText(language, 'positiveCoverageDocuments')}</p>
       </article>
       <article className="metric-card">
-        <span>Missing critical</span>
+        <span>{getText(language, 'missingCritical')}</span>
         <strong>{missingCritical.length}</strong>
-        <p>Highest priority document risks</p>
+        <p>{getText(language, 'highestPriorityDocumentRisks')}</p>
       </article>
       <article className="metric-card">
-        <span>Needs review</span>
+        <span>{getText(language, 'needsReview')}</span>
         <strong>{needsReview.length}</strong>
-        <p>Pending or review required</p>
+        <p>{getText(language, 'pendingOrReviewRequired')}</p>
       </article>
       <article className="metric-card">
-        <span>Expiring soon</span>
+        <span>{getText(language, 'expiringSoon')}</span>
         <strong>{expiringSoon.length}</strong>
-        <p>Within demo 30-day window</p>
+        <p>{getText(language, 'withinDemoThirtyDayWindow')}</p>
       </article>
     </section>
   )

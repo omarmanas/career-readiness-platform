@@ -1,4 +1,10 @@
 import { Badge } from './Badge'
+import {
+  getRequirementTypeText,
+  getStatusText,
+  getText,
+  type Language,
+} from '../i18n'
 import type { CareerTrack } from '../types'
 import { requirementStatusTone, requirementTypeTone } from '../utils/display'
 import {
@@ -8,10 +14,12 @@ import {
 
 interface RequirementIntelligencePanelProps {
   selectedTrack: CareerTrack
+  language: Language
 }
 
 export function RequirementIntelligencePanel({
   selectedTrack,
+  language,
 }: RequirementIntelligencePanelProps) {
   const coverage = getRequirementCoverage(selectedTrack)
   const risk = getBlockingRiskSummary(selectedTrack)
@@ -19,26 +27,28 @@ export function RequirementIntelligencePanel({
   return (
     <article className="panel document-intelligence-panel">
       <div className="section-heading">
-        <h3>Requirement Intelligence</h3>
-        <span>{coverage.percentage}% required coverage</span>
+        <h3>{getText(language, 'requirementIntelligence')}</h3>
+        <span>
+          {coverage.percentage}% {getText(language, 'requiredCoverage')}
+        </span>
       </div>
       <div className="compact-metric-row">
         <div>
-          <span>Required Complete</span>
+          <span>{getText(language, 'requiredComplete')}</span>
           <strong>
             {coverage.requiredComplete}/{coverage.requiredTotal}
           </strong>
         </div>
         <div>
-          <span>Blocking Open</span>
+          <span>{getText(language, 'blockingOpen')}</span>
           <strong>{risk.openBlocking.length}</strong>
         </div>
         <div>
-          <span>Needs Review</span>
+          <span>{getText(language, 'needsReview')}</span>
           <strong>{risk.needsReview.length}</strong>
         </div>
         <div>
-          <span>Missing</span>
+          <span>{getText(language, 'missing')}</span>
           <strong>{risk.missing.length}</strong>
         </div>
       </div>
@@ -46,11 +56,14 @@ export function RequirementIntelligencePanel({
         <article className="list-row">
           <div>
             <strong>{risk.highestImpactMissingRequirement.title}</strong>
-            <p>Highest-impact missing requirement</p>
+            <p>{getText(language, 'highestImpactMissingRequirement')}</p>
           </div>
           <div className="badge-pair">
             <Badge
-              label={risk.highestImpactMissingRequirement.requirementType}
+              label={getRequirementTypeText(
+                language,
+                risk.highestImpactMissingRequirement.requirementType,
+              )}
               tone={
                 requirementTypeTone[
                   risk.highestImpactMissingRequirement.requirementType
@@ -58,7 +71,10 @@ export function RequirementIntelligencePanel({
               }
             />
             <Badge
-              label={risk.highestImpactMissingRequirement.status}
+              label={getStatusText(
+                language,
+                risk.highestImpactMissingRequirement.status,
+              )}
               tone={
                 requirementStatusTone[risk.highestImpactMissingRequirement.status]
               }

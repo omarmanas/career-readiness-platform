@@ -1,38 +1,48 @@
 import { Badge } from './Badge'
+import {
+  getPriorityText,
+  getStatusText,
+  getText,
+  type Language,
+} from '../i18n'
 import type { CareerTrack } from '../types'
 import { documentImportanceTone, documentTone } from '../utils/display'
 import { getDocumentRiskSummary } from '../utils/documents'
 
 interface DocumentIntelligencePanelProps {
   selectedTrack: CareerTrack
+  language: Language
 }
 
 export function DocumentIntelligencePanel({
   selectedTrack,
+  language,
 }: DocumentIntelligencePanelProps) {
   const summary = getDocumentRiskSummary(selectedTrack)
 
   return (
     <article className="panel document-intelligence-panel">
       <div className="section-heading">
-        <h3>Document Intelligence</h3>
-        <span>{summary.coverage.percentage}% coverage</span>
+        <h3>{getText(language, 'documentIntelligence')}</h3>
+        <span>
+          {summary.coverage.percentage}% {getText(language, 'coverage')}
+        </span>
       </div>
       <div className="compact-metric-row">
         <div>
-          <span>Missing Critical</span>
+          <span>{getText(language, 'missingCritical')}</span>
           <strong>{summary.missingCritical.length}</strong>
         </div>
         <div>
-          <span>Needs Review</span>
+          <span>{getText(language, 'needsReview')}</span>
           <strong>{summary.needsReview.length}</strong>
         </div>
         <div>
-          <span>Expiring Soon</span>
+          <span>{getText(language, 'expiringSoon')}</span>
           <strong>{summary.expiringSoon.length}</strong>
         </div>
         <div>
-          <span>Impact Open</span>
+          <span>{getText(language, 'impactOpen')}</span>
           <strong>{summary.readinessImpact}</strong>
         </div>
       </div>
@@ -40,15 +50,21 @@ export function DocumentIntelligencePanel({
         <article className="list-row">
           <div>
             <strong>{summary.highestImpactMissingDocument.title}</strong>
-            <p>Highest-impact missing or unverified document</p>
+            <p>{getText(language, 'highestImpactMissingDocument')}</p>
           </div>
           <div className="badge-pair">
             <Badge
-              label={summary.highestImpactMissingDocument.status}
+              label={getStatusText(
+                language,
+                summary.highestImpactMissingDocument.status,
+              )}
               tone={documentTone[summary.highestImpactMissingDocument.status]}
             />
             <Badge
-              label={summary.highestImpactMissingDocument.importance}
+              label={getPriorityText(
+                language,
+                summary.highestImpactMissingDocument.importance,
+              )}
               tone={
                 documentImportanceTone[
                   summary.highestImpactMissingDocument.importance

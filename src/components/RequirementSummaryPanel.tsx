@@ -1,4 +1,5 @@
 import type { CareerTrack } from '../types'
+import { getText, type Language } from '../i18n'
 import {
   getBlockingRequirements,
   getHighestImpactMissingRequirement,
@@ -8,10 +9,12 @@ import {
 
 interface RequirementSummaryPanelProps {
   selectedTrack: CareerTrack
+  language: Language
 }
 
 export function RequirementSummaryPanel({
   selectedTrack,
+  language,
 }: RequirementSummaryPanelProps) {
   const coverage = getRequirementCoverage(selectedTrack)
   const blockingOpen = getBlockingRequirements(selectedTrack)
@@ -19,33 +22,38 @@ export function RequirementSummaryPanel({
   const highestImpactMissing = getHighestImpactMissingRequirement(selectedTrack)
 
   return (
-    <section className="document-summary-grid" aria-label="Requirement summary">
+    <section
+      className="document-summary-grid"
+      aria-label={getText(language, 'requirements')}
+    >
       <article className="metric-card">
-        <span>Total requirements</span>
+        <span>{getText(language, 'totalRequirements')}</span>
         <strong>{coverage.total}</strong>
-        <p>{coverage.percentage}% required coverage</p>
+        <p>
+          {coverage.percentage}% {getText(language, 'requiredCoverage')}
+        </p>
       </article>
       <article className="metric-card">
-        <span>Required complete</span>
+        <span>{getText(language, 'requiredComplete')}</span>
         <strong>
           {coverage.requiredComplete}/{coverage.requiredTotal}
         </strong>
-        <p>Required or blocking items</p>
+        <p>{getText(language, 'requiredOrBlockingItems')}</p>
       </article>
       <article className="metric-card">
-        <span>Blocking open</span>
+        <span>{getText(language, 'blockingOpen')}</span>
         <strong>{blockingOpen.length}</strong>
-        <p>Open blocking requirements</p>
+        <p>{getText(language, 'openBlockingRequirements')}</p>
       </article>
       <article className="metric-card">
-        <span>Needs review</span>
+        <span>{getText(language, 'needsReview')}</span>
         <strong>{needsReview.length}</strong>
-        <p>Source or readiness review needed</p>
+        <p>{getText(language, 'sourceOrReadinessReviewNeeded')}</p>
       </article>
       <article className="metric-card">
-        <span>Highest-impact missing</span>
+        <span>{getText(language, 'highestImpactMissing')}</span>
         <strong>{highestImpactMissing?.readinessImpact ?? 0}</strong>
-        <p>{highestImpactMissing?.title ?? 'None'}</p>
+        <p>{highestImpactMissing?.title ?? getText(language, 'none')}</p>
       </article>
     </section>
   )

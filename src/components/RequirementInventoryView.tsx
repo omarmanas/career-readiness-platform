@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Badge } from './Badge'
 import {
   getPriorityText,
+  getRequirementTypeText,
   getStatusText,
   getText,
   type Language,
@@ -57,10 +58,10 @@ export function RequirementInventoryView({
           const isExpanded = expandedIds.has(req.id)
           const counts = [
             req.relatedDocumentIds.length > 0
-              ? `Docs: ${req.relatedDocumentIds.length}`
+              ? `${getText(language, 'docsAbbrev')}: ${req.relatedDocumentIds.length}`
               : null,
             req.relatedTrainingIds.length > 0
-              ? `Trng: ${req.relatedTrainingIds.length}`
+              ? `${getText(language, 'trainingsAbbrev')}: ${req.relatedTrainingIds.length}`
               : null,
           ]
             .filter(Boolean)
@@ -73,14 +74,17 @@ export function RequirementInventoryView({
                   <strong className="card-item-title">{req.title}</strong>
                   <div className="card-badge-row">
                     <Badge
-                      label={req.requirementType}
+                      label={getRequirementTypeText(language, req.requirementType)}
                       tone={requirementTypeTone[req.requirementType]}
                     />
                     <Badge
                       label={getPriorityText(language, req.priority)}
                       tone={priorityTone[req.priority]}
                     />
-                    <Badge label={`+${req.readinessImpact} pts`} tone="success" />
+                    <Badge
+                      label={`+${req.readinessImpact} ${getText(language, 'pointAbbrev')}`}
+                      tone="success"
+                    />
                     {counts && <span className="card-count-text">{counts}</span>}
                   </div>
                 </div>
@@ -133,7 +137,9 @@ export function RequirementInventoryView({
                   <div className="requirement-support">
                     <div>
                       <span>{getText(language, 'readinessImpact')}</span>
-                      <strong>{req.readinessImpact} pts</strong>
+                      <strong>
+                        {req.readinessImpact} {getText(language, 'pointAbbrev')}
+                      </strong>
                     </div>
                     <div>
                       <span>{getText(language, 'relatedDocuments')}</span>
@@ -149,8 +155,9 @@ export function RequirementInventoryView({
                     <div className="requirement-source-row">
                       <span>{getText(language, 'source')}</span>
                       <small>
-                        {req.sourceName} - {req.sourceType} - Last reviewed{' '}
-                        {req.lastReviewed} - {req.jurisdiction} - Confidence{' '}
+                        {req.sourceName} - {req.sourceType} -{' '}
+                        {getText(language, 'lastReviewed')} {req.lastReviewed} -{' '}
+                        {req.jurisdiction} - {getText(language, 'confidence')}{' '}
                         {req.confidenceLevel}
                       </small>
                       {req.sourceUrl && (

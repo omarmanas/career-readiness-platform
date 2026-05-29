@@ -73,7 +73,7 @@ export function TrainingTrackerView({
       </div>
       {!isInteractive && (
         <p className="status-control-note">
-          Status controls are read-only for preview tracks.
+          {getText(language, 'readOnlyPreviewNote')}
         </p>
       )}
     </section>

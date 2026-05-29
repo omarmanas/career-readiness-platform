@@ -18,7 +18,9 @@ export function RecruiterReadinessCard({
       <div className="section-heading">
         <h3>{getText(language, 'recruiterReadiness')}</h3>
         <span style={{ color: overallReady ? '#86efac' : '#fcd34d' }}>
-          {overallReady ? 'On track' : `${needsAttentionItems.length} items`}
+          {overallReady
+            ? getText(language, 'onTrack')
+            : `${needsAttentionItems.length} ${getText(language, 'items')}`}
         </span>
       </div>
 
@@ -28,7 +30,9 @@ export function RecruiterReadinessCard({
             {getText(language, 'ready')}
           </p>
           {readyItems.length === 0 ? (
-            <p className="intel-empty">No items confirmed yet.</p>
+            <p className="intel-empty">
+              {getText(language, 'noItemsConfirmedYet')}
+            </p>
           ) : (
             <ul className="check-list">
               {readyItems.map((item) => (
@@ -42,9 +46,13 @@ export function RecruiterReadinessCard({
         </div>
 
         <div>
-          <p className="intel-subheading intel-subheading--attention">Needs attention</p>
+          <p className="intel-subheading intel-subheading--attention">
+            {getText(language, 'needsAttention')}
+          </p>
           {needsAttentionItems.length === 0 ? (
-            <p className="intel-empty" style={{ color: '#86efac' }}>All items on track.</p>
+            <p className="intel-empty" style={{ color: '#86efac' }}>
+              {getText(language, 'allItemsOnTrack')}
+            </p>
           ) : (
             <ul className="check-list">
               {needsAttentionItems.map((item) => (

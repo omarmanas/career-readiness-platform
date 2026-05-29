@@ -110,7 +110,7 @@ function App() {
           </div>
           {activeScreen !== 'tracks' && (
             <label className="track-picker">
-              <span>Choose Career Track</span>
+              <span>{getText(language, 'chooseCareerTrack')}</span>
               <select
                 onChange={(event) => handleSelectedTrackChange(event.target.value)}
                 value={effectiveTrack.id}

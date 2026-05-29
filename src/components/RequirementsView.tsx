@@ -19,12 +19,11 @@ export function RequirementsView({
   return (
     <section className="screen-stack">
       <article className="context-note">
-        Requirements are the conditions or actions needed for readiness. Documents
-        are evidence used to prove or support them.{' '}
+        {getText(language, 'requirementsContextNote')}{' '}
         {getText(language, 'verifyOfficialSourceRecruiter')}.{' '}
         {getText(language, 'requirementsMayChange')}.
       </article>
-      <RequirementSummaryPanel selectedTrack={selectedTrack} />
+      <RequirementSummaryPanel selectedTrack={selectedTrack} language={language} />
       <RequirementInventoryView
         selectedTrack={selectedTrack}
         isInteractive={isInteractive}

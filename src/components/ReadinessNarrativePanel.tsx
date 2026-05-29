@@ -15,7 +15,7 @@ export function ReadinessNarrativePanel({
     <article className="panel narrative-panel">
       <div className="section-heading">
         <h3>{getText(language, 'trackReadinessNarrative')}</h3>
-        <span>Deterministic summary</span>
+        <span>{getText(language, 'deterministicSummary')}</span>
       </div>
       <p>{getReadinessNarrative(selectedTrack)}</p>
     </article>

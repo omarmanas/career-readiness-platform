@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Badge } from './Badge'
-import { getStatusText, getText, type Language } from '../i18n'
+import { getPriorityText, getStatusText, getText, type Language } from '../i18n'
 import type { CareerTrack, DocumentStatus } from '../types'
 import {
   documentImportanceTone,
@@ -45,7 +45,7 @@ export function DocumentInventoryView({
     <section className="panel">
       <div className="section-heading">
         <h3>{getText(language, 'documents')}</h3>
-        <span>No uploads or real links</span>
+        <span>{getText(language, 'noUploadsRealLinks')}</span>
       </div>
       <div className="document-inventory-list">
         {selectedTrack.documentChecklist.map((item) => {
@@ -59,7 +59,7 @@ export function DocumentInventoryView({
                   <strong className="card-item-title">{item.title}</strong>
                   <div className="card-badge-row">
                     <Badge
-                      label={item.importance}
+                      label={getPriorityText(language, item.importance)}
                       tone={documentImportanceTone[item.importance]}
                     />
                     <Badge
@@ -67,7 +67,10 @@ export function DocumentInventoryView({
                       tone={privacyTone[item.privacyLevel]}
                     />
                     <Badge label={item.evidenceType} tone="neutral" />
-                    <Badge label={`${item.readinessImpact} pts`} tone="success" />
+                    <Badge
+                      label={`${item.readinessImpact} ${getText(language, 'pointAbbrev')}`}
+                      tone="success"
+                    />
                   </div>
                 </div>
 
@@ -132,7 +135,9 @@ export function DocumentInventoryView({
                     </div>
                     <div>
                       <span>{getText(language, 'readinessImpact')}</span>
-                      <strong>{item.readinessImpact} pts</strong>
+                      <strong>
+                        {item.readinessImpact} {getText(language, 'pointAbbrev')}
+                      </strong>
                     </div>
                     <div>
                       <span>{getText(language, 'issued')}</span>
@@ -157,20 +162,30 @@ export function DocumentInventoryView({
                         )}
                       </div>
                       <div>
-                        <span>Source type</span>
-                        <strong>{item.sourceType ?? 'Unspecified'}</strong>
+                        <span>{getText(language, 'sourceType')}</span>
+                        <strong>
+                          {item.sourceType ?? getText(language, 'unspecified')}
+                        </strong>
                       </div>
                       <div>
-                        <span>Last reviewed</span>
-                        <strong>{item.lastReviewed ?? 'Not reviewed'}</strong>
+                        <span>{getText(language, 'lastReviewed')}</span>
+                        <strong>
+                          {item.lastReviewed ?? getText(language, 'notReviewed')}
+                        </strong>
                       </div>
                       <div>
-                        <span>Jurisdiction</span>
-                        <strong>{item.jurisdiction ?? 'Not specified'}</strong>
+                        <span>{getText(language, 'jurisdiction')}</span>
+                        <strong>
+                          {item.jurisdiction ?? getText(language, 'notSpecified')}
+                        </strong>
                       </div>
                       <div>
-                        <span>Confidence</span>
-                        <strong>{item.confidenceLevel ?? 'Low'}</strong>
+                        <span>{getText(language, 'confidence')}</span>
+                        <strong>
+                          {item.confidenceLevel
+                            ? getPriorityText(language, item.confidenceLevel)
+                            : getText(language, 'low')}
+                        </strong>
                       </div>
                       <p>
                         {getText(language, 'verifyOfficialSourceRecruiter')}.{' '}
@@ -191,7 +206,7 @@ export function DocumentInventoryView({
       </div>
       {!isInteractive && (
         <p className="status-control-note">
-          Status controls are read-only for preview tracks.
+          {getText(language, 'readOnlyPreviewNote')}
         </p>
       )}
     </section>

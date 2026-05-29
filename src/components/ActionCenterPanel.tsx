@@ -67,7 +67,7 @@ export function ActionCenterPanel({
           {getText(language, 'blockers')}
         </span>
         <span className="blockers-strip-clear">
-          No blocking items - track is clear to advance.
+          {getText(language, 'noBlockingItems')}
         </span>
       </section>
     ) : (
@@ -76,7 +76,10 @@ export function ActionCenterPanel({
           <span className="blockers-strip-label">
             {getText(language, 'blockers')}
           </span>
-          <Badge label={`${blockers.length} gating`} tone="danger" />
+          <Badge
+            label={`${blockers.length} ${getText(language, 'gating')}`}
+            tone="danger"
+          />
         </div>
         <div className="blockers-list">
           {blockers.map((blocker) => {
@@ -93,7 +96,7 @@ export function ActionCenterPanel({
                         blocker.priority === 'Critical' ? 'danger' : 'warning'
                       }
                     />
-                    <Badge label="Blocking" tone="danger" />
+                    <Badge label={getText(language, 'blocking')} tone="danger" />
                   </div>
                 </div>
                 <p className="blocker-item-desc">{blocker.description}</p>
@@ -142,12 +145,14 @@ export function ActionCenterPanel({
     <article className="panel">
       <div className="section-heading">
         <h3>{getText(language, 'nextActions')}</h3>
-        <span>{nextActions.length} ranked</span>
+        <span>
+          {nextActions.length} {getText(language, 'ranked')}
+        </span>
       </div>
 
       {nextActions.length === 0 ? (
         <p style={{ color: 'var(--text-muted)', margin: 0 }}>
-          No open actions. All non-blocking items are complete or deferred.
+          {getText(language, 'noOpenActions')}
         </p>
       ) : (
         <>
@@ -180,7 +185,11 @@ export function ActionCenterPanel({
                       <strong>{action.title}</strong>
                       <div className="badge-pair">
                         <Badge
-                          label={action.sourceType}
+                          label={
+                            action.sourceType === 'requirement'
+                              ? getText(language, 'requirement')
+                              : getText(language, 'document')
+                          }
                           tone={
                             action.sourceType === 'requirement'
                               ? 'warning'
@@ -191,7 +200,9 @@ export function ActionCenterPanel({
                           label={getPriorityText(language, priority)}
                           tone={priorityTone[priority] ?? 'neutral'}
                         />
-                        {isGapOnly && <Badge label="Info" tone="neutral" />}
+                        {isGapOnly && (
+                          <Badge label={getText(language, 'info')} tone="neutral" />
+                        )}
                       </div>
                     </div>
 
@@ -200,13 +211,18 @@ export function ActionCenterPanel({
                     <div className="next-action-meta">
                       <span>{action.reason.category}</span>
                       <span className="next-action-impact">
-                        +{action.reason.scoreContributionPts} pt
-                        {action.reason.scoreContributionPts !== 1 ? 's' : ''}{' '}
+                        +{action.reason.scoreContributionPts}{' '}
+                        {getText(
+                          language,
+                          action.reason.scoreContributionPts === 1
+                            ? 'pointAbbrevSingular'
+                            : 'pointAbbrev',
+                        )}{' '}
                         {getText(language, 'readiness')}
                       </span>
                       {action.reason.unblocksCategory && (
                         <span className="next-action-unlocks">
-                          Unblocks category
+                          {getText(language, 'unblocksCategory')}
                         </span>
                       )}
                     </div>
@@ -291,23 +307,23 @@ export function ActionCenterPanel({
 
           <div className="next-actions-footer">
             <div className="next-actions-projection">
-              <span>Current readiness</span>
+              <span>{getText(language, 'currentReadiness')}</span>
               <strong>{currentScore}%</strong>
               <span className="next-actions-arrow" aria-hidden="true">
                 {'->'}
               </span>
-              <span>After these {nextActions.length} actions</span>
+              <span>{getText(language, 'afterTheseActions')}</span>
               <strong className="next-actions-projected">
                 {projectedScore}%
               </strong>
               <span className="next-actions-gain">
-                +{projectedImprovementPts} pts estimated
+                +{projectedImprovementPts} {getText(language, 'pointAbbrev')}{' '}
+                {getText(language, 'estimated')}
               </span>
             </div>
             <p className="intel-note">
-              Estimate based on completion of shown items using the readiness
-              weighting schema (requirements 40% / training 25% / documents 20%
-              / milestones 15%). {getText(language, 'verifyOfficialSourceRecruiter')}.
+              {getText(language, 'projectionEstimateNote')}{' '}
+              {getText(language, 'verifyOfficialSourceRecruiter')}.
               {getText(language, 'requirementsMayChange')}.
             </p>
           </div>

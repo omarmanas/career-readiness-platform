@@ -1,5 +1,5 @@
 import { Badge } from './Badge'
-import { getText, type Language } from '../i18n'
+import { getPriorityText, getText, getTrackStatusText, type Language } from '../i18n'
 import type { CareerTrack, RiskFlag } from '../types'
 import { trackTone } from '../utils/display'
 import {
@@ -28,7 +28,7 @@ export function CareerTracksView({
 
   return (
     <div className="track-master-detail">
-      <nav className="track-list-panel" aria-label="Career tracks">
+      <nav className="track-list-panel" aria-label={getText(language, 'careerTracksAria')}>
         {careerTracks.map((track) => {
           const score = calculateReadinessScore(track)
           const isSelected = track.id === selectedTrackId
@@ -47,7 +47,10 @@ export function CareerTracksView({
                 {isPreview && (
                   <Badge label={getText(language, 'preview')} tone="neutral" />
                 )}
-                <Badge label={track.status} tone={trackTone[track.status]} />
+                <Badge
+                  label={getTrackStatusText(language, track.status)}
+                  tone={trackTone[track.status]}
+                />
                 <strong className="track-list-score">{score}%</strong>
               </span>
             </button>
@@ -105,7 +108,10 @@ function TrackDetailPanel({
 
       <div className="track-detail-header">
         <div className="track-detail-title-row">
-          <Badge label={track.status} tone={trackTone[track.status]} />
+          <Badge
+            label={getTrackStatusText(language, track.status)}
+            tone={trackTone[track.status]}
+          />
           {isPreview && (
             <Badge label={getText(language, 'preview')} tone="neutral" />
           )}
@@ -118,11 +124,11 @@ function TrackDetailPanel({
 
       <div className="track-detail-meta-row">
         <div>
-          <span>Domain</span>
+          <span>{getText(language, 'domain')}</span>
           <strong>{track.domain}</strong>
         </div>
         <div>
-          <span>Market</span>
+          <span>{getText(language, 'market')}</span>
           <strong>{track.market}</strong>
         </div>
         <div>
@@ -149,7 +155,9 @@ function TrackDetailPanel({
 
       <div className="track-detail-body">
         <div className="track-detail-col">
-          <h4 className="mini-heading">Top readiness categories</h4>
+          <h4 className="mini-heading">
+            {getText(language, 'topReadinessCategories')}
+          </h4>
           <div className="breakdown-list">
             {topCategories.map((category) => (
               <div className="breakdown-row" key={category.id}>
@@ -161,20 +169,22 @@ function TrackDetailPanel({
         </div>
 
         <div className="track-detail-col">
-          <h4 className="mini-heading">Gap summary</h4>
+          <h4 className="mini-heading">{getText(language, 'gapSummary')}</h4>
           <div className="breakdown-list">
             {topGaps.length > 0 ? (
               topGaps.map((gap) => (
                 <div className="breakdown-row" key={gap.id}>
                   <span>{gap.title}</span>
                   <Badge
-                    label={gap.severity}
+                    label={getPriorityText(language, gap.severity)}
                     tone={gapSeverityTone(gap.severity)}
                   />
                 </div>
               ))
             ) : (
-              <span className="track-detail-empty">No open gaps</span>
+              <span className="track-detail-empty">
+                {getText(language, 'noOpenGaps')}
+              </span>
             )}
           </div>
         </div>
@@ -182,28 +192,31 @@ function TrackDetailPanel({
 
       <div className="track-detail-actions">
         <div className="track-detail-action-item">
-          <h4 className="mini-heading">Immediate action</h4>
-          <strong>{immediateAction?.title ?? 'None'}</strong>
+          <h4 className="mini-heading">{getText(language, 'immediateAction')}</h4>
+          <strong>{immediateAction?.title ?? getText(language, 'none')}</strong>
           {immediateAction?.description && (
             <p>{immediateAction.description}</p>
           )}
         </div>
 
         <div className="track-detail-action-item">
-          <h4 className="mini-heading">Top unresolved gap</h4>
-          <strong>{topUnresolvedGap?.title ?? 'None'}</strong>
+          <h4 className="mini-heading">{getText(language, 'topUnresolvedGap')}</h4>
+          <strong>{topUnresolvedGap?.title ?? getText(language, 'none')}</strong>
           {topUnresolvedGap?.reason && <p>{topUnresolvedGap.reason}</p>}
         </div>
       </div>
 
       {riskFlags.length > 0 && (
         <div className="track-detail-risks">
-          <h4 className="mini-heading">Risk indicators</h4>
+          <h4 className="mini-heading">{getText(language, 'riskIndicators')}</h4>
           <div className="breakdown-list">
             {riskFlags.map((flag) => (
               <div className="breakdown-row" key={flag.id}>
                 <span>{flag.title}</span>
-                <Badge label={flag.level} tone={riskTone(flag.level)} />
+                <Badge
+                  label={getPriorityText(language, flag.level)}
+                  tone={riskTone(flag.level)}
+                />
               </div>
             ))}
           </div>

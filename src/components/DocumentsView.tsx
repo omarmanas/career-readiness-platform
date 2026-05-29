@@ -18,7 +18,7 @@ export function DocumentsView({
 }: DocumentsViewProps) {
   return (
     <section className="screen-stack">
-      <DocumentSummaryPanel selectedTrack={selectedTrack} />
+      <DocumentSummaryPanel selectedTrack={selectedTrack} language={language} />
       <DocumentInventoryView
         selectedTrack={selectedTrack}
         isInteractive={isInteractive}

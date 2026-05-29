@@ -9,7 +9,7 @@ import { ReadinessBreakdownCard } from './ReadinessBreakdownCard'
 import { ReadinessNarrativePanel } from './ReadinessNarrativePanel'
 import { RecruiterReadinessCard } from './RecruiterReadinessCard'
 import { RequirementIntelligencePanel } from './RequirementIntelligencePanel'
-import { getText, type Language } from '../i18n'
+import { getPriorityText, getText, getTrackStatusText, type Language } from '../i18n'
 import type { CareerTrack, DocumentStatus, RequirementStatus } from '../types'
 import {
   priorityTone,
@@ -59,9 +59,12 @@ export function DashboardView({
       <article className="summary-panel summary-panel--compact">
         <div className="summary-panel-main">
           <div className="badge-pair badge-pair--start">
-            <Badge label={selectedTrack.status} tone={trackTone[selectedTrack.status]} />
+            <Badge
+              label={getTrackStatusText(language, selectedTrack.status)}
+              tone={trackTone[selectedTrack.status]}
+            />
             {selectedTrack.maturity === 'preview' && (
-              <Badge label="Preview" tone="neutral" />
+              <Badge label={getText(language, 'preview')} tone="neutral" />
             )}
           </div>
           <h3>{selectedTrack.title}</h3>
@@ -76,7 +79,7 @@ export function DashboardView({
           <div
             className="score-ring score-ring--compact"
             style={{ '--score': `${readinessScore}%` } as CSSProperties}
-            aria-label={`${readinessScore}% ready`}
+            aria-label={`${readinessScore}% ${getText(language, 'readySuffix')}`}
           >
             <span>{readinessScore}%</span>
           </div>
@@ -91,12 +94,12 @@ export function DashboardView({
 
       <section
         className="metric-grid metric-grid--compact"
-        aria-label="Readiness weighting"
+        aria-label={getText(language, 'readinessWeighting')}
       >
         <article className="metric-card">
           <span>{getText(language, 'readiness')}</span>
           <strong>{readinessScore}%</strong>
-          <p>Weighted model</p>
+          <p>{getText(language, 'weightedModel')}</p>
         </article>
         <article className="metric-card">
           <span>{getText(language, 'requirementsComplete')}</span>
@@ -104,7 +107,7 @@ export function DashboardView({
             {getCompletedRequirementCount(selectedTrack.requirements)} /{' '}
             {selectedTrack.requirements.length}
           </strong>
-          <p>40% weight</p>
+          <p>40% {getText(language, 'weight')}</p>
         </article>
         <article className="metric-card">
           <span>{getText(language, 'trainingsComplete')}</span>
@@ -112,7 +115,7 @@ export function DashboardView({
             {getCompletedTrainingCount(selectedTrack.trainingPlan)} /{' '}
             {selectedTrack.trainingPlan.length}
           </strong>
-          <p>25% weight</p>
+          <p>25% {getText(language, 'weight')}</p>
         </article>
         <article className="metric-card">
           <span>{getText(language, 'documentsAvailable')}</span>
@@ -120,7 +123,7 @@ export function DashboardView({
             {getAvailableDocumentCount(selectedTrack.documentChecklist)} /{' '}
             {selectedTrack.documentChecklist.length}
           </strong>
-          <p>20% weight</p>
+          <p>20% {getText(language, 'weight')}</p>
         </article>
         <article className="metric-card">
           <span>{getText(language, 'milestonesComplete')}</span>
@@ -128,7 +131,7 @@ export function DashboardView({
             {getCompletedMilestoneCount(selectedTrack.milestones)} /{' '}
             {selectedTrack.milestones.length}
           </strong>
-          <p>{nextMilestone?.title ?? 'No upcoming milestone'}</p>
+          <p>{nextMilestone?.title ?? getText(language, 'noUpcomingMilestone')}</p>
         </article>
       </section>
 
@@ -151,12 +154,15 @@ export function DashboardView({
           <RecruiterReadinessCard selectedTrack={selectedTrack} language={language} />
         </div>
 
-        <RequirementIntelligencePanel selectedTrack={selectedTrack} />
+        <RequirementIntelligencePanel
+          selectedTrack={selectedTrack}
+          language={language}
+        />
 
         <section className="panel">
           <div className="section-heading">
-            <h3>Readiness categories</h3>
-            <span>Calculated scoring</span>
+            <h3>{getText(language, 'readinessCategories')}</h3>
+            <span>{getText(language, 'calculatedScoring')}</span>
           </div>
           <div className="category-grid">
             {readinessCategories.map((category) => (
@@ -170,7 +176,10 @@ export function DashboardView({
                 </div>
                 <span>{category.score}%</span>
                 <p>{category.description}</p>
-                <small>Target {category.targetScore}% - {category.notes}</small>
+                <small>
+                  {getText(language, 'target')} {category.targetScore}% -{' '}
+                  {category.notes}
+                </small>
               </article>
             ))}
           </div>
@@ -179,8 +188,8 @@ export function DashboardView({
         <div className="two-column">
           <article className="panel">
             <div className="section-heading">
-              <h3>Category gaps</h3>
-              <span>Target shortfalls</span>
+              <h3>{getText(language, 'categoryGaps')}</h3>
+              <span>{getText(language, 'targetShortfalls')}</span>
             </div>
             <div className="item-list">
               {readinessGaps.map((gap) => (
@@ -189,7 +198,10 @@ export function DashboardView({
                     <strong>{gap.title}</strong>
                     <p>{gap.detail}</p>
                   </div>
-                  <Badge label={`${gap.gap} pt gap`} tone="warning" />
+                  <Badge
+                    label={`${gap.gap} ${getText(language, 'pointGap')}`}
+                    tone="warning"
+                  />
                 </article>
               ))}
             </div>
@@ -197,20 +209,20 @@ export function DashboardView({
 
           <article className="panel">
             <div className="section-heading">
-              <h3>Track health</h3>
-              <span>Category summary</span>
+              <h3>{getText(language, 'trackHealth')}</h3>
+              <span>{getText(language, 'categorySummary')}</span>
             </div>
             <div className="health-grid">
               <div>
-                <span>Strongest area</span>
+                <span>{getText(language, 'strongestArea')}</span>
                 <strong>{trackHealth.strongestArea.name}</strong>
               </div>
               <div>
-                <span>Weakest area</span>
+                <span>{getText(language, 'weakestArea')}</span>
                 <strong>{trackHealth.weakestArea.name}</strong>
               </div>
               <div>
-                <span>Categories on target</span>
+                <span>{getText(language, 'categoriesOnTarget')}</span>
                 <strong>
                   {trackHealth.categoriesOnTarget}/{trackHealth.totalCategories}
                 </strong>
@@ -219,14 +231,19 @@ export function DashboardView({
           </article>
         </div>
 
-        <GapAnalysisPanel selectedTrack={selectedTrack} />
+        <GapAnalysisPanel selectedTrack={selectedTrack} language={language} />
 
         <div className="two-column">
-          <DocumentIntelligencePanel selectedTrack={selectedTrack} />
+          <DocumentIntelligencePanel
+            selectedTrack={selectedTrack}
+            language={language}
+          />
           <article className="panel">
             <div className="section-heading">
-              <h3>Top risk flags</h3>
-              <span>{topRiskFlags.length} shown</span>
+              <h3>{getText(language, 'topRiskFlags')}</h3>
+              <span>
+                {topRiskFlags.length} {getText(language, 'shown')}
+              </span>
             </div>
             <div className="item-list">
               {topRiskFlags.map((risk) => (
@@ -235,7 +252,10 @@ export function DashboardView({
                     <strong>{risk.title}</strong>
                     <p>{risk.detail}</p>
                   </div>
-                  <Badge label={risk.level} tone={riskTone[risk.level]} />
+                  <Badge
+                    label={getPriorityText(language, risk.level)}
+                    tone={riskTone[risk.level]}
+                  />
                 </article>
               ))}
             </div>
@@ -244,8 +264,8 @@ export function DashboardView({
 
         <article className="panel">
           <div className="section-heading">
-            <h3>Supporting priority actions</h3>
-            <span>Traceability reference</span>
+            <h3>{getText(language, 'supportingPriorityActions')}</h3>
+            <span>{getText(language, 'traceabilityReference')}</span>
           </div>
           <div className="item-list">
             {priorityActions.map((action) => (
@@ -257,7 +277,7 @@ export function DashboardView({
                   </p>
                 </div>
                 <Badge
-                  label={action.priority}
+                  label={getPriorityText(language, action.priority)}
                   tone={priorityTone[action.priority]}
                 />
               </article>
@@ -265,7 +285,7 @@ export function DashboardView({
           </div>
         </article>
 
-        <CompactMetricRow selectedTrack={selectedTrack} />
+        <CompactMetricRow selectedTrack={selectedTrack} language={language} />
       </CollapsibleSection>
     </section>
   )

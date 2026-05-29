@@ -7,6 +7,14 @@ interface ReadinessBreakdownCardProps {
   language: Language
 }
 
+function getBreakdownLabel(language: Language, label: string) {
+  if (label === 'Requirements') return getText(language, 'requirements')
+  if (label === 'Training') return getText(language, 'training')
+  if (label === 'Documents') return getText(language, 'documents')
+  if (label === 'Milestones') return getText(language, 'milestones')
+  return label
+}
+
 export function ReadinessBreakdownCard({
   selectedTrack,
   language,
@@ -17,14 +25,18 @@ export function ReadinessBreakdownCard({
     <article className="panel">
       <div className="section-heading">
         <h3>{getText(language, 'readinessBreakdown')}</h3>
-        <span>{overall}% overall</span>
+        <span>
+          {overall}% {getText(language, 'overall')}
+        </span>
       </div>
       <div className="breakdown-bar-list">
         {components.map((component) => (
           <div className="breakdown-bar-row" key={component.label}>
             <div className="breakdown-bar-label">
-              <span>{component.label}</span>
-              <span className="breakdown-bar-weight">{component.weight}% weight</span>
+              <span>{getBreakdownLabel(language, component.label)}</span>
+              <span className="breakdown-bar-weight">
+                {component.weight}% {getText(language, 'weight')}
+              </span>
             </div>
             <div className="breakdown-bar-track" aria-hidden="true">
               <div
@@ -36,13 +48,15 @@ export function ReadinessBreakdownCard({
               <strong>
                 {component.completed}/{component.total} &nbsp; {component.pct}%
               </strong>
-              <span className="breakdown-bar-contribution">+{component.contribution} pts</span>
+              <span className="breakdown-bar-contribution">
+                +{component.contribution} {getText(language, 'pointAbbrev')}
+              </span>
             </div>
           </div>
         ))}
       </div>
       <p className="intel-note">
-        Weighted contribution: requirements 40%, training 25%, documents 20%, milestones 15%.
+        {getText(language, 'projectionEstimateNote')}
       </p>
     </article>
   )

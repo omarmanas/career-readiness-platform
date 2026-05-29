@@ -3,8 +3,11 @@ import { tr } from './tr'
 import type {
   CompletionStatus,
   DocumentStatus,
+  GapStatus,
   Priority,
+  RequirementType,
   RequirementStatus,
+  TrackStatus,
 } from '../types'
 
 export const supportedLanguages = ['en', 'tr'] as const
@@ -17,12 +20,21 @@ const dictionaries: Record<Language, typeof en> = {
   tr,
 }
 
-export function getText(language: Language, key: TranslationKey): string {
-  return dictionaries[language][key] ?? dictionaries.en[key]
+export function getText(language: Language, key: TranslationKey | string): string {
+  const typedKey = key as TranslationKey
+  const value = dictionaries[language]?.[typedKey] ?? dictionaries.en[typedKey]
+
+  if (value) return value
+
+  if (import.meta.env.DEV) {
+    console.warn(`Missing translation key: ${key}`)
+  }
+
+  return key
 }
 
 const statusKeys: Record<
-  CompletionStatus | DocumentStatus | RequirementStatus,
+  CompletionStatus | DocumentStatus | RequirementStatus | GapStatus,
   TranslationKey
 > = {
   Planned: 'planned',
@@ -37,6 +49,8 @@ const statusKeys: Record<
   Available: 'available',
   Verified: 'verified',
   Expired: 'expired',
+  Open: 'open',
+  Resolved: 'resolved',
 }
 
 const priorityKeys: Record<Priority, TranslationKey> = {
@@ -46,13 +60,40 @@ const priorityKeys: Record<Priority, TranslationKey> = {
   Critical: 'critical',
 }
 
+const requirementTypeKeys: Record<RequirementType, TranslationKey> = {
+  Required: 'required',
+  Recommended: 'recommended',
+  Optional: 'optional',
+  Blocking: 'blocking',
+}
+
+const trackStatusKeys: Record<TrackStatus, TranslationKey> = {
+  Exploring: 'exploring',
+  Preparing: 'preparing',
+  'Application Ready': 'applicationReady',
+}
+
 export function getStatusText(
   language: Language,
-  status: CompletionStatus | DocumentStatus | RequirementStatus,
+  status: CompletionStatus | DocumentStatus | RequirementStatus | GapStatus,
 ): string {
   return getText(language, statusKeys[status])
 }
 
 export function getPriorityText(language: Language, priority: Priority): string {
   return getText(language, priorityKeys[priority])
+}
+
+export function getRequirementTypeText(
+  language: Language,
+  requirementType: RequirementType,
+): string {
+  return getText(language, requirementTypeKeys[requirementType])
+}
+
+export function getTrackStatusText(
+  language: Language,
+  status: TrackStatus,
+): string {
+  return getText(language, trackStatusKeys[status])
 }
