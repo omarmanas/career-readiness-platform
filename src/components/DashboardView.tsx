@@ -83,37 +83,40 @@ function getMilestoneTone(status: TrackMilestone['status']) {
   return 'info'
 }
 
-function renderSourceDetails(source: GuidanceSource, language: Language) {
+function renderSourceSection(source: GuidanceSource | undefined, language: Language) {
+  if (!source) {
+    return <p className="detail-muted-note">{getText(language, 'noSourceMetadata')}</p>
+  }
+
   return (
-    <details className="inline-source-details">
-      <summary>{getText(language, 'source')}</summary>
-      <div className="source-attribution source-attribution--inline">
-        <div>
-          <span>{getText(language, 'source')}</span>
-          {source.sourceUrl ? (
-            <a href={source.sourceUrl} target="_blank" rel="noreferrer">
-              {source.sourceName}
-            </a>
-          ) : (
-            <strong>{source.sourceName}</strong>
-          )}
-        </div>
-        <div>
-          <span>{getText(language, 'sourceType')}</span>
-          <strong>{source.sourceType}</strong>
-        </div>
-        <div>
-          <span>{getText(language, 'lastReviewed')}</span>
-          <strong>{source.lastReviewed ?? getText(language, 'notReviewed')}</strong>
-        </div>
-        {source.rationale && (
-          <div>
-            <span>{getText(language, 'sourceRationale')}</span>
-            <strong>{source.rationale}</strong>
-          </div>
+    <div className="source-attribution source-attribution--inline">
+      <div>
+        <span>{getText(language, 'sourceType')}</span>
+        <strong>{source.sourceType}</strong>
+      </div>
+      <div>
+        <span>{getText(language, 'sourceName')}</span>
+        <strong>{source.sourceName}</strong>
+      </div>
+      <div>
+        <span>{getText(language, 'sourceUrl')}</span>
+        {source.sourceUrl ? (
+          <a href={source.sourceUrl} target="_blank" rel="noreferrer">
+            {getText(language, 'verifySource')}
+          </a>
+        ) : (
+          <strong>{getText(language, 'notSpecified')}</strong>
         )}
       </div>
-    </details>
+      <div>
+        <span>{getText(language, 'lastReviewed')}</span>
+        <strong>{source.lastReviewed ?? getText(language, 'notReviewed')}</strong>
+      </div>
+      <div>
+        <span>{getText(language, 'rationale')}</span>
+        <strong>{source.rationale ?? getText(language, 'notSpecified')}</strong>
+      </div>
+    </div>
   )
 }
 
@@ -333,7 +336,34 @@ export function DashboardView({
               <div className="milestone-row-main">
                 <strong>{milestone.title}</strong>
                 <span>{milestone.targetDateLabel}</span>
-                {milestone.source && renderSourceDetails(milestone.source, language)}
+                <details className="inline-source-details">
+                  <summary>{getText(language, 'details')}</summary>
+                  <div className="inline-detail-sections">
+                    <section className="detail-section">
+                      <h5>{getText(language, 'whyThisMatters')}</h5>
+                      <p>{milestone.targetDateLabel}</p>
+                    </section>
+                    <section className="detail-section">
+                      <h5>{getText(language, 'source')}</h5>
+                      {renderSourceSection(milestone.source, language)}
+                    </section>
+                    <section className="detail-section">
+                      <h5>{getText(language, 'verificationEvidence')}</h5>
+                      <div className="document-detail-grid">
+                        <div>
+                          <span>{getText(language, 'status')}</span>
+                          <strong>
+                            {getMilestoneStatusText(language, milestone.status)}
+                          </strong>
+                        </div>
+                        <div>
+                          <span>{getText(language, 'target')}</span>
+                          <strong>{milestone.targetDateLabel}</strong>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </details>
               </div>
               {isInteractive ? (
                 <select

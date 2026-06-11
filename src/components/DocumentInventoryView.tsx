@@ -30,6 +30,46 @@ function getDocumentSource(item: DocumentItem): GuidanceSource | null {
   }
 }
 
+function renderSourceSection(source: GuidanceSource | null, language: Language) {
+  return (
+    <section className="detail-section">
+      <h5>{getText(language, 'source')}</h5>
+      {source ? (
+        <div className="source-attribution source-attribution--detail">
+          <div>
+            <span>{getText(language, 'sourceType')}</span>
+            <strong>{source.sourceType}</strong>
+          </div>
+          <div>
+            <span>{getText(language, 'sourceName')}</span>
+            <strong>{source.sourceName}</strong>
+          </div>
+          <div>
+            <span>{getText(language, 'sourceUrl')}</span>
+            {source.sourceUrl ? (
+              <a href={source.sourceUrl} target="_blank" rel="noreferrer">
+                {getText(language, 'verifySource')}
+              </a>
+            ) : (
+              <strong>{getText(language, 'notSpecified')}</strong>
+            )}
+          </div>
+          <div>
+            <span>{getText(language, 'lastReviewed')}</span>
+            <strong>{source.lastReviewed ?? getText(language, 'notReviewed')}</strong>
+          </div>
+          <div>
+            <span>{getText(language, 'rationale')}</span>
+            <strong>{source.rationale ?? getText(language, 'notSpecified')}</strong>
+          </div>
+        </div>
+      ) : (
+        <p className="detail-muted-note">{getText(language, 'noSourceMetadata')}</p>
+      )}
+    </section>
+  )
+}
+
 interface DocumentInventoryViewProps {
   selectedTrack: CareerTrack
   isInteractive: boolean
@@ -64,7 +104,6 @@ export function DocumentInventoryView({
         {selectedTrack.documentChecklist.map((item) => {
           const isExpanded = expandedIds.has(item.id)
           const source = getDocumentSource(item)
-          const hasSource = !!source
 
           return (
             <article className="document-card" key={item.id}>
@@ -126,82 +165,49 @@ export function DocumentInventoryView({
 
               {isExpanded && (
                 <div className="card-secondary-tier">
-                  {hasSource && (
-                    <Badge label={getText(language, 'verifySource')} tone="warning" />
-                  )}
                   <p className="card-item-desc">{item.description}</p>
 
-                  <div className="document-detail-grid">
-                    <div>
-                      <span>{getText(language, 'evidence')}</span>
-                      <strong>{item.evidenceType}</strong>
-                    </div>
-                    <div>
-                      <span>{getText(language, 'privacy')}</span>
-                      <Badge
-                        label={item.privacyLevel}
-                        tone={privacyTone[item.privacyLevel]}
-                      />
-                    </div>
-                    <div>
-                      <span>{getText(language, 'issuer')}</span>
-                      <strong>{item.issuer}</strong>
-                    </div>
-                    <div>
-                      <span>{getText(language, 'readinessImpact')}</span>
-                      <strong>
-                        {item.readinessImpact} {getText(language, 'pointAbbrev')}
-                      </strong>
-                    </div>
-                    <div>
-                      <span>{getText(language, 'issued')}</span>
-                      <strong>{item.issueDate}</strong>
-                    </div>
-                    <div>
-                      <span>{getText(language, 'expires')}</span>
-                      <strong>{item.expirationDate}</strong>
-                    </div>
-                  </div>
+                  <section className="detail-section">
+                    <h5>{getText(language, 'whyThisMatters')}</h5>
+                    <p>{item.notes}</p>
+                  </section>
 
-                  {source && (
-                    <div className="source-attribution">
+                  {renderSourceSection(source, language)}
+
+                  <section className="detail-section">
+                    <h5>{getText(language, 'verificationEvidence')}</h5>
+                    <div className="document-detail-grid">
                       <div>
-                        <span>{getText(language, 'source')}</span>
-                        {source.sourceUrl ? (
-                          <a href={source.sourceUrl} target="_blank" rel="noreferrer">
-                            {source.sourceName}
-                          </a>
-                        ) : (
-                          <strong>{source.sourceName}</strong>
-                        )}
+                        <span>{getText(language, 'evidence')}</span>
+                        <strong>{item.evidenceType}</strong>
                       </div>
                       <div>
-                        <span>{getText(language, 'sourceType')}</span>
-                        <strong>{source.sourceType}</strong>
+                        <span>{getText(language, 'privacy')}</span>
+                        <Badge
+                          label={item.privacyLevel}
+                          tone={privacyTone[item.privacyLevel]}
+                        />
                       </div>
                       <div>
-                        <span>{getText(language, 'lastReviewed')}</span>
+                        <span>{getText(language, 'issuer')}</span>
+                        <strong>{item.issuer}</strong>
+                      </div>
+                      <div>
+                        <span>{getText(language, 'readinessImpact')}</span>
                         <strong>
-                          {source.lastReviewed ?? getText(language, 'notReviewed')}
+                          {item.readinessImpact} {getText(language, 'pointAbbrev')}
                         </strong>
                       </div>
-                      {source.rationale && (
-                        <div>
-                          <span>{getText(language, 'sourceRationale')}</span>
-                          <strong>{source.rationale}</strong>
-                        </div>
-                      )}
-                      <p>
-                        {getText(language, 'verifyOfficialSourceRecruiter')}.{' '}
-                        {getText(language, 'requirementsMayChange')}.
-                      </p>
+                      <div>
+                        <span>{getText(language, 'issued')}</span>
+                        <strong>{item.issueDate}</strong>
+                      </div>
+                      <div>
+                        <span>{getText(language, 'expires')}</span>
+                        <strong>{item.expirationDate}</strong>
+                      </div>
                     </div>
-                  )}
-
-                  <p className="document-notes">
-                    <strong>{getText(language, 'notes')}: </strong>
-                    {item.notes}
-                  </p>
+                  </section>
                 </div>
               )}
             </article>

@@ -7,13 +7,17 @@ import {
   getText,
   type Language,
 } from '../i18n'
-import type { CareerTrack, RequirementStatus, TrackRequirement } from '../types'
+import type {
+  CareerTrack,
+  GuidanceSource,
+  RequirementStatus,
+  TrackRequirement,
+} from '../types'
 import {
   priorityTone,
   requirementStatusTone,
   requirementTypeTone,
 } from '../utils/display'
-import type { GuidanceSource } from '../types'
 
 const REQUIREMENT_STATUSES: RequirementStatus[] = [
   'Not Started',
@@ -35,6 +39,46 @@ function getRequirementSource(req: TrackRequirement): GuidanceSource | null {
     lastReviewed: req.lastReviewed,
     rationale: req.notes,
   }
+}
+
+function renderSourceSection(source: GuidanceSource | null, language: Language) {
+  return (
+    <section className="detail-section">
+      <h5>{getText(language, 'source')}</h5>
+      {source ? (
+        <div className="source-attribution source-attribution--detail">
+          <div>
+            <span>{getText(language, 'sourceType')}</span>
+            <strong>{source.sourceType}</strong>
+          </div>
+          <div>
+            <span>{getText(language, 'sourceName')}</span>
+            <strong>{source.sourceName}</strong>
+          </div>
+          <div>
+            <span>{getText(language, 'sourceUrl')}</span>
+            {source.sourceUrl ? (
+              <a href={source.sourceUrl} target="_blank" rel="noreferrer">
+                {getText(language, 'verifySource')}
+              </a>
+            ) : (
+              <strong>{getText(language, 'notSpecified')}</strong>
+            )}
+          </div>
+          <div>
+            <span>{getText(language, 'lastReviewed')}</span>
+            <strong>{source.lastReviewed ?? getText(language, 'notReviewed')}</strong>
+          </div>
+          <div>
+            <span>{getText(language, 'rationale')}</span>
+            <strong>{source.rationale ?? getText(language, 'notSpecified')}</strong>
+          </div>
+        </div>
+      ) : (
+        <p className="detail-muted-note">{getText(language, 'noSourceMetadata')}</p>
+      )}
+    </section>
+  )
 }
 
 interface RequirementInventoryViewProps {
@@ -167,48 +211,32 @@ export function RequirementInventoryView({
 
             <p className="card-item-desc">{req.description}</p>
 
-            <div className="requirement-why">
-              <span>{getText(language, 'whyItMatters')}</span>
+            <div className="requirement-why detail-section">
+              <h5>{getText(language, 'whyThisMatters')}</h5>
               <p>{req.notes}</p>
             </div>
 
-            <div className="requirement-support">
-              <div>
-                <span>{getText(language, 'readinessImpact')}</span>
-                <strong>
-                  {req.readinessImpact} {getText(language, 'pointAbbrev')}
-                </strong>
-              </div>
-              <div>
-                <span>{getText(language, 'relatedDocuments')}</span>
-                <strong>{req.relatedDocumentIds.length}</strong>
-              </div>
-              <div>
-                <span>{getText(language, 'relatedTrainings')}</span>
-                <strong>{req.relatedTrainingIds.length}</strong>
-              </div>
-            </div>
+            {renderSourceSection(source, language)}
 
-            {source && (
-              <div className="requirement-source-row">
-                <span>{getText(language, 'source')}</span>
-                <small>
-                  {source.sourceName} - {source.sourceType} -{' '}
-                  {getText(language, 'lastReviewed')}{' '}
-                  {source.lastReviewed ?? getText(language, 'notReviewed')}
-                </small>
-                {source.sourceUrl && (
-                  <a href={source.sourceUrl} target="_blank" rel="noreferrer">
-                    {getText(language, 'verifyOfficialSourceRecruiter')}
-                  </a>
-                )}
-                {source.rationale && (
-                  <small>
-                    {getText(language, 'sourceRationale')}: {source.rationale}
-                  </small>
-                )}
+            <section className="detail-section">
+              <h5>{getText(language, 'verificationEvidence')}</h5>
+              <div className="requirement-support">
+                <div>
+                  <span>{getText(language, 'readinessImpact')}</span>
+                  <strong>
+                    {req.readinessImpact} {getText(language, 'pointAbbrev')}
+                  </strong>
+                </div>
+                <div>
+                  <span>{getText(language, 'relatedDocuments')}</span>
+                  <strong>{req.relatedDocumentIds.length}</strong>
+                </div>
+                <div>
+                  <span>{getText(language, 'relatedTrainings')}</span>
+                  <strong>{req.relatedTrainingIds.length}</strong>
+                </div>
               </div>
-            )}
+            </section>
           </div>
         )}
       </article>
