@@ -1,6 +1,6 @@
 import { RequirementInventoryView } from './RequirementInventoryView'
 import { RequirementSummaryPanel } from './RequirementSummaryPanel'
-import { getText, type Language } from '../i18n'
+import type { Language } from '../i18n'
 import type { CareerTrack, RequirementStatus } from '../types'
 
 interface RequirementsViewProps {
@@ -18,11 +18,6 @@ export function RequirementsView({
 }: RequirementsViewProps) {
   return (
     <section className="screen-stack">
-      <article className="context-note">
-        {getText(language, 'requirementsContextNote')}{' '}
-        {getText(language, 'verifyOfficialSourceRecruiter')}.{' '}
-        {getText(language, 'requirementsMayChange')}.
-      </article>
       <RequirementSummaryPanel selectedTrack={selectedTrack} language={language} />
       <RequirementInventoryView
         selectedTrack={selectedTrack}
