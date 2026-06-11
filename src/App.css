@@ -561,6 +561,33 @@
   font-size: 0.95rem;
 }
 
+.coach-brief-card {
+  background: rgba(17, 24, 39, 0.9);
+  border: 1px solid rgba(6, 182, 212, 0.28);
+  border-left: 3px solid rgba(6, 182, 212, 0.62);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 5px;
+  padding: 14px 16px;
+}
+
+.coach-brief-kicker {
+  color: #67e8f9;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+}
+
+.coach-brief-line {
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
 .analysis-cta-panel {
   align-items: center;
   background: rgba(17, 24, 39, 0.72);

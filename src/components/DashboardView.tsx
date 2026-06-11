@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 import { ActionCenterPanel } from './ActionCenterPanel'
 import { Badge } from './Badge'
+import { CoachBriefCard } from './CoachBriefCard'
 import {
   getPriorityText,
   getStatusText,
@@ -264,6 +265,8 @@ export function DashboardView({
           </div>
         </div>
       </article>
+
+      <CoachBriefCard selectedTrack={selectedTrack} language={language} />
 
       <section
         className="readiness-snapshot"

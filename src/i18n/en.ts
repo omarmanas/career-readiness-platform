@@ -194,4 +194,12 @@ export const en = {
   exploring: 'Exploring',
   applicationReady: 'Application Ready',
   obtainPrefix: 'Obtain',
+  coachBrief: 'Coach Brief',
+  coachReadinessLine: 'You are {score}% ready.',
+  coachBlockerLine: 'Main blocker: {blocker}.',
+  coachNoBlocker: 'No blocking issue right now.',
+  coachFocusLine: 'This week: finish {action} and complete the next milestone.',
+  coachFocusActionOnly: 'This week: finish {action}.',
+  coachFocusMilestoneOnly: 'This week: complete the next milestone.',
+  coachNoAction: 'No open action right now.',
 }

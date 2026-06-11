@@ -200,4 +200,12 @@ export const tr: typeof en = {
   exploring: 'Keşif',
   applicationReady: 'Başvuruya Hazır',
   obtainPrefix: 'Temin et',
+  coachBrief: 'Koç Özeti',
+  coachReadinessLine: '%{score} hazırsın.',
+  coachBlockerLine: 'Ana engel: {blocker}.',
+  coachNoBlocker: 'Şu anda geçiş engeli yok.',
+  coachFocusLine: 'Bu hafta: {action} işini bitir ve sıradaki kilometre taşını kapat.',
+  coachFocusActionOnly: 'Bu hafta: {action} işini bitir.',
+  coachFocusMilestoneOnly: 'Bu hafta: sıradaki kilometre taşını kapat.',
+  coachNoAction: 'Şu anda açık aksiyon yok.',
 }
