@@ -20,6 +20,8 @@ export const en = {
   blockers: 'Blockers',
   nextActions: 'Next Actions',
   advancedAnalysis: 'Advanced Analysis',
+  analysisCenter: 'Analysis Center',
+  viewAnalysis: 'View Analysis',
   advancedAnalysisDescription:
     'Readiness breakdown, intelligence, gaps, risks, and supporting detail.',
   readinessBreakdown: 'Readiness Breakdown',

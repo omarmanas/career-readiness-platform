@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import { AnalysisCenterView } from './components/AnalysisCenterView'
 import { CareerTracksView } from './components/CareerTracksView'
 import { DashboardView } from './components/DashboardView'
 import { DocumentsView } from './components/DocumentsView'
@@ -15,9 +16,15 @@ import {
   setStoredSelectedTrackId,
 } from './utils/preferences'
 
-type Screen = 'dashboard' | 'tracks' | 'requirements' | 'training' | 'documents'
+type Screen =
+  | 'dashboard'
+  | 'analysis'
+  | 'tracks'
+  | 'requirements'
+  | 'training'
+  | 'documents'
 
-const navItems: { id: Screen; labelKey: TranslationKey }[] = [
+const navItems: { id: Exclude<Screen, 'analysis'>; labelKey: TranslationKey }[] = [
   { id: 'dashboard', labelKey: 'dashboard' },
   { id: 'tracks', labelKey: 'careerTracks' },
   { id: 'requirements', labelKey: 'requirements' },
@@ -57,6 +64,11 @@ function App() {
     setSelectedTrackId(nextTrackId)
     setStoredSelectedTrackId(nextTrackId)
   }
+
+  const activeScreenTitle =
+    activeScreen === 'analysis'
+      ? 'analysisCenter'
+      : navItems.find((item) => item.id === activeScreen)?.labelKey ?? 'dashboard'
 
   return (
     <div className="app-shell">
@@ -101,11 +113,7 @@ function App() {
         <header className="topbar">
           <div>
             <h2>
-              {getText(
-                language,
-                navItems.find((item) => item.id === activeScreen)?.labelKey ??
-                  'dashboard',
-              )}
+              {getText(language, activeScreenTitle)}
             </h2>
           </div>
           {activeScreen !== 'tracks' && (
@@ -134,7 +142,11 @@ function App() {
             language={language}
             onReqStatusChange={setReqStatus}
             onDocStatusChange={setDocStatus}
+            onOpenAnalysis={() => setActiveScreen('analysis')}
           />
+        )}
+        {activeScreen === 'analysis' && (
+          <AnalysisCenterView selectedTrack={effectiveTrack} language={language} />
         )}
         {activeScreen === 'tracks' && (
           <CareerTracksView

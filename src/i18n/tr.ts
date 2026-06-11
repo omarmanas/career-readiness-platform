@@ -24,6 +24,8 @@ export const tr: typeof en = {
   blockers: 'Engelleyiciler',
   nextActions: 'Sonraki Adımlar',
   advancedAnalysis: 'Gelişmiş Analiz',
+  analysisCenter: 'Analiz Merkezi',
+  viewAnalysis: 'Analiz Merkezi',
   advancedAnalysisDescription:
     'Hazırlık dökümü, analiz, açıklar, riskler ve destekleyici detaylar.',
   readinessBreakdown: 'Hazırlık Dökümü',
