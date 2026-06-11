@@ -838,6 +838,13 @@ export const careerTracks: CareerTrack[] = [
         relatedGapIds: ['tr-career-gap-cv'],
         relatedActionIds: ['tr-career-action-cv'],
         notes: 'CV formatı başvurulacak sektör ve pozisyona göre kontrol edilmelidir.',
+        source: {
+          sourceType: 'bestPractice',
+          sourceName: 'PERYON – Türkiye İnsan Yönetimi Derneği',
+          sourceUrl: 'https://www.peryon.org.tr',
+          lastReviewed: '2026-06-11',
+          rationale: 'Türkiye CV hazırlık standartları ve sektör beklentileri, PERYON işe alım kılavuzları esas alınarak belirlenmiştir.',
+        },
       }),
       makeRequirement({
         ...turkeyCareerPilotSource,
@@ -854,6 +861,13 @@ export const careerTracks: CareerTrack[] = [
         relatedTrainingIds: ['tr-career-train-linkedin'],
         relatedActionIds: ['tr-career-action-linkedin'],
         notes: 'LinkedIn profilinin güncelliği ve hedef role uyumu düzenli olarak kontrol edilmelidir.',
+        source: {
+          sourceType: 'employer',
+          sourceName: 'LinkedIn – Profil Yardım Merkezi',
+          sourceUrl: 'https://www.linkedin.com/help/linkedin',
+          lastReviewed: '2026-06-11',
+          rationale: 'LinkedIn, Türkiye iş piyasasında işveren görünürlüğü için birincil platform olup profil güncelliği başvuru kalitesini doğrudan etkiler.',
+        },
       }),
       makeRequirement({
         ...turkeyCareerPilotSource,
@@ -869,6 +883,13 @@ export const careerTracks: CareerTrack[] = [
         relatedDocumentIds: ['tr-career-doc-tracker'],
         relatedTrainingIds: ['tr-career-train-search'],
         notes: 'Hedef rol belirsiz olduğunda başvurular dağınık kalır; odaklı bir hedef, CV ve LinkedIn içeriğini de şekillendirir.',
+        source: {
+          sourceType: 'bestPractice',
+          sourceName: 'İŞKUR – Türkiye İş Kurumu Kariyer Danışmanlığı',
+          sourceUrl: 'https://www.iskur.gov.tr',
+          lastReviewed: '2026-06-11',
+          rationale: 'Kariyer hedefi belirleme, İŞKUR kariyer danışmanlığı kılavuzlarında etkili iş arama sürecinin temel adımı olarak tanımlanmaktadır.',
+        },
       }),
       makeRequirement({
         ...turkeyCareerPilotSource,
@@ -889,6 +910,13 @@ export const careerTracks: CareerTrack[] = [
         ],
         relatedTrainingIds: ['tr-career-train-application'],
         notes: 'Tüm belgeler tek bir yerde takip edilmeli; her başvuru için hazır olmaları zaman kaybını önler.',
+        source: {
+          sourceType: 'bestPractice',
+          sourceName: 'Kariyer.net – İş Başvuru Rehberi',
+          sourceUrl: 'https://www.kariyer.net',
+          lastReviewed: '2026-06-11',
+          rationale: 'Türkiye iş başvuru süreçlerinde belge düzenliliği, seçici işverenlerle etkili iletişimin ve hızlı başvuru yapabilmenin ön koşulu olarak değerlendirilmektedir.',
+        },
       }),
       makeRequirement({
         ...turkeyCareerPilotSource,
@@ -906,6 +934,13 @@ export const careerTracks: CareerTrack[] = [
         relatedGapIds: ['tr-career-gap-interview'],
         relatedActionIds: ['tr-career-action-interview'],
         notes: 'Mülakat soruları önceden hazırlanmadan görüşme performansı belirsiz kalır; somut örnekler güveni artırır.',
+        source: {
+          sourceType: 'bestPractice',
+          sourceName: 'PERYON – İşe Alım ve Mülakat Standartları',
+          sourceUrl: 'https://www.peryon.org.tr',
+          lastReviewed: '2026-06-11',
+          rationale: 'Türkiye işe alım süreçlerinde mülakat performansı aday değerlendirmesinde belirleyici rol oynamaktadır; PERYON mülakat standartları sektör genelinde referans alınmaktadır.',
+        },
       }),
       makeRequirement({
         ...turkeyCareerPilotSource,
@@ -922,6 +957,13 @@ export const careerTracks: CareerTrack[] = [
         relatedTrainingIds: ['tr-career-train-english'],
         relatedGapIds: ['tr-career-gap-english'],
         notes: 'İngilizce gereksinimi sektöre ve pozisyona göre değişir; mevcut seviyeyi erken değerlendirmek hazırlık sürecini netleştirir.',
+        source: {
+          sourceType: 'educational',
+          sourceName: 'ÖSYM – Yabancı Dil Sınavları (YDS / YÖKDİL)',
+          sourceUrl: 'https://www.osym.gov.tr',
+          lastReviewed: '2026-06-11',
+          rationale: 'Türkiye iş piyasasında yabancı dil yeterliliği için ÖSYM sınav kriterleri yaygın referans noktası olarak kullanılmaktadır.',
+        },
       }),
       makeRequirement({
         ...turkeyCareerPilotSource,
@@ -936,6 +978,13 @@ export const careerTracks: CareerTrack[] = [
         readinessImpact: 10,
         relatedDocumentIds: ['tr-career-doc-references'],
         notes: 'Referansların iletişim bilgileri güncellenmeli ve izinleri önceden alınmalıdır.',
+        source: {
+          sourceType: 'bestPractice',
+          sourceName: 'PERYON – Türkiye İnsan Yönetimi Derneği',
+          sourceUrl: 'https://www.peryon.org.tr',
+          lastReviewed: '2026-06-11',
+          rationale: 'Türkiye işe alım sürecinde referans bildirimi, kurumsal işverenler tarafından yaygın biçimde talep edilmekte olup PERYON işe alım standartları bu beklentiyi belgelemektedir.',
+        },
       }),
       makeRequirement({
         ...turkeyCareerPilotSource,
@@ -953,6 +1002,13 @@ export const careerTracks: CareerTrack[] = [
         relatedGapIds: ['tr-career-gap-tracker'],
         relatedActionIds: ['tr-career-action-tracker'],
         notes: 'Takip tablosu olmadan başvuruların durumu, geri dönüşler ve sonraki adımlar kolayca gözden kaçar.',
+        source: {
+          sourceType: 'bestPractice',
+          sourceName: 'Kariyer.net – İş Başvuru Yönetimi',
+          sourceUrl: 'https://www.kariyer.net',
+          lastReviewed: '2026-06-11',
+          rationale: 'Düzenli başvuru takibi, Türkiye iş arama sürecinde fırsatların ve geri dönüşlerin yönetilmesinde temel bir uygulama olarak kabul görmektedir.',
+        },
       }),
       makeRequirement({
         ...turkeyCareerPilotSource,
@@ -966,6 +1022,13 @@ export const careerTracks: CareerTrack[] = [
         priority: 'Low',
         readinessImpact: 6,
         notes: 'İş arama sürecinin pratik gereksinimleri (ulaşım, kıyafet, çalışma saatleri) önceden planlanırsa süreç daha rahat yürür.',
+        source: {
+          sourceType: 'bestPractice',
+          sourceName: 'İŞKUR – Kariyer Danışmanlığı Rehberi',
+          sourceUrl: 'https://www.iskur.gov.tr',
+          lastReviewed: '2026-06-11',
+          rationale: 'İş arama sürecinin pratik ve lojistik hazırlık boyutları, İŞKUR kariyer danışmanlığı kılavuzlarında aday hazırlığının bütünleyici unsurları olarak ele alınmaktadır.',
+        },
       }),
     ],
     milestones: [
