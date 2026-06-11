@@ -212,4 +212,8 @@ export const tr: typeof en = {
   confidenceOfficial: 'Resmi',
   confidenceInformed: 'Araştırılmış',
   confidenceEstimated: 'Tahmini',
+  completedDocuments: 'Tamamlanan Belgeler',
+  allDocumentsReady: 'Tüm belgeler hazır.',
+  highestImpactGap: 'En yüksek etkili açık',
+  expiringSoonLabel: 'Yakında süresi dolacak',
 }

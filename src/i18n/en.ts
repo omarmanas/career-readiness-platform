@@ -206,4 +206,8 @@ export const en = {
   confidenceOfficial: 'Official',
   confidenceInformed: 'Informed',
   confidenceEstimated: 'Estimated',
+  completedDocuments: 'Completed Documents',
+  allDocumentsReady: 'All documents are ready.',
+  highestImpactGap: 'Highest-impact gap',
+  expiringSoonLabel: 'Expiring soon',
 }

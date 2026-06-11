@@ -561,6 +561,39 @@
   font-size: 0.95rem;
 }
 
+.document-focus-card {
+  background: rgba(17, 24, 39, 0.82);
+  border: 1px solid rgba(51, 65, 85, 0.72);
+  border-left: 3px solid rgba(251, 191, 36, 0.5);
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  padding: 13px 16px;
+}
+
+.document-focus-kicker {
+  color: rgba(251, 191, 36, 0.85);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.document-focus-body {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.document-focus-body strong {
+  color: var(--text-strong);
+  flex: 1;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  min-width: 0;
+}
+
 .coach-brief-card {
   background: rgba(17, 24, 39, 0.9);
   border: 1px solid rgba(6, 182, 212, 0.28);

@@ -1,3 +1,4 @@
+import { DocumentFocusCard } from './DocumentFocusCard'
 import { DocumentInventoryView } from './DocumentInventoryView'
 import { DocumentSummaryPanel } from './DocumentSummaryPanel'
 import type { Language } from '../i18n'
@@ -19,6 +20,7 @@ export function DocumentsView({
   return (
     <section className="screen-stack">
       <DocumentSummaryPanel selectedTrack={selectedTrack} language={language} />
+      <DocumentFocusCard selectedTrack={selectedTrack} language={language} />
       <DocumentInventoryView
         selectedTrack={selectedTrack}
         isInteractive={isInteractive}
