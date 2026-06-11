@@ -693,12 +693,12 @@
 
 .requirement-mission-section {
   display: grid;
-  gap: 9px;
+  gap: 10px;
 }
 
 .requirement-mission-section + .requirement-mission-section {
   border-top: 1px solid rgba(51, 65, 85, 0.58);
-  padding-top: 13px;
+  padding-top: 14px;
 }
 
 .requirement-section-heading {
@@ -708,10 +708,22 @@
   justify-content: space-between;
 }
 
+.requirement-section-heading > div {
+  display: grid;
+  gap: 3px;
+}
+
 .requirement-section-heading h4 {
   color: var(--text-strong);
-  font-size: 0.96rem;
+  font-size: 1rem;
   font-weight: 760;
+  margin: 0;
+}
+
+.requirement-section-heading p {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
   margin: 0;
 }
 
@@ -730,12 +742,13 @@
 }
 
 .requirement-section-heading--button {
-  background: transparent;
-  border: 0;
+  background: rgba(15, 23, 42, 0.46);
+  border: 1px solid rgba(51, 65, 85, 0.62);
+  border-radius: 8px;
   color: inherit;
   cursor: pointer;
   font: inherit;
-  padding: 0;
+  padding: 10px 12px;
   text-align: left;
   width: 100%;
 }
@@ -747,14 +760,54 @@
 
 .requirement-section-heading--button:focus-visible {
   outline: 2px solid rgba(134, 239, 172, 0.35);
-  outline-offset: 3px;
+  outline-offset: 2px;
+}
+
+.requirement-mission-section--primary {
+  background:
+    linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(14, 165, 233, 0.04)),
+    rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(34, 197, 94, 0.24);
+  border-radius: 8px;
+  padding: 13px;
+}
+
+.requirement-mission-section--primary + .requirement-mission-section {
+  border-top: 0;
+}
+
+.requirement-mission-section--primary .requirement-section-heading h4 {
+  color: #86efac;
+  font-size: 1.06rem;
+}
+
+.requirement-mission-section--primary .requirement-section-heading span {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.34);
+  color: #86efac;
 }
 
 .requirement-mission-section--primary .requirement-card {
-  background:
-    linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(14, 165, 233, 0.04)),
-    rgba(15, 23, 42, 0.82);
+  background: rgba(15, 23, 42, 0.82);
   border-color: rgba(34, 197, 94, 0.3);
+}
+
+.requirement-card--mission .card-primary-tier {
+  align-items: center;
+}
+
+.requirement-mission-rank {
+  align-items: center;
+  background: #22c55e;
+  border-radius: 999px;
+  color: #052e16;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 0.8rem;
+  font-weight: 850;
+  height: 28px;
+  justify-content: center;
+  width: 28px;
 }
 
 .two-column {

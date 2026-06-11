@@ -37,6 +37,7 @@ export function RequirementInventoryView({
   onStatusChange,
 }: RequirementInventoryViewProps) {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
+  const [isActiveOpen, setIsActiveOpen] = useState(true)
   const [isCompletedOpen, setIsCompletedOpen] = useState(false)
   const incompleteRequirements = selectedTrack.requirements.filter(
     (req) => req.status !== 'Completed' && req.status !== 'Waived',
@@ -59,7 +60,11 @@ export function RequirementInventoryView({
     })
   }
 
-  function renderRequirementCard(req: TrackRequirement) {
+  function renderRequirementCard(
+    req: TrackRequirement,
+    index?: number,
+    isMission = false,
+  ) {
     const isExpanded = expandedIds.has(req.id)
     const counts = [
       req.relatedDocumentIds.length > 0
@@ -73,8 +78,18 @@ export function RequirementInventoryView({
       .join(' / ')
 
     return (
-      <article className="requirement-card" key={req.id}>
+      <article
+        className={
+          isMission ? 'requirement-card requirement-card--mission' : 'requirement-card'
+        }
+        key={req.id}
+      >
         <div className="card-primary-tier">
+          {isMission && typeof index === 'number' && (
+            <span className="requirement-mission-rank" aria-hidden="true">
+              {index + 1}
+            </span>
+          )}
           <div className="card-left-col">
             <strong className="card-item-title">{req.title}</strong>
             <div className="card-badge-row card-badge-row--compact">
@@ -181,7 +196,7 @@ export function RequirementInventoryView({
     )
   }
 
-  function renderRequirementSection(
+  function renderMissionSection(
     title: string,
     requirements: TrackRequirement[],
     className = '',
@@ -191,11 +206,14 @@ export function RequirementInventoryView({
     return (
       <section className={`requirement-mission-section ${className}`.trim()}>
         <div className="requirement-section-heading">
-          <h4>{title}</h4>
+          <div>
+            <h4>{title}</h4>
+            <p>{getText(language, 'topPriorityWork')}</p>
+          </div>
           <span>{requirements.length}</span>
         </div>
         <div className="requirement-list">
-          {requirements.map((req) => renderRequirementCard(req))}
+          {requirements.map((req, index) => renderRequirementCard(req, index, true))}
         </div>
       </section>
     )
@@ -207,14 +225,28 @@ export function RequirementInventoryView({
         <h3>{getText(language, 'requirements')}</h3>
         <span>{getText(language, 'topPriorityWork')}</span>
       </div>
-      {renderRequirementSection(
+      {renderMissionSection(
         getText(language, 'missionQueue'),
         missionQueue,
         'requirement-mission-section--primary',
       )}
-      {renderRequirementSection(
-        getText(language, 'activeRequirements'),
-        activeRequirements,
+      {activeRequirements.length > 0 && (
+        <section className="requirement-mission-section">
+          <button
+            className="requirement-section-heading requirement-section-heading--button"
+            type="button"
+            onClick={() => setIsActiveOpen((current) => !current)}
+            aria-expanded={isActiveOpen}
+          >
+            <h4>{getText(language, 'activeRequirements')}</h4>
+            <span>{activeRequirements.length}</span>
+          </button>
+          {isActiveOpen && (
+            <div className="requirement-list">
+              {activeRequirements.map((req) => renderRequirementCard(req))}
+            </div>
+          )}
+        </section>
       )}
       {completedExemptRequirements.length > 0 && (
         <section className="requirement-mission-section">
