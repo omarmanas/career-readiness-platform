@@ -151,7 +151,7 @@ const securityOfficialSource = {
 } as const
 
 const turkeyCareerPilotSource = {
-  sourceName: 'Türkiye career readiness pilot',
+  sourceName: 'Türkiye kariyer hazırlığı pilot kaynağı',
   sourceType: 'User Provided',
   lastReviewed: '2026-05-29',
   jurisdiction: 'Türkiye',
@@ -853,6 +853,7 @@ export const careerTracks: CareerTrack[] = [
         relatedDocumentIds: ['tr-career-doc-linkedin'],
         relatedTrainingIds: ['tr-career-train-linkedin'],
         relatedActionIds: ['tr-career-action-linkedin'],
+        notes: 'LinkedIn profilinin güncelliği ve hedef role uyumu düzenli olarak kontrol edilmelidir.',
       }),
       makeRequirement({
         ...turkeyCareerPilotSource,
@@ -867,6 +868,7 @@ export const careerTracks: CareerTrack[] = [
         readinessImpact: 14,
         relatedDocumentIds: ['tr-career-doc-tracker'],
         relatedTrainingIds: ['tr-career-train-search'],
+        notes: 'Hedef rol belirsiz olduğunda başvurular dağınık kalır; odaklı bir hedef, CV ve LinkedIn içeriğini de şekillendirir.',
       }),
       makeRequirement({
         ...turkeyCareerPilotSource,
@@ -886,6 +888,7 @@ export const careerTracks: CareerTrack[] = [
           'tr-career-doc-references',
         ],
         relatedTrainingIds: ['tr-career-train-application'],
+        notes: 'Tüm belgeler tek bir yerde takip edilmeli; her başvuru için hazır olmaları zaman kaybını önler.',
       }),
       makeRequirement({
         ...turkeyCareerPilotSource,
@@ -902,6 +905,7 @@ export const careerTracks: CareerTrack[] = [
         relatedTrainingIds: ['tr-career-train-interview'],
         relatedGapIds: ['tr-career-gap-interview'],
         relatedActionIds: ['tr-career-action-interview'],
+        notes: 'Mülakat soruları önceden hazırlanmadan görüşme performansı belirsiz kalır; somut örnekler güveni artırır.',
       }),
       makeRequirement({
         ...turkeyCareerPilotSource,
@@ -917,6 +921,7 @@ export const careerTracks: CareerTrack[] = [
         relatedDocumentIds: ['tr-career-doc-english'],
         relatedTrainingIds: ['tr-career-train-english'],
         relatedGapIds: ['tr-career-gap-english'],
+        notes: 'İngilizce gereksinimi sektöre ve pozisyona göre değişir; mevcut seviyeyi erken değerlendirmek hazırlık sürecini netleştirir.',
       }),
       makeRequirement({
         ...turkeyCareerPilotSource,
@@ -930,6 +935,7 @@ export const careerTracks: CareerTrack[] = [
         priority: 'Medium',
         readinessImpact: 10,
         relatedDocumentIds: ['tr-career-doc-references'],
+        notes: 'Referansların iletişim bilgileri güncellenmeli ve izinleri önceden alınmalıdır.',
       }),
       makeRequirement({
         ...turkeyCareerPilotSource,
@@ -946,6 +952,7 @@ export const careerTracks: CareerTrack[] = [
         relatedTrainingIds: ['tr-career-train-application'],
         relatedGapIds: ['tr-career-gap-tracker'],
         relatedActionIds: ['tr-career-action-tracker'],
+        notes: 'Takip tablosu olmadan başvuruların durumu, geri dönüşler ve sonraki adımlar kolayca gözden kaçar.',
       }),
       makeRequirement({
         ...turkeyCareerPilotSource,
@@ -958,6 +965,7 @@ export const careerTracks: CareerTrack[] = [
         status: 'Not Started',
         priority: 'Low',
         readinessImpact: 6,
+        notes: 'İş arama sürecinin pratik gereksinimleri (ulaşım, kıyafet, çalışma saatleri) önceden planlanırsa süreç daha rahat yürür.',
       }),
     ],
     milestones: [
