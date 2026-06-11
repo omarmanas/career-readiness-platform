@@ -51,6 +51,7 @@ export const en = {
   placeholderData: 'Placeholder data',
   notYetValidated: 'Not yet validated',
   actionQueue: 'Action queue',
+  todaysNextStep: "Today's next step",
   targetRole: 'Target role',
   complete: 'Complete',
   completed: 'Completed',

@@ -68,7 +68,7 @@ export function DashboardView({
             )}
           </div>
           <h3>{selectedTrack.title}</h3>
-          <p>{selectedTrack.description}</p>
+          <p className="summary-panel-description">{selectedTrack.description}</p>
           <div className="meta-list meta-list--compact">
             <span>{selectedTrack.domain}</span>
             <span>{selectedTrack.market}</span>

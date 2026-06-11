@@ -56,6 +56,148 @@ export function ActionCenterPanel({
     getRecommendationSet(selectedTrack, 5, language)
   const currentScore = calculateReadinessScore(selectedTrack)
   const projectedScore = Math.min(100, currentScore + projectedImprovementPts)
+  const primaryAction = nextActions[0]
+  const queuedActions = nextActions.slice(1)
+
+  function renderAction(
+    action: (typeof nextActions)[number],
+    idx: number,
+    isPrimary = false,
+  ) {
+    const isGapOnly = action.itemId === null
+
+    let currentStatus: string | null = null
+    if (action.itemType === 'requirement' && action.itemId) {
+      const req = selectedTrack.requirements.find((r) => r.id === action.itemId)
+      currentStatus = req?.status ?? null
+    } else if (action.itemType === 'document' && action.itemId) {
+      const doc = selectedTrack.documentChecklist.find((d) => d.id === action.itemId)
+      currentStatus = doc?.status ?? null
+    }
+
+    const priority = action.reason.priorityLevel as Priority
+
+    return (
+      <li
+        className={
+          isPrimary ? 'next-action-item next-action-item--primary' : 'next-action-item'
+        }
+        key={action.id}
+      >
+        <div className="next-action-rank" aria-hidden="true">
+          {idx + 1}
+        </div>
+        <div className="next-action-body">
+          {isPrimary && (
+            <span className="next-action-kicker">
+              {getText(language, 'todaysNextStep')}
+            </span>
+          )}
+          <div className="next-action-header">
+            <strong>{action.title}</strong>
+            <div className="badge-pair">
+              <Badge
+                label={
+                  action.sourceType === 'requirement'
+                    ? getText(language, 'requirement')
+                    : getText(language, 'document')
+                }
+                tone={action.sourceType === 'requirement' ? 'warning' : 'info'}
+              />
+              <Badge
+                label={getPriorityText(language, priority)}
+                tone={priorityTone[priority] ?? 'neutral'}
+              />
+              {isGapOnly && (
+                <Badge label={getText(language, 'info')} tone="neutral" />
+              )}
+            </div>
+          </div>
+
+          <p className="next-action-desc">{action.description}</p>
+
+          <div className="next-action-meta">
+            <span>{action.reason.category}</span>
+            <span className="next-action-impact">
+              +{action.reason.scoreContributionPts}{' '}
+              {getText(
+                language,
+                action.reason.scoreContributionPts === 1
+                  ? 'pointAbbrevSingular'
+                  : 'pointAbbrev',
+              )}{' '}
+              {getText(language, 'readiness')}
+            </span>
+            {action.reason.unblocksCategory && (
+              <span className="next-action-unlocks">
+                {getText(language, 'unblocksCategory')}
+              </span>
+            )}
+          </div>
+
+          {!isGapOnly && (
+            <div className="status-control-row">
+              <span className="status-control-label">
+                {getText(language, 'status')}
+              </span>
+              {isInteractive ? (
+                action.itemType === 'requirement' ? (
+                  <select
+                    className="status-control"
+                    value={currentStatus ?? 'Not Started'}
+                    onChange={(e) =>
+                      onReqStatusChange(
+                        action.itemId!,
+                        e.target.value as RequirementStatus,
+                      )
+                    }
+                    aria-label={`Status for ${action.title}`}
+                  >
+                    {REQUIREMENT_STATUSES.map((s) => (
+                      <option key={s} value={s}>
+                        {getStatusText(language, s)}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <select
+                    className="status-control"
+                    value={currentStatus ?? 'Missing'}
+                    onChange={(e) =>
+                      onDocStatusChange(action.itemId!, e.target.value as DocumentStatus)
+                    }
+                    aria-label={`Status for ${action.title}`}
+                  >
+                    {DOCUMENT_STATUSES.map((s) => (
+                      <option key={s} value={s}>
+                        {getStatusText(language, s)}
+                      </option>
+                    ))}
+                  </select>
+                )
+              ) : (
+                currentStatus &&
+                (action.itemType === 'requirement' ? (
+                  <Badge
+                    label={getStatusText(
+                      language,
+                      currentStatus as RequirementStatus,
+                    )}
+                    tone={requirementStatusTone[currentStatus as RequirementStatus]}
+                  />
+                ) : (
+                  <Badge
+                    label={getStatusText(language, currentStatus as DocumentStatus)}
+                    tone={documentTone[currentStatus as DocumentStatus]}
+                  />
+                ))
+              )}
+            </div>
+          )}
+        </div>
+      </li>
+    )
+  }
 
   const blockerStrip =
     blockers.length === 0 ? (
@@ -73,13 +215,13 @@ export function ActionCenterPanel({
     ) : (
       <section className="blockers-strip" aria-label={getText(language, 'blockers')}>
         <div className="blockers-strip-header">
-          <span className="blockers-strip-label">
-            {getText(language, 'blockers')}
-          </span>
-          <Badge
-            label={`${blockers.length} ${getText(language, 'gating')}`}
-            tone="danger"
-          />
+          <div>
+            <span className="blockers-strip-label">
+              {getText(language, 'blockers')}
+            </span>
+            <strong className="blockers-strip-title">{blockers[0].title}</strong>
+          </div>
+          <Badge label={`${blockers.length} ${getText(language, 'gating')}`} tone="danger" />
         </div>
         <div className="blockers-list">
           {blockers.map((blocker) => {
@@ -156,154 +298,24 @@ export function ActionCenterPanel({
         </p>
       ) : (
         <>
-          <ol className="next-actions-list">
-            {nextActions.map((action, idx) => {
-              const isGapOnly = action.itemId === null
+          {primaryAction && (
+            <ol className="next-actions-list next-actions-list--primary">
+              {renderAction(primaryAction, 0, true)}
+            </ol>
+          )}
 
-              let currentStatus: string | null = null
-              if (action.itemType === 'requirement' && action.itemId) {
-                const req = selectedTrack.requirements.find(
-                  (r) => r.id === action.itemId,
-                )
-                currentStatus = req?.status ?? null
-              } else if (action.itemType === 'document' && action.itemId) {
-                const doc = selectedTrack.documentChecklist.find(
-                  (d) => d.id === action.itemId,
-                )
-                currentStatus = doc?.status ?? null
-              }
+          <div className="action-queue-heading">
+            <h4>{getText(language, 'actionQueue')}</h4>
+            <span>
+              {queuedActions.length} {getText(language, 'ranked')}
+            </span>
+          </div>
 
-              const priority = action.reason.priorityLevel as Priority
-
-              return (
-                <li className="next-action-item" key={action.id}>
-                  <div className="next-action-rank" aria-hidden="true">
-                    {idx + 1}
-                  </div>
-                  <div className="next-action-body">
-                    <div className="next-action-header">
-                      <strong>{action.title}</strong>
-                      <div className="badge-pair">
-                        <Badge
-                          label={
-                            action.sourceType === 'requirement'
-                              ? getText(language, 'requirement')
-                              : getText(language, 'document')
-                          }
-                          tone={
-                            action.sourceType === 'requirement'
-                              ? 'warning'
-                              : 'info'
-                          }
-                        />
-                        <Badge
-                          label={getPriorityText(language, priority)}
-                          tone={priorityTone[priority] ?? 'neutral'}
-                        />
-                        {isGapOnly && (
-                          <Badge label={getText(language, 'info')} tone="neutral" />
-                        )}
-                      </div>
-                    </div>
-
-                    <p className="next-action-desc">{action.description}</p>
-
-                    <div className="next-action-meta">
-                      <span>{action.reason.category}</span>
-                      <span className="next-action-impact">
-                        +{action.reason.scoreContributionPts}{' '}
-                        {getText(
-                          language,
-                          action.reason.scoreContributionPts === 1
-                            ? 'pointAbbrevSingular'
-                            : 'pointAbbrev',
-                        )}{' '}
-                        {getText(language, 'readiness')}
-                      </span>
-                      {action.reason.unblocksCategory && (
-                        <span className="next-action-unlocks">
-                          {getText(language, 'unblocksCategory')}
-                        </span>
-                      )}
-                    </div>
-
-                    {!isGapOnly && (
-                      <div className="status-control-row">
-                        <span className="status-control-label">
-                          {getText(language, 'status')}
-                        </span>
-                        {isInteractive ? (
-                          action.itemType === 'requirement' ? (
-                            <select
-                              className="status-control"
-                              value={currentStatus ?? 'Not Started'}
-                              onChange={(e) =>
-                                onReqStatusChange(
-                                  action.itemId!,
-                                  e.target.value as RequirementStatus,
-                                )
-                              }
-                              aria-label={`Status for ${action.title}`}
-                            >
-                              {REQUIREMENT_STATUSES.map((s) => (
-                                <option key={s} value={s}>
-                                  {getStatusText(language, s)}
-                                </option>
-                              ))}
-                            </select>
-                          ) : (
-                            <select
-                              className="status-control"
-                              value={currentStatus ?? 'Missing'}
-                              onChange={(e) =>
-                                onDocStatusChange(
-                                  action.itemId!,
-                                  e.target.value as DocumentStatus,
-                                )
-                              }
-                              aria-label={`Status for ${action.title}`}
-                            >
-                              {DOCUMENT_STATUSES.map((s) => (
-                                <option key={s} value={s}>
-                                  {getStatusText(language, s)}
-                                </option>
-                              ))}
-                            </select>
-                          )
-                        ) : (
-                          currentStatus && (
-                            action.itemType === 'requirement' ? (
-                              <Badge
-                                label={getStatusText(
-                                  language,
-                                  currentStatus as RequirementStatus,
-                                )}
-                                tone={
-                                  requirementStatusTone[
-                                    currentStatus as RequirementStatus
-                                  ]
-                                }
-                              />
-                            ) : (
-                              <Badge
-                                label={getStatusText(
-                                  language,
-                                  currentStatus as DocumentStatus,
-                                )}
-                                tone={
-                                  documentTone[currentStatus as DocumentStatus]
-                                }
-                              />
-                            )
-                          )
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </li>
-              )
-            })}
-          </ol>
+          {queuedActions.length > 0 && (
+            <ol className="next-actions-list">
+              {queuedActions.map((action, idx) => renderAction(action, idx + 1))}
+            </ol>
+          )}
 
           <div className="next-actions-footer">
             <div className="next-actions-projection">

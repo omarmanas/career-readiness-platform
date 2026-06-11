@@ -53,6 +53,7 @@ export const tr: typeof en = {
   placeholderData: 'Yer tutucu veri',
   notYetValidated: 'Henüz doğrulanmadı',
   actionQueue: 'Aksiyon kuyruğu',
+  todaysNextStep: 'Bugünün sonraki adımı',
   targetRole: 'Hedef rol',
   complete: 'Tamamla',
   completed: 'Tamamlandı',
