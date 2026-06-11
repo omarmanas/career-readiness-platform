@@ -208,4 +208,8 @@ export const tr: typeof en = {
   coachFocusActionOnly: 'Bu hafta: {action} işini bitir.',
   coachFocusMilestoneOnly: 'Bu hafta: sıradaki kilometre taşını kapat.',
   coachNoAction: 'Şu anda açık aksiyon yok.',
+  confidenceLevel: 'Kaynak güvenilirliği',
+  confidenceOfficial: 'Resmi',
+  confidenceInformed: 'Araştırılmış',
+  confidenceEstimated: 'Tahmini',
 }

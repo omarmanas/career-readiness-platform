@@ -16,6 +16,12 @@ const TRAINING_STATUSES: TrainingStatus[] = [
   'Deferred',
 ]
 
+const CONFIDENCE_LEVEL_KEYS: Record<string, string> = {
+  official: 'confidenceOfficial',
+  informed: 'confidenceInformed',
+  estimated: 'confidenceEstimated',
+}
+
 function renderSourceSection(source: GuidanceSource | undefined, language: Language) {
   if (!source) {
     return <p className="detail-muted-note">{getText(language, 'noSourceMetadata')}</p>
@@ -49,6 +55,12 @@ function renderSourceSection(source: GuidanceSource | undefined, language: Langu
         <span>{getText(language, 'rationale')}</span>
         <strong>{source.rationale ?? getText(language, 'notSpecified')}</strong>
       </div>
+      {source.confidenceLevel && (
+        <div>
+          <span>{getText(language, 'confidenceLevel')}</span>
+          <strong>{getText(language, CONFIDENCE_LEVEL_KEYS[source.confidenceLevel] ?? source.confidenceLevel)}</strong>
+        </div>
+      )}
     </div>
   )
 }

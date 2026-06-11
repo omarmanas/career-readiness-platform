@@ -202,4 +202,8 @@ export const en = {
   coachFocusActionOnly: 'This week: finish {action}.',
   coachFocusMilestoneOnly: 'This week: complete the next milestone.',
   coachNoAction: 'No open action right now.',
+  confidenceLevel: 'Source confidence',
+  confidenceOfficial: 'Official',
+  confidenceInformed: 'Informed',
+  confidenceEstimated: 'Estimated',
 }

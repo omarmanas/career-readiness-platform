@@ -64,7 +64,9 @@ export type GuidanceSourceType =
   | 'educational'
   | 'bestPractice'
 
-export type ConfidenceLevel = 'High' | 'Medium' | 'Low'
+export type LegacyConfidenceLevel = 'High' | 'Medium' | 'Low'
+
+export type ConfidenceLevel = 'official' | 'informed' | 'estimated'
 
 export interface GuidanceSource {
   sourceType: GuidanceSourceType
@@ -72,6 +74,7 @@ export interface GuidanceSource {
   sourceUrl?: string
   lastReviewed?: string
   rationale?: string
+  confidenceLevel?: ConfidenceLevel
 }
 
 export interface SourceAttribution {
@@ -80,7 +83,7 @@ export interface SourceAttribution {
   sourceType?: SourceType
   lastReviewed?: string
   jurisdiction?: string
-  confidenceLevel?: ConfidenceLevel
+  confidenceLevel?: LegacyConfidenceLevel
 }
 
 export interface SourceEntry extends SourceAttribution {

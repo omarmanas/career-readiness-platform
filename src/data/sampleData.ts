@@ -844,6 +844,7 @@ export const careerTracks: CareerTrack[] = [
           sourceUrl: 'https://www.peryon.org.tr',
           lastReviewed: '2026-06-11',
           rationale: 'Türkiye CV hazırlık standartları ve sektör beklentileri, PERYON işe alım kılavuzları esas alınarak belirlenmiştir.',
+          confidenceLevel: 'informed',
         },
       }),
       makeRequirement({
@@ -867,6 +868,7 @@ export const careerTracks: CareerTrack[] = [
           sourceUrl: 'https://www.linkedin.com/help/linkedin',
           lastReviewed: '2026-06-11',
           rationale: 'LinkedIn, Türkiye iş piyasasında işveren görünürlüğü için birincil platform olup profil güncelliği başvuru kalitesini doğrudan etkiler.',
+          confidenceLevel: 'informed',
         },
       }),
       makeRequirement({
@@ -889,6 +891,7 @@ export const careerTracks: CareerTrack[] = [
           sourceUrl: 'https://www.iskur.gov.tr',
           lastReviewed: '2026-06-11',
           rationale: 'Kariyer hedefi belirleme, İŞKUR kariyer danışmanlığı kılavuzlarında etkili iş arama sürecinin temel adımı olarak tanımlanmaktadır.',
+          confidenceLevel: 'official',
         },
       }),
       makeRequirement({
@@ -916,6 +919,7 @@ export const careerTracks: CareerTrack[] = [
           sourceUrl: 'https://www.kariyer.net',
           lastReviewed: '2026-06-11',
           rationale: 'Türkiye iş başvuru süreçlerinde belge düzenliliği, seçici işverenlerle etkili iletişimin ve hızlı başvuru yapabilmenin ön koşulu olarak değerlendirilmektedir.',
+          confidenceLevel: 'informed',
         },
       }),
       makeRequirement({
@@ -940,6 +944,7 @@ export const careerTracks: CareerTrack[] = [
           sourceUrl: 'https://www.peryon.org.tr',
           lastReviewed: '2026-06-11',
           rationale: 'Türkiye işe alım süreçlerinde mülakat performansı aday değerlendirmesinde belirleyici rol oynamaktadır; PERYON mülakat standartları sektör genelinde referans alınmaktadır.',
+          confidenceLevel: 'informed',
         },
       }),
       makeRequirement({
@@ -963,6 +968,7 @@ export const careerTracks: CareerTrack[] = [
           sourceUrl: 'https://www.osym.gov.tr',
           lastReviewed: '2026-06-11',
           rationale: 'Türkiye iş piyasasında yabancı dil yeterliliği için ÖSYM sınav kriterleri yaygın referans noktası olarak kullanılmaktadır.',
+          confidenceLevel: 'official',
         },
       }),
       makeRequirement({
@@ -984,6 +990,7 @@ export const careerTracks: CareerTrack[] = [
           sourceUrl: 'https://www.peryon.org.tr',
           lastReviewed: '2026-06-11',
           rationale: 'Türkiye işe alım sürecinde referans bildirimi, kurumsal işverenler tarafından yaygın biçimde talep edilmekte olup PERYON işe alım standartları bu beklentiyi belgelemektedir.',
+          confidenceLevel: 'informed',
         },
       }),
       makeRequirement({
@@ -1008,6 +1015,7 @@ export const careerTracks: CareerTrack[] = [
           sourceUrl: 'https://www.kariyer.net',
           lastReviewed: '2026-06-11',
           rationale: 'Düzenli başvuru takibi, Türkiye iş arama sürecinde fırsatların ve geri dönüşlerin yönetilmesinde temel bir uygulama olarak kabul görmektedir.',
+          confidenceLevel: 'informed',
         },
       }),
       makeRequirement({
@@ -1028,6 +1036,7 @@ export const careerTracks: CareerTrack[] = [
           sourceUrl: 'https://www.iskur.gov.tr',
           lastReviewed: '2026-06-11',
           rationale: 'İş arama sürecinin pratik ve lojistik hazırlık boyutları, İŞKUR kariyer danışmanlığı kılavuzlarında aday hazırlığının bütünleyici unsurları olarak ele alınmaktadır.',
+          confidenceLevel: 'official',
         },
       }),
     ],

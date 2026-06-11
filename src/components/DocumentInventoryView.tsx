@@ -30,6 +30,12 @@ function getDocumentSource(item: DocumentItem): GuidanceSource | null {
   }
 }
 
+const CONFIDENCE_LEVEL_KEYS: Record<string, string> = {
+  official: 'confidenceOfficial',
+  informed: 'confidenceInformed',
+  estimated: 'confidenceEstimated',
+}
+
 function renderSourceSection(source: GuidanceSource | null, language: Language) {
   return (
     <section className="detail-section">
@@ -62,6 +68,12 @@ function renderSourceSection(source: GuidanceSource | null, language: Language) 
             <span>{getText(language, 'rationale')}</span>
             <strong>{source.rationale ?? getText(language, 'notSpecified')}</strong>
           </div>
+          {source.confidenceLevel && (
+            <div>
+              <span>{getText(language, 'confidenceLevel')}</span>
+              <strong>{getText(language, CONFIDENCE_LEVEL_KEYS[source.confidenceLevel] ?? source.confidenceLevel)}</strong>
+            </div>
+          )}
         </div>
       ) : (
         <p className="detail-muted-note">{getText(language, 'noSourceMetadata')}</p>
