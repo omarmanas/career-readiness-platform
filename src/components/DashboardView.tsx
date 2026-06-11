@@ -8,7 +8,13 @@ import {
   getTrackStatusText,
   type Language,
 } from '../i18n'
-import type { CareerTrack, DocumentStatus, Priority, RequirementStatus } from '../types'
+import type {
+  CareerTrack,
+  DocumentStatus,
+  Priority,
+  RequirementStatus,
+  TrackMilestone,
+} from '../types'
 import {
   documentTone,
   priorityTone,
@@ -31,6 +37,10 @@ interface DashboardViewProps {
   language: Language
   onReqStatusChange: (itemId: string, status: RequirementStatus) => void
   onDocStatusChange: (itemId: string, status: DocumentStatus) => void
+  onMilestoneStatusChange: (
+    itemId: string,
+    status: TrackMilestone['status'],
+  ) => void
   onOpenAnalysis: () => void
 }
 
@@ -52,16 +62,40 @@ const DOCUMENT_STATUSES: DocumentStatus[] = [
   'Expired',
 ]
 
+const MILESTONE_STATUSES: TrackMilestone['status'][] = [
+  'Completed',
+  'In Progress',
+  'Upcoming',
+]
+
+function getMilestoneStatusText(
+  language: Language,
+  status: TrackMilestone['status'],
+) {
+  if (status === 'Upcoming') return getText(language, 'upcoming')
+  return getStatusText(language, status)
+}
+
+function getMilestoneTone(status: TrackMilestone['status']) {
+  if (status === 'Completed') return 'success'
+  if (status === 'In Progress') return 'warning'
+  return 'info'
+}
+
 export function DashboardView({
   selectedTrack,
   isInteractive,
   language,
   onReqStatusChange,
   onDocStatusChange,
+  onMilestoneStatusChange,
   onOpenAnalysis,
 }: DashboardViewProps) {
   const readinessScore = calculateReadinessScore(selectedTrack)
   const nextMilestone = getNextMilestone(selectedTrack.milestones)
+  const completedMilestones = getCompletedMilestoneCount(selectedTrack.milestones)
+  const totalMilestones = selectedTrack.milestones.length
+  const remainingMilestones = Math.max(0, totalMilestones - completedMilestones)
   const { nextActions } = getRecommendationSet(selectedTrack, 5, language)
   const missionAction = nextActions[0]
   const missionPriority = missionAction?.reason.priorityLevel as Priority | undefined
@@ -231,6 +265,71 @@ export function DashboardView({
           <p>{nextMilestone?.title ?? getText(language, 'noUpcomingMilestone')}</p>
         </article>
       </section>
+
+      <article className="milestone-progress-panel">
+        <div className="milestone-progress-header">
+          <div>
+            <span>{getText(language, 'milestoneProgress')}</span>
+            <h3>
+              {completedMilestones}/{totalMilestones}{' '}
+              {getText(language, 'milestonesComplete')}
+            </h3>
+          </div>
+          <Badge
+            label={`${remainingMilestones} ${getText(language, 'remainingMilestones')}`}
+            tone={remainingMilestones === 0 ? 'success' : 'warning'}
+          />
+        </div>
+
+        <div className="milestone-progress-summary">
+          <div>
+            <span>{getText(language, 'nextMilestone')}</span>
+            <strong>
+              {nextMilestone?.title ?? getText(language, 'noUpcomingMilestone')}
+            </strong>
+            {nextMilestone && <p>{nextMilestone.targetDateLabel}</p>}
+          </div>
+          <p>{getText(language, 'milestonesAffectScore')}</p>
+        </div>
+
+        <div className="milestone-list">
+          {selectedTrack.milestones.map((milestone) => (
+            <div className="milestone-row" key={milestone.id}>
+              <div className="milestone-row-main">
+                <strong>{milestone.title}</strong>
+                <span>{milestone.targetDateLabel}</span>
+              </div>
+              {isInteractive ? (
+                <select
+                  className="status-control milestone-status-control"
+                  data-status={milestone.status}
+                  value={milestone.status}
+                  onChange={(e) =>
+                    onMilestoneStatusChange(
+                      milestone.id,
+                      e.target.value as TrackMilestone['status'],
+                    )
+                  }
+                  aria-label={`${getText(language, 'milestoneStatus')}: ${
+                    milestone.title
+                  }`}
+                >
+                  {MILESTONE_STATUSES.map((status) => (
+                    <option key={status} value={status}>
+                      {getMilestoneStatusText(language, status)}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <Badge
+                  label={getMilestoneStatusText(language, milestone.status)}
+                  tone={getMilestoneTone(milestone.status)}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      </article>
 
       <ActionCenterPanel
         selectedTrack={selectedTrack}

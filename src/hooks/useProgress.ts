@@ -3,6 +3,7 @@ import type {
   CareerTrack,
   DocumentStatus,
   RequirementStatus,
+  TrackMilestone,
   TrainingStatus,
 } from '../types'
 import {
@@ -10,6 +11,7 @@ import {
   emptyOverrides,
   loadOverrides,
   withDocumentStatus,
+  withMilestoneStatus,
   withRequirementStatus,
   withTrainingStatus,
   type ProgressOverrides,
@@ -21,6 +23,7 @@ export interface UseProgressResult {
   setReqStatus: (itemId: string, status: RequirementStatus) => void
   setTrainStatus: (itemId: string, status: TrainingStatus) => void
   setDocStatus: (itemId: string, status: DocumentStatus) => void
+  setMilestoneStatus: (itemId: string, status: TrackMilestone['status']) => void
   resetOverrides: () => void
 }
 
@@ -70,6 +73,8 @@ export function useProgress(seedTrack: CareerTrack): UseProgressResult {
       commit(withTrainingStatus(seedTrack.id, overrides, itemId, status)),
     setDocStatus: (itemId, status) =>
       commit(withDocumentStatus(seedTrack.id, overrides, itemId, status)),
+    setMilestoneStatus: (itemId, status) =>
+      commit(withMilestoneStatus(seedTrack.id, overrides, itemId, status)),
     resetOverrides: () => {
       commit(emptyOverrides())
       try {

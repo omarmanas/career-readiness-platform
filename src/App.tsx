@@ -44,8 +44,13 @@ function App() {
   const seedTrack =
     careerTracks.find((track) => track.id === selectedTrackId) ?? careerTracks[0]
 
-  const { effectiveTrack, setReqStatus, setTrainStatus, setDocStatus } =
-    useProgress(seedTrack)
+  const {
+    effectiveTrack,
+    setReqStatus,
+    setTrainStatus,
+    setDocStatus,
+    setMilestoneStatus,
+  } = useProgress(seedTrack)
 
   const isInteractive = effectiveTrack.maturity === 'live'
 
@@ -142,6 +147,7 @@ function App() {
             language={language}
             onReqStatusChange={setReqStatus}
             onDocStatusChange={setDocStatus}
+            onMilestoneStatusChange={setMilestoneStatus}
             onOpenAnalysis={() => setActiveScreen('analysis')}
           />
         )}

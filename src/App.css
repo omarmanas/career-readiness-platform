@@ -658,6 +658,87 @@
   -webkit-line-clamp: 1;
 }
 
+.milestone-progress-panel {
+  background: rgba(17, 24, 39, 0.74);
+  border: 1px solid rgba(51, 65, 85, 0.7);
+  border-radius: 8px;
+  display: grid;
+  gap: 14px;
+  padding: 16px 17px;
+}
+
+.milestone-progress-header,
+.milestone-progress-summary,
+.milestone-row {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.milestone-progress-header > div,
+.milestone-progress-summary > div,
+.milestone-row-main {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.milestone-progress-header span,
+.milestone-progress-summary span,
+.milestone-row-main span {
+  color: var(--text-muted);
+  font-size: 0.74rem;
+}
+
+.milestone-progress-header h3 {
+  color: var(--text-strong);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.milestone-progress-summary {
+  background: rgba(15, 23, 42, 0.56);
+  border: 1px solid rgba(51, 65, 85, 0.58);
+  border-radius: 8px;
+  padding: 11px 12px;
+}
+
+.milestone-progress-summary strong,
+.milestone-row-main strong {
+  color: var(--text-strong);
+  font-size: 0.94rem;
+  line-height: 1.25;
+}
+
+.milestone-progress-summary p {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.35;
+  margin: 0;
+  max-width: 390px;
+}
+
+.milestone-list {
+  display: grid;
+  gap: 8px;
+}
+
+.milestone-row {
+  border-top: 1px solid rgba(51, 65, 85, 0.55);
+  padding-top: 9px;
+}
+
+.milestone-row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.milestone-status-control {
+  flex: 0 0 156px;
+  min-width: 156px;
+}
+
 .card-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -2159,6 +2240,11 @@
   color: #fcd34d;
 }
 
+.status-control[data-status="Upcoming"] {
+  border-color: rgba(14, 165, 233, 0.42);
+  color: #bae6fd;
+}
+
 .status-control[data-status="Needs Review"] {
   border-color: rgba(245, 158, 11, 0.4);
   color: #fcd34d;
@@ -2422,6 +2508,28 @@
   }
 
   .analysis-cta-button {
+    width: 100%;
+  }
+
+  .milestone-progress-panel {
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .milestone-progress-header,
+  .milestone-progress-summary,
+  .milestone-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .milestone-progress-summary p {
+    max-width: none;
+  }
+
+  .milestone-status-control {
+    flex-basis: auto;
+    min-width: 0;
     width: 100%;
   }
 
