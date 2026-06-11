@@ -56,14 +56,9 @@ export function ActionCenterPanel({
     getRecommendationSet(selectedTrack, 5, language)
   const currentScore = calculateReadinessScore(selectedTrack)
   const projectedScore = Math.min(100, currentScore + projectedImprovementPts)
-  const primaryAction = nextActions[0]
   const queuedActions = nextActions.slice(1)
 
-  function renderAction(
-    action: (typeof nextActions)[number],
-    idx: number,
-    isPrimary = false,
-  ) {
+  function renderAction(action: (typeof nextActions)[number], idx: number) {
     const isGapOnly = action.itemId === null
 
     let currentStatus: string | null = null
@@ -78,61 +73,32 @@ export function ActionCenterPanel({
     const priority = action.reason.priorityLevel as Priority
 
     return (
-      <li
-        className={
-          isPrimary ? 'next-action-item next-action-item--primary' : 'next-action-item'
-        }
-        key={action.id}
-      >
+      <li className="next-action-item" key={action.id}>
         <div className="next-action-rank" aria-hidden="true">
           {idx + 1}
         </div>
         <div className="next-action-body">
-          {isPrimary && (
-            <span className="next-action-kicker">
-              {getText(language, 'todaysNextStep')}
-            </span>
-          )}
           <div className="next-action-header">
             <strong>{action.title}</strong>
             <div className="badge-pair">
               <Badge
-                label={
-                  action.sourceType === 'requirement'
-                    ? getText(language, 'requirement')
-                    : getText(language, 'document')
-                }
-                tone={action.sourceType === 'requirement' ? 'warning' : 'info'}
-              />
-              <Badge
                 label={getPriorityText(language, priority)}
                 tone={priorityTone[priority] ?? 'neutral'}
               />
-              {isGapOnly && (
-                <Badge label={getText(language, 'info')} tone="neutral" />
-              )}
             </div>
           </div>
 
-          <p className="next-action-desc">{action.description}</p>
-
           <div className="next-action-meta">
-            <span>{action.reason.category}</span>
             <span className="next-action-impact">
               +{action.reason.scoreContributionPts}{' '}
               {getText(
                 language,
                 action.reason.scoreContributionPts === 1
                   ? 'pointAbbrevSingular'
-                  : 'pointAbbrev',
+                : 'pointAbbrev',
               )}{' '}
               {getText(language, 'readiness')}
             </span>
-            {action.reason.unblocksCategory && (
-              <span className="next-action-unlocks">
-                {getText(language, 'unblocksCategory')}
-              </span>
-            )}
           </div>
 
           {!isGapOnly && (
@@ -298,12 +264,6 @@ export function ActionCenterPanel({
         </p>
       ) : (
         <>
-          {primaryAction && (
-            <ol className="next-actions-list next-actions-list--primary">
-              {renderAction(primaryAction, 0, true)}
-            </ol>
-          )}
-
           <div className="action-queue-heading">
             <h4>{getText(language, 'actionQueue')}</h4>
             <span>

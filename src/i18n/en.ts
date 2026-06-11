@@ -11,6 +11,8 @@ export const en = {
   ready: 'Ready',
   readinessScore: 'Readiness score',
   readySuffix: 'ready',
+  missionMode: 'Mission mode',
+  readinessSnapshot: 'Readiness snapshot',
   blockers: 'Blockers',
   nextActions: 'Next Actions',
   advancedAnalysis: 'Advanced Analysis',

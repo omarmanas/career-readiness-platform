@@ -15,6 +15,8 @@ export const tr: typeof en = {
   ready: 'Hazır',
   readinessScore: 'Hazırlık puanı',
   readySuffix: 'hazır',
+  missionMode: 'Görev modu',
+  readinessSnapshot: 'Hazırlık özeti',
   blockers: 'Engelleyiciler',
   nextActions: 'Sonraki Adımlar',
   advancedAnalysis: 'Gelişmiş Analiz',
