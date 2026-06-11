@@ -130,6 +130,7 @@ export const en = {
   recommended: 'Recommended',
   optional: 'Optional',
   sourceType: 'Source type',
+  sourceRationale: 'Rationale',
   lastReviewed: 'Last reviewed',
   jurisdiction: 'Jurisdiction',
   confidence: 'Confidence',

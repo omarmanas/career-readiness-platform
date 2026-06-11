@@ -13,6 +13,7 @@ import {
   requirementStatusTone,
   requirementTypeTone,
 } from '../utils/display'
+import type { GuidanceSource } from '../types'
 
 const REQUIREMENT_STATUSES: RequirementStatus[] = [
   'Not Started',
@@ -22,6 +23,19 @@ const REQUIREMENT_STATUSES: RequirementStatus[] = [
   'Missing',
   'Waived',
 ]
+
+function getRequirementSource(req: TrackRequirement): GuidanceSource | null {
+  if (req.source) return req.source
+  if (!req.sourceName) return null
+
+  return {
+    sourceName: req.sourceName,
+    sourceUrl: req.sourceUrl,
+    sourceType: 'official',
+    lastReviewed: req.lastReviewed,
+    rationale: req.notes,
+  }
+}
 
 interface RequirementInventoryViewProps {
   selectedTrack: CareerTrack
@@ -66,6 +80,7 @@ export function RequirementInventoryView({
     isMission = false,
   ) {
     const isExpanded = expandedIds.has(req.id)
+    const source = getRequirementSource(req)
     const counts = [
       req.relatedDocumentIds.length > 0
         ? `${getText(language, 'docsAbbrev')}: ${req.relatedDocumentIds.length}`
@@ -174,19 +189,23 @@ export function RequirementInventoryView({
               </div>
             </div>
 
-            {req.sourceName && (
+            {source && (
               <div className="requirement-source-row">
                 <span>{getText(language, 'source')}</span>
                 <small>
-                  {req.sourceName} - {req.sourceType} -{' '}
-                  {getText(language, 'lastReviewed')} {req.lastReviewed} -{' '}
-                  {req.jurisdiction} - {getText(language, 'confidence')}{' '}
-                  {req.confidenceLevel}
+                  {source.sourceName} - {source.sourceType} -{' '}
+                  {getText(language, 'lastReviewed')}{' '}
+                  {source.lastReviewed ?? getText(language, 'notReviewed')}
                 </small>
-                {req.sourceUrl && (
-                  <a href={req.sourceUrl} target="_blank" rel="noreferrer">
+                {source.sourceUrl && (
+                  <a href={source.sourceUrl} target="_blank" rel="noreferrer">
                     {getText(language, 'verifyOfficialSourceRecruiter')}
                   </a>
+                )}
+                {source.rationale && (
+                  <small>
+                    {getText(language, 'sourceRationale')}: {source.rationale}
+                  </small>
                 )}
               </div>
             )}

@@ -11,6 +11,7 @@ import {
 import type {
   CareerTrack,
   DocumentStatus,
+  GuidanceSource,
   Priority,
   RequirementStatus,
   TrackMilestone,
@@ -80,6 +81,40 @@ function getMilestoneTone(status: TrackMilestone['status']) {
   if (status === 'Completed') return 'success'
   if (status === 'In Progress') return 'warning'
   return 'info'
+}
+
+function renderSourceDetails(source: GuidanceSource, language: Language) {
+  return (
+    <details className="inline-source-details">
+      <summary>{getText(language, 'source')}</summary>
+      <div className="source-attribution source-attribution--inline">
+        <div>
+          <span>{getText(language, 'source')}</span>
+          {source.sourceUrl ? (
+            <a href={source.sourceUrl} target="_blank" rel="noreferrer">
+              {source.sourceName}
+            </a>
+          ) : (
+            <strong>{source.sourceName}</strong>
+          )}
+        </div>
+        <div>
+          <span>{getText(language, 'sourceType')}</span>
+          <strong>{source.sourceType}</strong>
+        </div>
+        <div>
+          <span>{getText(language, 'lastReviewed')}</span>
+          <strong>{source.lastReviewed ?? getText(language, 'notReviewed')}</strong>
+        </div>
+        {source.rationale && (
+          <div>
+            <span>{getText(language, 'sourceRationale')}</span>
+            <strong>{source.rationale}</strong>
+          </div>
+        )}
+      </div>
+    </details>
+  )
 }
 
 export function DashboardView({
@@ -298,6 +333,7 @@ export function DashboardView({
               <div className="milestone-row-main">
                 <strong>{milestone.title}</strong>
                 <span>{milestone.targetDateLabel}</span>
+                {milestone.source && renderSourceDetails(milestone.source, language)}
               </div>
               {isInteractive ? (
                 <select

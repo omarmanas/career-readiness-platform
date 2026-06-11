@@ -5,7 +5,7 @@ import {
   getText,
   type Language,
 } from '../i18n'
-import type { CareerTrack, TrainingStatus } from '../types'
+import type { CareerTrack, GuidanceSource, TrainingStatus } from '../types'
 import { priorityTone, trainingTone } from '../utils/display'
 
 const TRAINING_STATUSES: TrainingStatus[] = [
@@ -15,6 +15,40 @@ const TRAINING_STATUSES: TrainingStatus[] = [
   'Pending',
   'Deferred',
 ]
+
+function renderSourceDetails(source: GuidanceSource, language: Language) {
+  return (
+    <details className="inline-source-details">
+      <summary>{getText(language, 'source')}</summary>
+      <div className="source-attribution source-attribution--inline">
+        <div>
+          <span>{getText(language, 'source')}</span>
+          {source.sourceUrl ? (
+            <a href={source.sourceUrl} target="_blank" rel="noreferrer">
+              {source.sourceName}
+            </a>
+          ) : (
+            <strong>{source.sourceName}</strong>
+          )}
+        </div>
+        <div>
+          <span>{getText(language, 'sourceType')}</span>
+          <strong>{source.sourceType}</strong>
+        </div>
+        <div>
+          <span>{getText(language, 'lastReviewed')}</span>
+          <strong>{source.lastReviewed ?? getText(language, 'notReviewed')}</strong>
+        </div>
+        {source.rationale && (
+          <div>
+            <span>{getText(language, 'sourceRationale')}</span>
+            <strong>{source.rationale}</strong>
+          </div>
+        )}
+      </div>
+    </details>
+  )
+}
 
 interface TrainingTrackerViewProps {
   selectedTrack: CareerTrack
@@ -41,6 +75,7 @@ export function TrainingTrackerView({
             <div>
               <strong>{item.title}</strong>
               <p>{item.category}</p>
+              {item.source && renderSourceDetails(item.source, language)}
             </div>
             <span>{item.dueLabel}</span>
             <Badge

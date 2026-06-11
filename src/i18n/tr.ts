@@ -133,6 +133,7 @@ export const tr: typeof en = {
   recommended: 'Önerilen',
   optional: 'İsteğe bağlı',
   sourceType: 'Kaynak türü',
+  sourceRationale: 'Gerekçe',
   lastReviewed: 'Son inceleme',
   jurisdiction: 'Yetki alanı',
   confidence: 'Güven',

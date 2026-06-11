@@ -57,7 +57,22 @@ export type SourceType =
   | 'Internal'
   | 'User Provided'
 
+export type GuidanceSourceType =
+  | 'official'
+  | 'employer'
+  | 'regulatory'
+  | 'educational'
+  | 'bestPractice'
+
 export type ConfidenceLevel = 'High' | 'Medium' | 'Low'
+
+export interface GuidanceSource {
+  sourceType: GuidanceSourceType
+  sourceName: string
+  sourceUrl?: string
+  lastReviewed?: string
+  rationale?: string
+}
 
 export interface SourceAttribution {
   sourceName?: string
@@ -125,6 +140,7 @@ export interface TrackRequirement extends SourceAttribution {
   relatedGapIds: string[]
   relatedActionIds: string[]
   notes: string
+  source?: GuidanceSource
 }
 
 export interface TrackMilestone {
@@ -132,6 +148,7 @@ export interface TrackMilestone {
   title: string
   targetDateLabel: string
   status: 'Completed' | 'In Progress' | 'Upcoming'
+  source?: GuidanceSource
 }
 
 export interface TrainingItem {
@@ -141,6 +158,7 @@ export interface TrainingItem {
   status: TrainingStatus
   priority: Priority
   dueLabel: string
+  source?: GuidanceSource
 }
 
 export interface DocumentItem extends SourceAttribution {
@@ -160,6 +178,7 @@ export interface DocumentItem extends SourceAttribution {
   readinessImpact: number
   privacyLevel: PrivacyLevel
   notes: string
+  source?: GuidanceSource
 }
 
 export interface ReadinessCategory {

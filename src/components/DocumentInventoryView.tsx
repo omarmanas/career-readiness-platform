@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Badge } from './Badge'
 import { getPriorityText, getStatusText, getText, type Language } from '../i18n'
-import type { CareerTrack, DocumentStatus } from '../types'
+import type { CareerTrack, DocumentItem, DocumentStatus, GuidanceSource } from '../types'
 import {
   documentImportanceTone,
   documentTone,
@@ -16,6 +16,19 @@ const DOCUMENT_STATUSES: DocumentStatus[] = [
   'Verified',
   'Expired',
 ]
+
+function getDocumentSource(item: DocumentItem): GuidanceSource | null {
+  if (item.source) return item.source
+  if (!item.sourceName) return null
+
+  return {
+    sourceName: item.sourceName,
+    sourceUrl: item.sourceUrl,
+    sourceType: 'official',
+    lastReviewed: item.lastReviewed,
+    rationale: item.notes,
+  }
+}
 
 interface DocumentInventoryViewProps {
   selectedTrack: CareerTrack
@@ -50,7 +63,8 @@ export function DocumentInventoryView({
       <div className="document-inventory-list">
         {selectedTrack.documentChecklist.map((item) => {
           const isExpanded = expandedIds.has(item.id)
-          const hasSource = !!item.sourceName
+          const source = getDocumentSource(item)
+          const hasSource = !!source
 
           return (
             <article className="document-card" key={item.id}>
@@ -149,44 +163,34 @@ export function DocumentInventoryView({
                     </div>
                   </div>
 
-                  {item.sourceName && (
+                  {source && (
                     <div className="source-attribution">
                       <div>
                         <span>{getText(language, 'source')}</span>
-                        {item.sourceUrl ? (
-                          <a href={item.sourceUrl} target="_blank" rel="noreferrer">
-                            {item.sourceName}
+                        {source.sourceUrl ? (
+                          <a href={source.sourceUrl} target="_blank" rel="noreferrer">
+                            {source.sourceName}
                           </a>
                         ) : (
-                          <strong>{item.sourceName}</strong>
+                          <strong>{source.sourceName}</strong>
                         )}
                       </div>
                       <div>
                         <span>{getText(language, 'sourceType')}</span>
-                        <strong>
-                          {item.sourceType ?? getText(language, 'unspecified')}
-                        </strong>
+                        <strong>{source.sourceType}</strong>
                       </div>
                       <div>
                         <span>{getText(language, 'lastReviewed')}</span>
                         <strong>
-                          {item.lastReviewed ?? getText(language, 'notReviewed')}
+                          {source.lastReviewed ?? getText(language, 'notReviewed')}
                         </strong>
                       </div>
-                      <div>
-                        <span>{getText(language, 'jurisdiction')}</span>
-                        <strong>
-                          {item.jurisdiction ?? getText(language, 'notSpecified')}
-                        </strong>
-                      </div>
-                      <div>
-                        <span>{getText(language, 'confidence')}</span>
-                        <strong>
-                          {item.confidenceLevel
-                            ? getPriorityText(language, item.confidenceLevel)
-                            : getText(language, 'low')}
-                        </strong>
-                      </div>
+                      {source.rationale && (
+                        <div>
+                          <span>{getText(language, 'sourceRationale')}</span>
+                          <strong>{source.rationale}</strong>
+                        </div>
+                      )}
                       <p>
                         {getText(language, 'verifyOfficialSourceRecruiter')}.{' '}
                         {getText(language, 'requirementsMayChange')}.

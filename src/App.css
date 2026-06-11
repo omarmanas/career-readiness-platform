@@ -1450,6 +1450,22 @@
   margin: 0;
 }
 
+.source-attribution--inline {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 8px;
+}
+
+.inline-source-details {
+  margin-top: 6px;
+}
+
+.inline-source-details summary {
+  color: #86efac;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
 .document-intelligence-panel {
   align-content: start;
 }
