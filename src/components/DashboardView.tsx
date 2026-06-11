@@ -149,10 +149,12 @@ export function DashboardView({
       >
         <ReadinessBreakdownCard selectedTrack={selectedTrack} language={language} />
 
-        <div className="two-column">
-          <ReadinessNarrativePanel selectedTrack={selectedTrack} language={language} />
-          <RecruiterReadinessCard selectedTrack={selectedTrack} language={language} />
-        </div>
+        {language === 'en' && (
+          <div className="two-column">
+            <ReadinessNarrativePanel selectedTrack={selectedTrack} language={language} />
+            <RecruiterReadinessCard selectedTrack={selectedTrack} language={language} />
+          </div>
+        )}
 
         <RequirementIntelligencePanel
           selectedTrack={selectedTrack}

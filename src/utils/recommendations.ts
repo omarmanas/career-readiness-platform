@@ -21,6 +21,7 @@ import type {
   Priority,
   TrackRequirement,
 } from '../types'
+import { getText, type Language } from '../i18n'
 
 // ── Weighting schema (must match readiness.ts) ─────────────────────────────
 
@@ -123,6 +124,7 @@ function documentScoreContribution(track: CareerTrack): number {
 export function getRecommendationSet(
   track: CareerTrack,
   actionLimit = 5,
+  language: Language = 'en',
 ): RecommendationSet {
   const blockers: Blocker[] = []
   const candidates: Array<{ action: RecommendedAction; rankScore: number }> = []
@@ -189,7 +191,7 @@ export function getRecommendationSet(
       rankScore,
       action: {
         id: doc.id,
-        title: `Obtain: ${doc.title}`,
+        title: `${getText(language, 'obtainPrefix')}: ${doc.title}`,
         description: doc.description,
         sourceType: 'document',
         itemId: doc.id,

@@ -170,4 +170,5 @@ export const en = {
   preparing: 'Preparing',
   exploring: 'Exploring',
   applicationReady: 'Application Ready',
+  obtainPrefix: 'Obtain',
 }

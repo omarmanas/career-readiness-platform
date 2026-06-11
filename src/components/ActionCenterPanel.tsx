@@ -53,7 +53,7 @@ export function ActionCenterPanel({
   onDocStatusChange,
 }: ActionCenterPanelProps) {
   const { blockers, nextActions, projectedImprovementPts } =
-    getRecommendationSet(selectedTrack, 5)
+    getRecommendationSet(selectedTrack, 5, language)
   const currentScore = calculateReadinessScore(selectedTrack)
   const projectedScore = Math.min(100, currentScore + projectedImprovementPts)
 

@@ -176,4 +176,5 @@ export const tr: typeof en = {
   preparing: 'Hazırlanıyor',
   exploring: 'Keşif',
   applicationReady: 'Başvuruya Hazır',
+  obtainPrefix: 'Temin et',
 }
