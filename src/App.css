@@ -1953,6 +1953,52 @@
 }
 
 @media (max-width: 720px) {
+  .sidebar {
+    padding: 12px;
+  }
+
+  .brand {
+    gap: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
+
+  .brand-mark {
+    height: 34px;
+    width: 34px;
+  }
+
+  .brand h1 {
+    font-size: 0.94rem;
+  }
+
+  .nav-list {
+    gap: 5px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .nav-item {
+    font-size: 0.84rem;
+    line-height: 1.15;
+    min-height: 42px;
+    padding: 8px 10px;
+  }
+
+  .nav-item.active::before {
+    height: 3px;
+    inset: -1px -1px auto -1px;
+    width: auto;
+  }
+
+  .language-selector {
+    margin-top: 8px;
+  }
+
+  .language-option {
+    font-size: 0.74rem;
+    padding: 7px 8px;
+  }
+
   .workspace {
     padding: 18px;
   }
@@ -2049,7 +2095,6 @@
     width: 100%;
   }
 
-  .nav-list,
   .metric-grid,
   .card-grid,
   .document-summary-grid,
