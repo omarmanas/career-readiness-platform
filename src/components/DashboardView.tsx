@@ -84,6 +84,12 @@ function getMilestoneTone(status: TrackMilestone['status']) {
   return 'info'
 }
 
+const CONFIDENCE_LEVEL_KEYS: Record<string, string> = {
+  official: 'confidenceOfficial',
+  informed: 'confidenceInformed',
+  estimated: 'confidenceEstimated',
+}
+
 function renderSourceSection(source: GuidanceSource | undefined, language: Language) {
   if (!source) {
     return <p className="detail-muted-note">{getText(language, 'noSourceMetadata')}</p>
@@ -117,6 +123,17 @@ function renderSourceSection(source: GuidanceSource | undefined, language: Langu
         <span>{getText(language, 'rationale')}</span>
         <strong>{source.rationale ?? getText(language, 'notSpecified')}</strong>
       </div>
+      {source.confidenceLevel && (
+        <div>
+          <span>{getText(language, 'confidenceLevel')}</span>
+          <strong>
+            {getText(
+              language,
+              CONFIDENCE_LEVEL_KEYS[source.confidenceLevel] ?? source.confidenceLevel,
+            )}
+          </strong>
+        </div>
+      )}
     </div>
   )
 }
@@ -342,10 +359,6 @@ export function DashboardView({
                 <details className="inline-source-details">
                   <summary>{getText(language, 'details')}</summary>
                   <div className="inline-detail-sections">
-                    <section className="detail-section">
-                      <h5>{getText(language, 'whyThisMatters')}</h5>
-                      <p>{milestone.targetDateLabel}</p>
-                    </section>
                     <section className="detail-section">
                       <h5>{getText(language, 'source')}</h5>
                       {renderSourceSection(milestone.source, language)}

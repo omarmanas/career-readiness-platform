@@ -28,6 +28,7 @@ export function DocumentSummaryPanel({
       className="document-summary-grid"
       aria-label={getText(language, 'documents')}
     >
+      <h3 className="summary-panel-heading">{getText(language, 'documentIntelligence')}</h3>
       <article className="metric-card">
         <span>{getText(language, 'totalDocuments')}</span>
         <strong>{coverage.total}</strong>

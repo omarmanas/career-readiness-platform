@@ -811,6 +811,16 @@
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
+.summary-panel-heading {
+  grid-column: 1 / -1;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin: 0;
+}
+
 .metric-card,
 .track-card,
 .panel {

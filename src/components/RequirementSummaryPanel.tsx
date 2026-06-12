@@ -26,6 +26,7 @@ export function RequirementSummaryPanel({
       className="document-summary-grid"
       aria-label={getText(language, 'requirements')}
     >
+      <h3 className="summary-panel-heading">{getText(language, 'requirementIntelligence')}</h3>
       <article className="metric-card">
         <span>{getText(language, 'totalRequirements')}</span>
         <strong>{coverage.total}</strong>
