@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Badge } from './Badge'
 import {
   getPriorityText,
@@ -5,7 +6,7 @@ import {
   getText,
   type Language,
 } from '../i18n'
-import type { CareerTrack, GuidanceSource, TrainingStatus } from '../types'
+import type { CareerTrack, Priority, TrainingItem, TrainingStatus } from '../types'
 import { priorityTone, trainingTone } from '../utils/display'
 
 const TRAINING_STATUSES: TrainingStatus[] = [
@@ -16,53 +17,27 @@ const TRAINING_STATUSES: TrainingStatus[] = [
   'Deferred',
 ]
 
-const CONFIDENCE_LEVEL_KEYS: Record<string, string> = {
-  official: 'confidenceOfficial',
-  informed: 'confidenceInformed',
-  estimated: 'confidenceEstimated',
+const STATUS_TIER: Record<TrainingStatus, number> = {
+  'In Progress': 0,
+  Planned: 1,
+  Pending: 2,
+  Deferred: 3,
+  Completed: 4,
 }
 
-function renderSourceSection(source: GuidanceSource | undefined, language: Language) {
-  if (!source) {
-    return <p className="detail-muted-note">{getText(language, 'noSourceMetadata')}</p>
-  }
+const PRIORITY_RANK: Record<Priority, number> = {
+  Critical: 0,
+  High: 1,
+  Medium: 2,
+  Low: 3,
+}
 
-  return (
-    <div className="source-attribution source-attribution--inline">
-      <div>
-        <span>{getText(language, 'sourceType')}</span>
-        <strong>{source.sourceType}</strong>
-      </div>
-      <div>
-        <span>{getText(language, 'sourceName')}</span>
-        <strong>{source.sourceName}</strong>
-      </div>
-      <div>
-        <span>{getText(language, 'sourceUrl')}</span>
-        {source.sourceUrl ? (
-          <a href={source.sourceUrl} target="_blank" rel="noreferrer">
-            {getText(language, 'verifySource')}
-          </a>
-        ) : (
-          <strong>{getText(language, 'notSpecified')}</strong>
-        )}
-      </div>
-      <div>
-        <span>{getText(language, 'lastReviewed')}</span>
-        <strong>{source.lastReviewed ?? getText(language, 'notReviewed')}</strong>
-      </div>
-      <div>
-        <span>{getText(language, 'rationale')}</span>
-        <strong>{source.rationale ?? getText(language, 'notSpecified')}</strong>
-      </div>
-      {source.confidenceLevel && (
-        <div>
-          <span>{getText(language, 'confidenceLevel')}</span>
-          <strong>{getText(language, CONFIDENCE_LEVEL_KEYS[source.confidenceLevel] ?? source.confidenceLevel)}</strong>
-        </div>
-      )}
-    </div>
-  )
+function sortByUrgency(items: TrainingItem[]): TrainingItem[] {
+  return [...items].sort((a, b) => {
+    const tierDiff = STATUS_TIER[a.status] - STATUS_TIER[b.status]
+    if (tierDiff !== 0) return tierDiff
+    return PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority]
+  })
 }
 
 interface TrainingTrackerViewProps {
@@ -78,82 +53,91 @@ export function TrainingTrackerView({
   language,
   onStatusChange,
 }: TrainingTrackerViewProps) {
+  const [isCompletedOpen, setIsCompletedOpen] = useState(false)
+
+  const sorted = sortByUrgency(selectedTrack.trainingPlan)
+  const activeItems = sorted.filter((item) => item.status !== 'Completed')
+  const completedItems = sorted.filter((item) => item.status === 'Completed')
+
+  function renderTrainingRow(item: TrainingItem) {
+    return (
+      <article className="table-row training-table-row" key={item.id}>
+        <div>
+          <strong>{item.title}</strong>
+          <p>{item.category}</p>
+        </div>
+        <span>{item.dueLabel}</span>
+        <Badge
+          label={getPriorityText(language, item.priority)}
+          tone={priorityTone[item.priority]}
+        />
+        {isInteractive ? (
+          <select
+            className="status-control"
+            value={item.status}
+            onChange={(e) =>
+              onStatusChange(item.id, e.target.value as TrainingStatus)
+            }
+            aria-label={`Status for ${item.title}`}
+          >
+            {TRAINING_STATUSES.map((s) => (
+              <option key={s} value={s}>
+                {getStatusText(language, s)}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <Badge
+            label={getStatusText(language, item.status)}
+            tone={trainingTone[item.status]}
+          />
+        )}
+      </article>
+    )
+  }
+
   return (
     <section className="panel">
       <div className="section-heading">
         <h3>{getText(language, 'trainingTracker')}</h3>
         <span>{selectedTrack.title}</span>
       </div>
-      <div className="data-table">
-        {selectedTrack.trainingPlan.map((item) => (
-          <article className="table-row training-table-row" key={item.id}>
-            <div>
-              <strong>{item.title}</strong>
-              <p>{item.category}</p>
-              <details className="inline-source-details">
-                <summary>{getText(language, 'details')}</summary>
-                <div className="inline-detail-sections">
-                  <section className="detail-section">
-                    <h5>{getText(language, 'whyThisMatters')}</h5>
-                    <p>{item.category}</p>
-                  </section>
-                  <section className="detail-section">
-                    <h5>{getText(language, 'source')}</h5>
-                    {renderSourceSection(item.source, language)}
-                  </section>
-                  <section className="detail-section">
-                    <h5>{getText(language, 'verificationEvidence')}</h5>
-                    <div className="document-detail-grid">
-                      <div>
-                        <span>{getText(language, 'category')}</span>
-                        <strong>{item.category}</strong>
-                      </div>
-                      <div>
-                        <span>{getText(language, 'priority')}</span>
-                        <strong>{getPriorityText(language, item.priority)}</strong>
-                      </div>
-                      <div>
-                        <span>{getText(language, 'status')}</span>
-                        <strong>{getStatusText(language, item.status)}</strong>
-                      </div>
-                      <div>
-                        <span>{getText(language, 'target')}</span>
-                        <strong>{item.dueLabel}</strong>
-                      </div>
-                    </div>
-                  </section>
-                </div>
-              </details>
+
+      {activeItems.length === 0 ? (
+        <p className="detail-muted-note">
+          {getText(language, 'allTrainingsComplete')}
+        </p>
+      ) : (
+        <section className="requirement-mission-section">
+          <div className="requirement-section-heading">
+            <h4>{getText(language, 'activeTraining')}</h4>
+            <span>{activeItems.length}</span>
+          </div>
+          <div className="data-table">
+            {activeItems.map((item) => renderTrainingRow(item))}
+          </div>
+        </section>
+      )}
+
+      {completedItems.length > 0 && (
+        <section className="requirement-mission-section">
+          <button
+            className="requirement-section-heading requirement-section-heading--button"
+            type="button"
+            onClick={() => setIsCompletedOpen((prev) => !prev)}
+            aria-expanded={isCompletedOpen}
+          >
+            <h4>{getText(language, 'completedTraining')}</h4>
+            <span>{completedItems.length}</span>
+          </button>
+          {isCompletedOpen && (
+            <div className="data-table">
+              {completedItems.map((item) => renderTrainingRow(item))}
             </div>
-            <span>{item.dueLabel}</span>
-            <Badge
-              label={getPriorityText(language, item.priority)}
-              tone={priorityTone[item.priority]}
-            />
-            {isInteractive ? (
-              <select
-                className="status-control"
-                value={item.status}
-                onChange={(e) =>
-                  onStatusChange(item.id, e.target.value as TrainingStatus)
-                }
-                aria-label={`Status for ${item.title}`}
-              >
-                {TRAINING_STATUSES.map((s) => (
-                  <option key={s} value={s}>
-                    {getStatusText(language, s)}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <Badge
-                label={getStatusText(language, item.status)}
-                tone={trainingTone[item.status]}
-              />
-            )}
-          </article>
-        ))}
-      </div>
+          )}
+        </section>
+      )}
+
       {!isInteractive && (
         <p className="status-control-note">
           {getText(language, 'readOnlyPreviewNote')}

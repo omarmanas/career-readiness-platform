@@ -216,4 +216,7 @@ export const tr: typeof en = {
   allDocumentsReady: 'Tüm belgeler hazır.',
   highestImpactGap: 'En yüksek etkili açık',
   expiringSoonLabel: 'Yakında süresi dolacak',
+  activeTraining: 'Aktif Eğitim',
+  completedTraining: 'Tamamlanan Eğitim',
+  allTrainingsComplete: 'Tüm eğitimler tamamlandı.',
 }

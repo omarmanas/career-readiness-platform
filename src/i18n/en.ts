@@ -210,4 +210,7 @@ export const en = {
   allDocumentsReady: 'All documents are ready.',
   highestImpactGap: 'Highest-impact gap',
   expiringSoonLabel: 'Expiring soon',
+  activeTraining: 'Active Training',
+  completedTraining: 'Completed Training',
+  allTrainingsComplete: 'All trainings are complete.',
 }
