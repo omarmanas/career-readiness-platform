@@ -41,6 +41,20 @@ function getDocumentSource(item: DocumentItem): GuidanceSource | null {
   return mapLegacySourceToGuidanceSource(item)
 }
 
+function getDocumentActionKey(status: DocumentStatus) {
+  if (status === 'Missing') return 'docActionCollect'
+  if (status === 'Expired') return 'docActionRenew'
+  if (status === 'Needs Review') return 'docActionReview'
+  if (status === 'Pending') return 'docActionFollowUp'
+  return 'docActionKeepReady'
+}
+
+function getDocumentReasonKey(status: DocumentStatus) {
+  if (status === 'Missing' || status === 'Expired') return 'docReasonBlocksReadiness'
+  if (status === 'Needs Review' || status === 'Pending') return 'docReasonNeedsConfirmation'
+  return 'docReasonReadyForReview'
+}
+
 
 interface DocumentInventoryViewProps {
   selectedTrack: CareerTrack
@@ -61,6 +75,7 @@ export function DocumentInventoryView({
   const sorted = sortByUrgency(selectedTrack.documentChecklist)
   const needsAttentionDocs = sorted.filter((d) => URGENCY_TIER[d.status] < 2)
   const completedDocs = sorted.filter((d) => URGENCY_TIER[d.status] === 2)
+  const firstDocumentAction = needsAttentionDocs[0]
 
   function toggleExpand(id: string) {
     setExpandedIds((prev) => {
@@ -74,6 +89,8 @@ export function DocumentInventoryView({
   function renderDocumentCard(item: DocumentItem) {
     const isExpanded = expandedIds.has(item.id)
     const source = getDocumentSource(item)
+    const actionText = getText(language, getDocumentActionKey(item.status))
+    const reasonText = getText(language, getDocumentReasonKey(item.status))
     // TODO: replace string comparison with real date logic
     const isExpiringSoon = item.expirationDate === 'Next 30 days'
 
@@ -82,19 +99,19 @@ export function DocumentInventoryView({
         <div className="card-primary-tier">
           <div className="card-left-col">
             <strong className="card-item-title">{item.title}</strong>
-            <div className="card-badge-row">
+            <div className="card-badge-row card-badge-row--compact">
               <Badge
                 label={getPriorityText(language, item.importance)}
                 tone={documentImportanceTone[item.importance]}
-              />
-              <Badge
-                label={`+${item.readinessImpact} ${getText(language, 'pointAbbrev')}`}
-                tone="success"
               />
               {isExpiringSoon && (
                 <Badge label={getText(language, 'expiringSoonLabel')} tone="warning" />
               )}
             </div>
+            <p className="document-next-action">
+              <strong>{actionText}</strong>
+              <span>{reasonText}</span>
+            </p>
           </div>
 
           <div className="card-right-col">
@@ -152,6 +169,12 @@ export function DocumentInventoryView({
                   <strong>{item.evidenceType}</strong>
                 </div>
                 <div>
+                  <span>{getText(language, 'impact')}</span>
+                  <strong>
+                    +{item.readinessImpact} {getText(language, 'pointAbbrev')}
+                  </strong>
+                </div>
+                <div>
                   <span>{getText(language, 'privacy')}</span>
                   <Badge
                     label={item.privacyLevel}
@@ -184,9 +207,34 @@ export function DocumentInventoryView({
         <h3>{getText(language, 'documents')}</h3>
       </div>
 
+      <section className="document-coach-panel">
+        <div>
+          <span>{getText(language, 'documentCoachKicker')}</span>
+          <h4>{getText(language, 'documentCoachTitle')}</h4>
+          <p>
+            {firstDocumentAction
+              ? getText(language, 'documentCoachWithAction').replace(
+                  '{document}',
+                  firstDocumentAction.title,
+                )
+              : getText(language, 'documentCoachAllReady')}
+          </p>
+        </div>
+        <div className="document-coach-metrics" aria-label={getText(language, 'documents')}>
+          <span>
+            <strong>{needsAttentionDocs.length}</strong>
+            {getText(language, 'needAttentionShort')}
+          </span>
+          <span>
+            <strong>{completedDocs.length}</strong>
+            {getText(language, 'readyCanWaitShort')}
+          </span>
+        </div>
+      </section>
+
       {needsAttentionDocs.length === 0 ? (
         <p className="detail-muted-note doc-inventory-ready">
-          {getText(language, 'allDocumentsReady')}
+          {getText(language, 'allDocumentsReadyCoach')}
         </p>
       ) : (
         <section className="requirement-mission-section">
