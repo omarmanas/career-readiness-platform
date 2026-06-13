@@ -191,7 +191,12 @@
 }
 
 .dashboard-stack {
-  gap: 14px;
+  gap: 22px;
+}
+
+.coach-zone {
+  display: grid;
+  gap: 10px;
 }
 
 .dashboard-section {

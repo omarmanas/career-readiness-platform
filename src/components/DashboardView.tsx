@@ -173,6 +173,7 @@ export function DashboardView({
 
   return (
     <section className="screen-stack dashboard-stack">
+      <div className="coach-zone">
       <article className="mission-card">
         <div className="mission-card-main">
           <div className="mission-kicker-row">
@@ -287,6 +288,7 @@ export function DashboardView({
       </article>
 
       <CoachBriefCard selectedTrack={selectedTrack} language={language} />
+      </div>
 
       <section
         className="readiness-snapshot"
