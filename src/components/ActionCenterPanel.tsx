@@ -196,7 +196,12 @@ export function ActionCenterPanel({
             return (
               <article className="blocker-item" key={blocker.id}>
                 <div className="blocker-item-header">
-                  <span className="blocker-item-title">{blocker.title}</span>
+                  <div className="blocker-item-title-row">
+                    <span className="blocker-item-title">{blocker.title}</span>
+                    {blocker.category && (
+                      <span className="blocker-item-category">{blocker.category}</span>
+                    )}
+                  </div>
                   <div className="badge-pair">
                     <Badge
                       label={getPriorityText(language, blocker.priority)}
@@ -237,15 +242,14 @@ export function ActionCenterPanel({
                     />
                   )}
                 </div>
-                <p className="blocker-item-footer">
-                  {getText(language, 'category')}: {blocker.category} -{' '}
-                  {getText(language, 'verifyOfficialSourceRecruiter')}.{' '}
-                  {getText(language, 'requirementsMayChange')}.
-                </p>
               </article>
             )
           })}
         </div>
+        <p className="intel-note">
+          {getText(language, 'verifyOfficialSourceRecruiter')}.{' '}
+          {getText(language, 'requirementsMayChange')}.
+        </p>
       </section>
     )
 

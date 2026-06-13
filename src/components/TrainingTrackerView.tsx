@@ -100,7 +100,6 @@ export function TrainingTrackerView({
     <section className="panel">
       <div className="section-heading">
         <h3>{getText(language, 'trainingTracker')}</h3>
-        <span>{selectedTrack.title}</span>
       </div>
 
       {activeItems.length === 0 ? (

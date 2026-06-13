@@ -275,7 +275,6 @@ export function DashboardView({
             <span>{readinessScore}%</span>
           </div>
           <div className="mission-score-copy">
-            <span>{getText(language, 'readinessScore')}</span>
             <strong>
               {readinessScore}% {getText(language, 'readySuffix')}
             </strong>
@@ -320,19 +319,15 @@ export function DashboardView({
             {getCompletedMilestoneCount(selectedTrack.milestones)} /{' '}
             {selectedTrack.milestones.length}
           </strong>
-          <p>{nextMilestone?.title ?? getText(language, 'noUpcomingMilestone')}</p>
         </article>
       </section>
 
       <article className="milestone-progress-panel">
         <div className="milestone-progress-header">
-          <div>
-            <span>{getText(language, 'milestoneProgress')}</span>
-            <h3>
-              {completedMilestones}/{totalMilestones}{' '}
-              {getText(language, 'milestonesComplete')}
-            </h3>
-          </div>
+          <h3>
+            {completedMilestones}/{totalMilestones}{' '}
+            {getText(language, 'milestonesComplete')}
+          </h3>
           <Badge
             label={`${remainingMilestones} ${getText(language, 'remainingMilestones')}`}
             tone={remainingMilestones === 0 ? 'success' : 'warning'}
@@ -347,7 +342,6 @@ export function DashboardView({
             </strong>
             {nextMilestone && <p>{nextMilestone.targetDateLabel}</p>}
           </div>
-          <p>{getText(language, 'milestonesAffectScore')}</p>
         </div>
 
         <div className="milestone-list">
@@ -362,21 +356,6 @@ export function DashboardView({
                     <section className="detail-section">
                       <h5>{getText(language, 'source')}</h5>
                       {renderSourceSection(milestone.source, language)}
-                    </section>
-                    <section className="detail-section">
-                      <h5>{getText(language, 'verificationEvidence')}</h5>
-                      <div className="document-detail-grid">
-                        <div>
-                          <span>{getText(language, 'status')}</span>
-                          <strong>
-                            {getMilestoneStatusText(language, milestone.status)}
-                          </strong>
-                        </div>
-                        <div>
-                          <span>{getText(language, 'target')}</span>
-                          <strong>{milestone.targetDateLabel}</strong>
-                        </div>
-                      </div>
                     </section>
                   </div>
                 </details>
