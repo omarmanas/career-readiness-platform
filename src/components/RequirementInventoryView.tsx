@@ -47,6 +47,8 @@ const CONFIDENCE_LEVEL_KEYS: Record<string, string> = {
   estimated: 'confidenceEstimated',
 }
 
+// BACKLOG: clarify sourceType vs confidenceLevel roles, consider removing sourceType from GuidanceSource
+// sourceType has 6 distinct values across tracks: Official, Training Provider, User Provided, bestPractice, employer, educational
 function renderSourceSection(source: GuidanceSource | null, language: Language) {
   return (
     <section className="detail-section">
@@ -75,10 +77,12 @@ function renderSourceSection(source: GuidanceSource | null, language: Language) 
             <span>{getText(language, 'lastReviewed')}</span>
             <strong>{source.lastReviewed ?? getText(language, 'notReviewed')}</strong>
           </div>
-          <div>
-            <span>{getText(language, 'rationale')}</span>
-            <strong>{source.rationale ?? getText(language, 'notSpecified')}</strong>
-          </div>
+          {source.rationale && (
+            <div>
+              <span>{getText(language, 'rationale')}</span>
+              <strong>{source.rationale}</strong>
+            </div>
+          )}
           {source.confidenceLevel && (
             <div>
               <span>{getText(language, 'confidenceLevel')}</span>
@@ -229,26 +233,6 @@ export function RequirementInventoryView({
             </div>
 
             {renderSourceSection(source, language)}
-
-            <section className="detail-section">
-              <h5>{getText(language, 'verificationEvidence')}</h5>
-              <div className="requirement-support">
-                <div>
-                  <span>{getText(language, 'readinessImpact')}</span>
-                  <strong>
-                    {req.readinessImpact} {getText(language, 'pointAbbrev')}
-                  </strong>
-                </div>
-                <div>
-                  <span>{getText(language, 'relatedDocuments')}</span>
-                  <strong>{req.relatedDocumentIds.length}</strong>
-                </div>
-                <div>
-                  <span>{getText(language, 'relatedTrainings')}</span>
-                  <strong>{req.relatedTrainingIds.length}</strong>
-                </div>
-              </div>
-            </section>
           </div>
         )}
       </article>

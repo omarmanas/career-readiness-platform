@@ -90,6 +90,8 @@ const CONFIDENCE_LEVEL_KEYS: Record<string, string> = {
   estimated: 'confidenceEstimated',
 }
 
+// BACKLOG: clarify sourceType vs confidenceLevel roles, consider removing sourceType from GuidanceSource
+// sourceType has 6 distinct values across tracks: Official, Training Provider, User Provided, bestPractice, employer, educational
 function renderSourceSection(source: GuidanceSource | undefined, language: Language) {
   if (!source) {
     return <p className="detail-muted-note">{getText(language, 'noSourceMetadata')}</p>
@@ -119,10 +121,12 @@ function renderSourceSection(source: GuidanceSource | undefined, language: Langu
         <span>{getText(language, 'lastReviewed')}</span>
         <strong>{source.lastReviewed ?? getText(language, 'notReviewed')}</strong>
       </div>
-      <div>
-        <span>{getText(language, 'rationale')}</span>
-        <strong>{source.rationale ?? getText(language, 'notSpecified')}</strong>
-      </div>
+      {source.rationale && (
+        <div>
+          <span>{getText(language, 'rationale')}</span>
+          <strong>{source.rationale}</strong>
+        </div>
+      )}
       {source.confidenceLevel && (
         <div>
           <span>{getText(language, 'confidenceLevel')}</span>
