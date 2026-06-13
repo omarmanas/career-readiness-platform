@@ -9,12 +9,12 @@ import type {
   TrainingItem,
 } from '../types'
 
-const readinessWeights = {
+export const READINESS_WEIGHTS = {
   requirements: 0.4,
   trainings: 0.25,
   documents: 0.2,
   milestones: 0.15,
-}
+} as const
 
 const priorityRank: Record<Priority, number> = {
   Critical: 4,
@@ -73,18 +73,18 @@ export function getCompletedMilestoneCount(milestones: TrackMilestone[]) {
 export function calculateReadinessScore(track: CareerTrack) {
   const requirements =
     completionRatio(track.requirements, (item) => item.status === 'Completed') *
-    readinessWeights.requirements
+    READINESS_WEIGHTS.requirements
   const trainings =
     completionRatio(track.trainingPlan, (item) => item.status === 'Completed') *
-    readinessWeights.trainings
+    READINESS_WEIGHTS.trainings
   const documents =
     completionRatio(
       track.documentChecklist,
       (item) => item.status === 'Available' || item.status === 'Verified',
-    ) * readinessWeights.documents
+    ) * READINESS_WEIGHTS.documents
   const milestones =
     completionRatio(track.milestones, (item) => item.status === 'Completed') *
-    readinessWeights.milestones
+    READINESS_WEIGHTS.milestones
 
   return Math.round((requirements + trainings + documents + milestones) * 100)
 }

@@ -6,14 +6,8 @@ import {
   getCompletedMilestoneCount,
   getCompletedRequirementCount,
   getCompletedTrainingCount,
+  READINESS_WEIGHTS,
 } from './readiness'
-
-const readinessWeights = {
-  requirements: 0.4,
-  trainings: 0.25,
-  documents: 0.2,
-  milestones: 0.15,
-}
 
 // ── Readiness Breakdown ────────────────────────────────────────────────────
 
@@ -56,7 +50,7 @@ export function getReadinessBreakdown(track: CareerTrack): ReadinessBreakdown {
         total: reqTotal,
         pct: reqPct,
         weight: 40,
-        contribution: Math.round(reqPct * readinessWeights.requirements),
+        contribution: Math.round(reqPct * READINESS_WEIGHTS.requirements),
       },
       {
         label: 'Training',
@@ -64,7 +58,7 @@ export function getReadinessBreakdown(track: CareerTrack): ReadinessBreakdown {
         total: trainTotal,
         pct: trainPct,
         weight: 25,
-        contribution: Math.round(trainPct * readinessWeights.trainings),
+        contribution: Math.round(trainPct * READINESS_WEIGHTS.trainings),
       },
       {
         label: 'Documents',
@@ -72,7 +66,7 @@ export function getReadinessBreakdown(track: CareerTrack): ReadinessBreakdown {
         total: docTotal,
         pct: docPct,
         weight: 20,
-        contribution: Math.round(docPct * readinessWeights.documents),
+        contribution: Math.round(docPct * READINESS_WEIGHTS.documents),
       },
       {
         label: 'Milestones',
@@ -80,7 +74,7 @@ export function getReadinessBreakdown(track: CareerTrack): ReadinessBreakdown {
         total: msTotal,
         pct: msPct,
         weight: 15,
-        contribution: Math.round(msPct * readinessWeights.milestones),
+        contribution: Math.round(msPct * READINESS_WEIGHTS.milestones),
       },
     ],
     overall: calculateReadinessScore(track),
@@ -183,7 +177,7 @@ export function getFastestPathToPlus10(track: CareerTrack): FastestPathItem[] {
     if (req.status !== 'Completed' && req.status !== 'Waived') {
       candidates.push({
         title: req.title,
-        estimatedPoints: Math.floor((1 / reqTotal) * readinessWeights.requirements * 100),
+        estimatedPoints: Math.floor((1 / reqTotal) * READINESS_WEIGHTS.requirements * 100),
         category: 'Requirement',
       })
     }
@@ -193,7 +187,7 @@ export function getFastestPathToPlus10(track: CareerTrack): FastestPathItem[] {
     if (train.status !== 'Completed') {
       candidates.push({
         title: train.title,
-        estimatedPoints: Math.floor((1 / trainTotal) * readinessWeights.trainings * 100),
+        estimatedPoints: Math.floor((1 / trainTotal) * READINESS_WEIGHTS.trainings * 100),
         category: 'Training',
       })
     }
@@ -203,7 +197,7 @@ export function getFastestPathToPlus10(track: CareerTrack): FastestPathItem[] {
     if (doc.status !== 'Available' && doc.status !== 'Verified') {
       candidates.push({
         title: doc.title,
-        estimatedPoints: Math.floor((1 / docTotal) * readinessWeights.documents * 100),
+        estimatedPoints: Math.floor((1 / docTotal) * READINESS_WEIGHTS.documents * 100),
         category: 'Document',
       })
     }
@@ -262,7 +256,7 @@ export function getProjectedImprovement(
         if (countedReqIds.has(reqId)) continue
         const req = track.requirements.find((r) => r.id === reqId)
         if (req && req.status !== 'Completed' && req.status !== 'Waived') {
-          gain += Math.floor((1 / reqTotal) * readinessWeights.requirements * 100)
+          gain += Math.floor((1 / reqTotal) * READINESS_WEIGHTS.requirements * 100)
           countedReqIds.add(reqId)
         }
       }
@@ -271,7 +265,7 @@ export function getProjectedImprovement(
         if (countedTrainIds.has(trainId)) continue
         const train = track.trainingPlan.find((t) => t.id === trainId)
         if (train && train.status !== 'Completed') {
-          gain += Math.floor((1 / trainTotal) * readinessWeights.trainings * 100)
+          gain += Math.floor((1 / trainTotal) * READINESS_WEIGHTS.trainings * 100)
           countedTrainIds.add(trainId)
         }
       }
@@ -280,7 +274,7 @@ export function getProjectedImprovement(
         if (countedDocIds.has(docId)) continue
         const doc = track.documentChecklist.find((d) => d.id === docId)
         if (doc && doc.status !== 'Available' && doc.status !== 'Verified') {
-          gain += Math.floor((1 / docTotal) * readinessWeights.documents * 100)
+          gain += Math.floor((1 / docTotal) * READINESS_WEIGHTS.documents * 100)
           countedDocIds.add(docId)
         }
       }

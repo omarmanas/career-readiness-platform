@@ -22,15 +22,7 @@ import type {
   TrackRequirement,
 } from '../types'
 import { getText, type Language } from '../i18n'
-
-// ── Weighting schema (must match readiness.ts) ─────────────────────────────
-
-const WEIGHTS = {
-  requirements: 0.4,
-  trainings: 0.25,
-  documents: 0.2,
-  milestones: 0.15,
-} as const
+import { READINESS_WEIGHTS } from './readiness'
 
 // ── Scoring helpers ────────────────────────────────────────────────────────
 
@@ -111,12 +103,12 @@ export interface RecommendationSet {
 
 function requirementScoreContribution(track: CareerTrack): number {
   const total = Math.max(1, track.requirements.length)
-  return Math.floor((1 / total) * WEIGHTS.requirements * 100)
+  return Math.floor((1 / total) * READINESS_WEIGHTS.requirements * 100)
 }
 
 function documentScoreContribution(track: CareerTrack): number {
   const total = Math.max(1, track.documentChecklist.length)
-  return Math.floor((1 / total) * WEIGHTS.documents * 100)
+  return Math.floor((1 / total) * READINESS_WEIGHTS.documents * 100)
 }
 
 // ── Main engine ────────────────────────────────────────────────────────────
