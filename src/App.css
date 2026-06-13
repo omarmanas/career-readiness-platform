@@ -2466,6 +2466,15 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  /* When a metric card is the last child and sits alone in column 1,
+     span it across both columns to avoid a visible right-column gap.
+     .readiness-snapshot has no heading sibling → last of 5 is 5th child (odd).
+     .document-summary-grid has a full-width heading sibling → last of 5 is 6th child (even). */
+  .readiness-snapshot > .metric-card:last-child:nth-child(odd),
+  .document-summary-grid > .metric-card:last-child:nth-child(even) {
+    grid-column: 1 / -1;
+  }
+
   .track-master-detail {
     grid-template-columns: 1fr;
   }
