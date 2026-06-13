@@ -60,8 +60,7 @@ status overrides. It does not write to a remote service.
 - The primary presentation should stay action-first: blockers, next actions, and
   immediate steps should remain ahead of deep analysis.
 - Source/evidence transparency must remain visible enough for users to
-  understand whether guidance is official, employer-based, best-practice,
-  informed, or estimated.
+  understand source metadata, confidence level, and verification status.
 - Preview/demo track labeling should stay clear so users do not mistake demo
   requirements for current official requirements.
 
@@ -73,8 +72,9 @@ status overrides. It does not write to a remote service.
   and keep screen openings focused on decisions.
 - Action-first dashboard refinement: preserve the coach brief, blockers, and top
   next action as the dominant flow.
-- Source policy alignment: normalize source types and confidence language across
-  requirements, documents, and imported data.
+- Source policy alignment: keep source type, confidence level, and verification
+  status language consistent across requirements, documents, and imported data
+  without overstating reliability.
 - Portfolio import readiness: decide whether public import UI is in scope and
   define validation/error UX before implementation.
 - QA hardening: rerun desktop/mobile smoke tests from the MVP checklist after

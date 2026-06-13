@@ -32,7 +32,8 @@ persistence.
 
 The checked-in seed data includes:
 
-- U.S. Coast Guard Candidate: live, official-source-aware demo track.
+- U.S. Coast Guard Candidate: live, source-aware demo track with official
+  source metadata where available.
 - Police Academy Candidate: preview/demo track.
 - EMT Candidate: preview/demo track.
 - Firefighter Candidate: preview/demo track.
@@ -42,8 +43,9 @@ The checked-in seed data includes:
 - Turkiye Career Readiness: localized preview/demo track.
 
 Preview tracks are useful for product validation and UX testing, but their
-requirements are demo content and must be verified against current official,
-regulatory, employer, or training-provider sources before real-world use.
+requirements are demo content and are not yet production-verified. They must be
+checked against current official, regulatory, employer, or training-provider
+sources before real-world use.
 
 ## Local Development
 
@@ -117,7 +119,7 @@ contents, or computed readiness scores.
 Requirements and document checklist items can carry source/evidence metadata so
 users can see where guidance came from and how much confidence to place in it.
 
-Legacy source fields include:
+Legacy source-attribution fields include:
 
 - `sourceName`
 - `sourceUrl`
@@ -127,12 +129,14 @@ Legacy source fields include:
 - `confidenceLevel`
 
 Newer guidance metadata can also appear under `source`, with source type,
-source name, optional URL, review date, rationale, and confidence level.
+source name, recommended source URL, review date, rationale, and confidence
+level.
 
 Source metadata is not a certification that the app is authoritative. It is a
-transparency layer. Requirement and document guidance should be verified against
-current official, regulatory, employer, or training-provider sources before a
-candidate relies on it.
+transparency layer for origin, confidence level, and verification status.
+Requirement and document guidance should be verified against current official,
+regulatory, employer, or training-provider sources before a candidate relies on
+it.
 
 See `docs/SOURCE_POLICY.md` for source handling rules.
 

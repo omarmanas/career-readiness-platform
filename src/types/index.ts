@@ -57,6 +57,11 @@ export type SourceType =
   | 'Internal'
   | 'User Provided'
 
+/**
+ * GuidanceSource is the newer display-oriented source metadata shape.
+ * SourceAttribution below is the legacy/portfolio-compatible shape.
+ * Keep both until a deliberate schema migration is planned.
+ */
 export type GuidanceSourceType =
   | 'official'
   | 'employer'
