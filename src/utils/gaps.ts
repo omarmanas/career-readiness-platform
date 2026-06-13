@@ -6,25 +6,7 @@ import type {
   GapStatus,
   ReadinessGap,
 } from '../types'
-
-const severityRank: Record<GapSeverity, number> = {
-  Critical: 4,
-  High: 3,
-  Medium: 2,
-  Low: 1,
-}
-
-const impactRank: Record<ActionImpact, number> = {
-  High: 3,
-  Medium: 2,
-  Low: 1,
-}
-
-const effortRank: Record<ActionEffort, number> = {
-  Low: 3,
-  Medium: 2,
-  High: 1,
-}
+import { effortRank, impactRank, severityRank } from './constants'
 
 const statusRank: Record<GapStatus, number> = {
   Open: 4,
