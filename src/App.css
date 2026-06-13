@@ -2734,9 +2734,7 @@
   }
 
   .metric-grid,
-  .readiness-snapshot,
   .card-grid,
-  .document-summary-grid,
   .document-detail-grid,
   .source-attribution,
   .requirement-body,
@@ -2747,6 +2745,13 @@
   .health-grid,
   .compact-metric-row {
     grid-template-columns: 1fr;
+  }
+
+  /* Keep metric summary strips at 2 columns on narrow viewports (≥ 360px)
+     so that 5-card panels don't stack into a single scroll-heavy column. */
+  .readiness-snapshot,
+  .document-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .list-row,
