@@ -1,90 +1,169 @@
-# React + TypeScript + Vite
+# Career Readiness Platform
 
-## MVP Status
+A React + Vite + TypeScript demo app for career readiness planning across
+public safety, emergency services, maritime, military, and protective services
+pathways.
 
-The Career Readiness Platform MVP is complete from an engineering perspective
-and ready for controlled review as a local-only demo app. It does not include
-backend services, authentication, or database persistence.
+The app helps a candidate choose a career track, see readiness status, identify
+blocking gaps, review required documents, and focus on the next practical
+actions. It is currently a local-only MVP. It does not include backend services,
+authentication, real user accounts, file upload/storage, or database
+persistence.
 
-The `portfolio.json` contract exists in `docs/05_Portfolio_JSON_Contract.md`,
-with an example file at `public/examples/portfolio.example.json`. Developers can
-validate the example import pipeline with:
+## Current MVP Capabilities
+
+- Career track selector with live and preview/demo tracks.
+- Readiness dashboard with score, blockers, and action-first guidance.
+- Gap analysis and next-action generation from track requirements, documents,
+  training, and milestones.
+- Requirements inventory with status, priority, readiness impact, related
+  documents/training, and source metadata.
+- Document checklist and document intelligence for missing, expired, pending,
+  verified, and available evidence.
+- Training and milestone tracking.
+- Local progress overrides for requirement, training, document, and milestone
+  status.
+- Local preferences for selected track and language.
+- Developer-only `portfolio.json` validation pipeline and example data contract.
+- English and Turkish UI copy support; current documentation focuses on the
+  English MVP.
+
+## Supported Career Tracks
+
+The checked-in seed data includes:
+
+- U.S. Coast Guard Candidate: live, official-source-aware demo track.
+- Police Academy Candidate: preview/demo track.
+- EMT Candidate: preview/demo track.
+- Firefighter Candidate: preview/demo track.
+- Emergency Management Candidate: preview/demo track.
+- Maritime / Merchant Mariner Candidate: preview/demo track.
+- Security / Protective Services Candidate: preview/demo track.
+- Turkiye Career Readiness: localized preview/demo track.
+
+Preview tracks are useful for product validation and UX testing, but their
+requirements are demo content and must be verified against current official,
+regulatory, employer, or training-provider sources before real-world use.
+
+## Local Development
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the Vite dev server:
+
+```bash
+npm run dev
+```
+
+Run lint:
+
+```bash
+npm run lint
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Preview the production build locally:
+
+```bash
+npm run preview
+```
+
+Validate the example portfolio JSON import contract:
 
 ```bash
 npm run validate:portfolio
 ```
 
-Language and selected career track preferences persist locally in
-localStorage. They are not synced to an account or backend.
+## Data Model Overview
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Core runtime types live in `src/types/index.ts`. Seed data lives in
+`src/data/sampleData.ts`.
 
-Currently, two official plugins are available:
+The main object is `CareerTrack`, which includes:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Track identity: `id`, `title`, `targetRole`, `domain`, `market`,
+  `description`, `status`, and `maturity`.
+- Requirements: eligibility, application, medical, testing, background,
+  training, or other readiness requirements.
+- Documents: evidence records such as IDs, resumes, certificates, licenses,
+  medical records, application packets, and training records.
+- Training plan items: planned or completed preparation activities.
+- Milestones: candidate progress markers.
+- Readiness categories, risk flags, priority actions, and readiness gaps used by
+  the dashboard and analysis views.
 
-## React Compiler
+User progress is stored separately from seed data. The app writes local status
+overrides to `localStorage` keys under `crp.progress.v1.{trackId}`. Language and
+selected-track preferences use `crp.language.v1` and
+`crp.selectedTrackId.v1`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The `portfolio.json` contract is documented in
+`docs/05_Portfolio_JSON_Contract.md`, with an example at
+`public/examples/portfolio.example.json`. That contract represents portable seed
+data only; it does not include local progress overrides, auth data, document file
+contents, or computed readiness scores.
 
-## Expanding the ESLint configuration
+## Source and Evidence Metadata
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Requirements and document checklist items can carry source/evidence metadata so
+users can see where guidance came from and how much confidence to place in it.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Legacy source fields include:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- `sourceName`
+- `sourceUrl`
+- `sourceType`
+- `lastReviewed`
+- `jurisdiction`
+- `confidenceLevel`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Newer guidance metadata can also appear under `source`, with source type,
+source name, optional URL, review date, rationale, and confidence level.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Source metadata is not a certification that the app is authoritative. It is a
+transparency layer. Requirement and document guidance should be verified against
+current official, regulatory, employer, or training-provider sources before a
+candidate relies on it.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+See `docs/SOURCE_POLICY.md` for source handling rules.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Known Limitations
+
+- Local-only demo app; no backend, database, or server-side persistence.
+- No authentication or real user accounts.
+- No real document upload, document storage, or file parsing.
+- No public import UI; portfolio validation is developer-only.
+- No live Google Sheets integration.
+- No official government, agency, employer, or school endorsement.
+- Preview tracks contain demo data and may not match current requirements.
+- Requirements can change by jurisdiction, employer, waiver policy, program, and
+  date.
+- Readiness scores and next actions are guidance aids, not official eligibility
+  determinations.
+- Sensitive candidate data should not be entered into this local demo as if it
+  were a secured production system.
+
+## Future Roadmap
+
+Likely next phases include:
+
+- Controlled QA and user validation on the current MVP.
+- Documents screen hierarchy improvements and reduced text density.
+- More progressive disclosure across requirements, documents, and analysis.
+- Public import UI for validated `portfolio.json` files.
+- Google Sheets template/export workflow.
+- Recruiter or advisor summary/export package.
+- Additional live tracks with verified source coverage.
+- Source review workflow and source freshness indicators.
+- Real document handling strategy, privacy model, and security review.
+- Authentication, backend persistence, and account sync if the product moves
+  beyond local demo scope.
