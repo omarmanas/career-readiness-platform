@@ -124,6 +124,8 @@ Do not inflate confidence to make the app look more complete.
 
 - Seeded preview sources are being progressively verified; remaining preview
   records may still need manual URL review before pilot or public release.
+- Use `docs/SOURCE_QA_CHECKLIST.md` and `npm run source:qa` to flag local
+  source metadata records that need manual review.
 - All official source URLs should be manually checked before pilot or public
   release.
 - A source URL should not be marked as official if it points only to a generic
