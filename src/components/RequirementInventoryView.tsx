@@ -35,6 +35,28 @@ function getRequirementSource(req: TrackRequirement): GuidanceSource | null {
   return mapLegacySourceToGuidanceSource(req)
 }
 
+function getRequirementActionKey(req: TrackRequirement) {
+  if (req.status === 'Missing' || req.status === 'Not Started') {
+    return req.requirementType === 'Blocking'
+      ? 'reqActionClearBlocker'
+      : 'reqActionStart'
+  }
+  if (req.status === 'Needs Review') return 'reqActionReview'
+  if (req.status === 'In Progress') return 'reqActionContinue'
+  return 'reqActionKeepConfirmed'
+}
+
+function getRequirementReasonKey(req: TrackRequirement) {
+  if (req.requirementType === 'Blocking') return 'reqReasonBlocksReadiness'
+  if (req.priority === 'Critical' || req.priority === 'High') {
+    return 'reqReasonHighPriority'
+  }
+  if (req.status === 'Completed' || req.status === 'Waived') {
+    return 'reqReasonReadyCanWait'
+  }
+  return 'reqReasonCanWait'
+}
+
 
 interface RequirementInventoryViewProps {
   selectedTrack: CareerTrack
@@ -63,6 +85,10 @@ export function RequirementInventoryView({
   const completedExemptRequirements = selectedTrack.requirements.filter(
     (req) => req.status === 'Completed' || req.status === 'Waived',
   )
+  const blockingRequirements = incompleteRequirements.filter(
+    (req) => req.requirementType === 'Blocking',
+  )
+  const firstRequirementAction = missionQueue[0]
 
   function toggleExpand(id: string) {
     setExpandedIds((prev) => {
@@ -80,6 +106,8 @@ export function RequirementInventoryView({
   ) {
     const isExpanded = expandedIds.has(req.id)
     const source = getRequirementSource(req)
+    const actionText = getText(language, getRequirementActionKey(req))
+    const reasonText = getText(language, getRequirementReasonKey(req))
     const counts = [
       req.relatedDocumentIds.length > 0
         ? `${getText(language, 'docsAbbrev')}: ${req.relatedDocumentIds.length}`
@@ -108,14 +136,18 @@ export function RequirementInventoryView({
             <strong className="card-item-title">{req.title}</strong>
             <div className="card-badge-row card-badge-row--compact">
               <Badge
-                label={`+${req.readinessImpact} ${getText(language, 'pointAbbrev')}`}
-                tone="success"
+                label={getRequirementTypeText(language, req.requirementType)}
+                tone={requirementTypeTone[req.requirementType]}
               />
               <Badge
                 label={getPriorityText(language, req.priority)}
                 tone={priorityTone[req.priority]}
               />
             </div>
+            <p className="requirement-next-action">
+              <strong>{actionText}</strong>
+              <span>{reasonText}</span>
+            </p>
           </div>
 
           <div className="card-right-col">
@@ -158,8 +190,8 @@ export function RequirementInventoryView({
           <div className="card-secondary-tier">
             <div className="card-badge-row">
               <Badge
-                label={getRequirementTypeText(language, req.requirementType)}
-                tone={requirementTypeTone[req.requirementType]}
+                label={`+${req.readinessImpact} ${getText(language, 'pointAbbrev')}`}
+                tone="success"
               />
               {counts && <span className="card-count-text">{counts}</span>}
             </div>
@@ -204,6 +236,39 @@ export function RequirementInventoryView({
         <h3>{getText(language, 'requirements')}</h3>
         <span>{getText(language, 'topPriorityWork')}</span>
       </div>
+
+      <section className="requirement-coach-panel">
+        <div>
+          <span>{getText(language, 'requirementCoachKicker')}</span>
+          <h4>{getText(language, 'requirementCoachTitle')}</h4>
+          <p>
+            {firstRequirementAction
+              ? getText(language, 'requirementCoachWithAction').replace(
+                  '{requirement}',
+                  firstRequirementAction.title,
+                )
+              : getText(language, 'requirementCoachAllReady')}
+          </p>
+        </div>
+        <div
+          className="requirement-coach-metrics"
+          aria-label={getText(language, 'requirements')}
+        >
+          <span>
+            <strong>{blockingRequirements.length}</strong>
+            {getText(language, 'blockingShort')}
+          </span>
+          <span>
+            <strong>{incompleteRequirements.length}</strong>
+            {getText(language, 'needAttentionShort')}
+          </span>
+          <span>
+            <strong>{completedExemptRequirements.length}</strong>
+            {getText(language, 'readyCanWaitShort')}
+          </span>
+        </div>
+      </section>
+
       {renderMissionSection(
         getText(language, 'missionQueue'),
         missionQueue,
