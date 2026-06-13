@@ -2738,6 +2738,7 @@
 
   .mission-score {
     justify-content: space-between;
+    padding: 8px 10px;
   }
 
   .mission-title-row h3 {
@@ -2802,8 +2803,9 @@
   }
 
   .score-ring--compact {
-    flex-basis: 72px;
-    font-size: 1rem;
+    flex-basis: 62px;
+    font-size: 0.94rem;
+    height: 62px;
   }
 
   .score-ring--compact::before {
@@ -2834,6 +2836,64 @@
 
   .metric-grid--compact .metric-card p {
     display: none;
+  }
+
+  .coach-brief-card {
+    gap: 4px;
+    padding: 12px 13px;
+  }
+
+  .coach-brief-line {
+    font-size: 0.84rem;
+    line-height: 1.35;
+  }
+
+  .requirement-coach-panel,
+  .document-coach-panel {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .requirement-coach-panel h4,
+  .document-coach-panel h4 {
+    font-size: 0.96rem;
+  }
+
+  .requirement-coach-panel p,
+  .document-coach-panel p {
+    display: -webkit-box;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .requirement-coach-metrics,
+  .document-coach-metrics {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .requirement-coach-metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .document-coach-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .requirement-coach-metrics span,
+  .document-coach-metrics span {
+    align-items: center;
+    font-size: 0.72rem;
+    min-width: 0;
+    padding: 7px 8px;
+  }
+
+  .requirement-coach-metrics strong,
+  .document-coach-metrics strong {
+    font-size: 0.94rem;
   }
 
   .collapsible-trigger {
@@ -2904,5 +2964,21 @@
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
+  }
+
+  .status-control--card,
+  .card-toggle {
+    flex: 1 1 136px;
+    min-width: 0;
+  }
+
+  .requirement-next-action strong,
+  .document-next-action strong {
+    font-size: 0.84rem;
+  }
+
+  .requirement-next-action span,
+  .document-next-action span {
+    font-size: 0.78rem;
   }
 }
