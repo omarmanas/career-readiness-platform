@@ -64,6 +64,22 @@ status overrides. It does not write to a remote service.
 - Preview/demo track labeling should stay clear so users do not mistake demo
   requirements for current official requirements.
 
+## Seeded Content Localization Rules
+
+- Official agency names, source names, course names, certification names, and
+  program acronyms should remain unchanged unless the original remains clear.
+- Official source names should not be translated if translation would obscure
+  the publisher or make manual source verification harder.
+- Generic career track display labels may use localized wording when it improves
+  comprehension and does not change the meaning.
+- Requirement and document titles may be localized only when the item is generic
+  and not source-specific.
+- When a term is official but unfamiliar, prefer adding a short localized helper
+  phrase in a future display field rather than replacing the official term.
+- The current seed model uses single display strings for titles, categories,
+  descriptions, and notes. Broader bilingual content should wait for explicit
+  localized display fields instead of overwriting source-specific English text.
+
 ## Next Recommended Sprint Themes
 
 - Documents hierarchy cleanup: prioritize urgent, missing, expired, and
