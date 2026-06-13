@@ -39,22 +39,18 @@ export function DocumentSummaryPanel({
       <article className="metric-card">
         <span>{getText(language, 'verifiedAvailable')}</span>
         <strong>{verified.length}</strong>
-        <p>{getText(language, 'positiveCoverageDocuments')}</p>
       </article>
       <article className="metric-card">
         <span>{getText(language, 'missingCritical')}</span>
         <strong>{missingCritical.length}</strong>
-        <p>{getText(language, 'highestPriorityDocumentRisks')}</p>
       </article>
       <article className="metric-card">
         <span>{getText(language, 'needsReview')}</span>
         <strong>{needsReview.length}</strong>
-        <p>{getText(language, 'pendingOrReviewRequired')}</p>
       </article>
       <article className="metric-card">
         <span>{getText(language, 'expiringSoon')}</span>
         <strong>{expiringSoon.length}</strong>
-        <p>{getText(language, 'withinDemoThirtyDayWindow')}</p>
       </article>
     </section>
   )

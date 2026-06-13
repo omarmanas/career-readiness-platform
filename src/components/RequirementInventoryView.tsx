@@ -265,10 +265,7 @@ export function RequirementInventoryView({
     return (
       <section className={`requirement-mission-section ${className}`.trim()}>
         <div className="requirement-section-heading">
-          <div>
-            <h4>{title}</h4>
-            <p>{getText(language, 'topPriorityWork')}</p>
-          </div>
+          <h4>{title}</h4>
           <span>{requirements.length}</span>
         </div>
         <div className="requirement-list">

@@ -39,17 +39,14 @@ export function RequirementSummaryPanel({
         <strong>
           {coverage.requiredComplete}/{coverage.requiredTotal}
         </strong>
-        <p>{getText(language, 'requiredOrBlockingItems')}</p>
       </article>
       <article className="metric-card">
         <span>{getText(language, 'blockingOpen')}</span>
         <strong>{blockingOpen.length}</strong>
-        <p>{getText(language, 'openBlockingRequirements')}</p>
       </article>
       <article className="metric-card">
         <span>{getText(language, 'needsReview')}</span>
         <strong>{needsReview.length}</strong>
-        <p>{getText(language, 'sourceOrReadinessReviewNeeded')}</p>
       </article>
       <article className="metric-card">
         <span>{getText(language, 'highestImpactMissing')}</span>

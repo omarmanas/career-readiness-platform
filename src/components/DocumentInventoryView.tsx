@@ -250,7 +250,6 @@ export function DocumentInventoryView({
     <section className="panel">
       <div className="section-heading">
         <h3>{getText(language, 'documents')}</h3>
-        <span>{getText(language, 'noUploadsRealLinks')}</span>
       </div>
 
       {needsAttentionDocs.length === 0 ? (

@@ -264,13 +264,6 @@ export function ActionCenterPanel({
         </p>
       ) : (
         <>
-          <div className="action-queue-heading">
-            <h4>{getText(language, 'actionQueue')}</h4>
-            <span>
-              {queuedActions.length} {getText(language, 'ranked')}
-            </span>
-          </div>
-
           {queuedActions.length > 0 && (
             <ol className="next-actions-list">
               {queuedActions.map((action, idx) => renderAction(action, idx + 1))}
