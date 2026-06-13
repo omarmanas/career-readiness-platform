@@ -110,6 +110,7 @@ export const tr: typeof en = {
   gating: 'geçiş engeli',
   blocking: 'Engelleyici',
   ranked: 'sıralandı',
+  moreQueuedActions: 'kuyrukta kalan aksiyon',
   noOpenActions:
     'Açık aksiyon yok. Engelleyici olmayan tüm maddeler tamamlandı veya ertelendi.',
   requirement: 'Gereksinim',

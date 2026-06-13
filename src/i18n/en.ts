@@ -108,6 +108,7 @@ export const en = {
   gating: 'gating',
   blocking: 'Blocking',
   ranked: 'ranked',
+  moreQueuedActions: 'more queued actions',
   noOpenActions: 'No open actions. All non-blocking items are complete or deferred.',
   requirement: 'Requirement',
   document: 'Document',

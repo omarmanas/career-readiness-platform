@@ -57,6 +57,8 @@ export function ActionCenterPanel({
   const currentScore = calculateReadinessScore(selectedTrack)
   const projectedScore = Math.min(100, currentScore + projectedImprovementPts)
   const queuedActions = nextActions.slice(1)
+  const visibleQueuedActions = queuedActions.slice(0, 2)
+  const overflowQueuedActions = queuedActions.slice(2)
 
   function renderAction(action: (typeof nextActions)[number], idx: number) {
     const isGapOnly = action.itemId === null
@@ -254,7 +256,7 @@ export function ActionCenterPanel({
     )
 
   const actionsQueue = (
-    <article className="panel">
+    <article className="panel action-center-panel">
       <div className="section-heading">
         <h3>{getText(language, 'nextActions')}</h3>
         <span>
@@ -268,10 +270,31 @@ export function ActionCenterPanel({
         </p>
       ) : (
         <>
-          {queuedActions.length > 0 && (
-            <ol className="next-actions-list">
-              {queuedActions.map((action, idx) => renderAction(action, idx + 1))}
-            </ol>
+          {visibleQueuedActions.length > 0 && (
+            <>
+              <div className="action-queue-heading">
+                <h4>{getText(language, 'supportingPriorityActions')}</h4>
+                <span>{getText(language, 'actionQueue')}</span>
+              </div>
+              <ol className="next-actions-list">
+                {visibleQueuedActions.map((action, idx) =>
+                  renderAction(action, idx + 1),
+                )}
+              </ol>
+            </>
+          )}
+
+          {overflowQueuedActions.length > 0 && (
+            <details className="next-actions-more">
+              <summary>
+                {overflowQueuedActions.length} {getText(language, 'moreQueuedActions')}
+              </summary>
+              <ol className="next-actions-list next-actions-list--compact">
+                {overflowQueuedActions.map((action, idx) =>
+                  renderAction(action, idx + visibleQueuedActions.length + 1),
+                )}
+              </ol>
+            </details>
           )}
 
           <div className="next-actions-footer">
