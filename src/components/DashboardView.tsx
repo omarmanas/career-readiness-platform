@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react'
 import { ActionCenterPanel } from './ActionCenterPanel'
 import { Badge } from './Badge'
 import { CoachBriefCard } from './CoachBriefCard'
+import { SourceSection } from './SourceSection'
 import {
   getPriorityText,
   getStatusText,
@@ -12,7 +13,6 @@ import {
 import type {
   CareerTrack,
   DocumentStatus,
-  GuidanceSource,
   Priority,
   RequirementStatus,
   TrackMilestone,
@@ -84,63 +84,6 @@ function getMilestoneTone(status: TrackMilestone['status']) {
   return 'info'
 }
 
-const CONFIDENCE_LEVEL_KEYS: Record<string, string> = {
-  official: 'confidenceOfficial',
-  informed: 'confidenceInformed',
-  estimated: 'confidenceEstimated',
-}
-
-// BACKLOG: clarify sourceType vs confidenceLevel roles, consider removing sourceType from GuidanceSource
-// sourceType has 6 distinct values across tracks: Official, Training Provider, User Provided, bestPractice, employer, educational
-function renderSourceSection(source: GuidanceSource | undefined, language: Language) {
-  if (!source) {
-    return <p className="detail-muted-note">{getText(language, 'noSourceMetadata')}</p>
-  }
-
-  return (
-    <div className="source-attribution source-attribution--inline">
-      <div>
-        <span>{getText(language, 'sourceType')}</span>
-        <strong>{source.sourceType}</strong>
-      </div>
-      <div>
-        <span>{getText(language, 'sourceName')}</span>
-        <strong>{source.sourceName}</strong>
-      </div>
-      <div>
-        <span>{getText(language, 'sourceUrl')}</span>
-        {source.sourceUrl ? (
-          <a href={source.sourceUrl} target="_blank" rel="noreferrer">
-            {getText(language, 'verifySource')}
-          </a>
-        ) : (
-          <strong>{getText(language, 'notSpecified')}</strong>
-        )}
-      </div>
-      <div>
-        <span>{getText(language, 'lastReviewed')}</span>
-        <strong>{source.lastReviewed ?? getText(language, 'notReviewed')}</strong>
-      </div>
-      {source.rationale && (
-        <div>
-          <span>{getText(language, 'rationale')}</span>
-          <strong>{source.rationale}</strong>
-        </div>
-      )}
-      {source.confidenceLevel && (
-        <div>
-          <span>{getText(language, 'confidenceLevel')}</span>
-          <strong>
-            {getText(
-              language,
-              CONFIDENCE_LEVEL_KEYS[source.confidenceLevel] ?? source.confidenceLevel,
-            )}
-          </strong>
-        </div>
-      )}
-    </div>
-  )
-}
 
 export function DashboardView({
   selectedTrack,
@@ -359,10 +302,7 @@ export function DashboardView({
                 <details className="inline-source-details">
                   <summary>{getText(language, 'details')}</summary>
                   <div className="inline-detail-sections">
-                    <section className="detail-section">
-                      <h5>{getText(language, 'source')}</h5>
-                      {renderSourceSection(milestone.source, language)}
-                    </section>
+                    <SourceSection source={milestone.source} language={language} variant="inline" />
                   </div>
                 </details>
               </div>

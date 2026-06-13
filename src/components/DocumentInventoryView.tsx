@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Badge } from './Badge'
+import { SourceSection } from './SourceSection'
 import { getPriorityText, getStatusText, getText, type Language } from '../i18n'
 import type { CareerTrack, DocumentItem, DocumentStatus, GuidanceSource } from '../types'
 import {
@@ -47,66 +48,6 @@ function getDocumentSource(item: DocumentItem): GuidanceSource | null {
   }
 }
 
-const CONFIDENCE_LEVEL_KEYS: Record<string, string> = {
-  official: 'confidenceOfficial',
-  informed: 'confidenceInformed',
-  estimated: 'confidenceEstimated',
-}
-
-// BACKLOG: clarify sourceType vs confidenceLevel roles, consider removing sourceType from GuidanceSource
-// sourceType has 6 distinct values across tracks: Official, Training Provider, User Provided, bestPractice, employer, educational
-function renderSourceSection(source: GuidanceSource | null, language: Language) {
-  return (
-    <section className="detail-section">
-      <h5>{getText(language, 'source')}</h5>
-      {source ? (
-        <div className="source-attribution source-attribution--detail">
-          <div>
-            <span>{getText(language, 'sourceType')}</span>
-            <strong>{source.sourceType}</strong>
-          </div>
-          <div>
-            <span>{getText(language, 'sourceName')}</span>
-            <strong>{source.sourceName}</strong>
-          </div>
-          <div>
-            <span>{getText(language, 'sourceUrl')}</span>
-            {source.sourceUrl ? (
-              <a href={source.sourceUrl} target="_blank" rel="noreferrer">
-                {getText(language, 'verifySource')}
-              </a>
-            ) : (
-              <strong>{getText(language, 'notSpecified')}</strong>
-            )}
-          </div>
-          <div>
-            <span>{getText(language, 'lastReviewed')}</span>
-            <strong>{source.lastReviewed ?? getText(language, 'notReviewed')}</strong>
-          </div>
-          {source.rationale && (
-            <div>
-              <span>{getText(language, 'rationale')}</span>
-              <strong>{source.rationale}</strong>
-            </div>
-          )}
-          {source.confidenceLevel && (
-            <div>
-              <span>{getText(language, 'confidenceLevel')}</span>
-              <strong>
-                {getText(
-                  language,
-                  CONFIDENCE_LEVEL_KEYS[source.confidenceLevel] ?? source.confidenceLevel,
-                )}
-              </strong>
-            </div>
-          )}
-        </div>
-      ) : (
-        <p className="detail-muted-note">{getText(language, 'noSourceMetadata')}</p>
-      )}
-    </section>
-  )
-}
 
 interface DocumentInventoryViewProps {
   selectedTrack: CareerTrack
@@ -208,7 +149,7 @@ export function DocumentInventoryView({
               <p>{item.notes}</p>
             </section>
 
-            {renderSourceSection(source, language)}
+            <SourceSection source={source} language={language} />
 
             <section className="detail-section">
               <h5>{getText(language, 'verificationEvidence')}</h5>
