@@ -13,6 +13,22 @@ const CONFIDENCE_LEVEL_KEYS: Record<string, string> = {
   estimated: 'confidenceEstimated',
 }
 
+const SOURCE_TYPE_KEYS: Record<string, string> = {
+  official: 'sourceTypeOfficial',
+  Official: 'sourceTypeOfficial',
+  'Training Provider': 'sourceTypeTrainingProvider',
+  'User Provided': 'sourceTypeUserProvided',
+  bestPractice: 'sourceTypeBestPractice',
+  employer: 'sourceTypeEmployer',
+  educational: 'sourceTypeEducational',
+  regulatory: 'sourceTypeRegulatory',
+}
+
+function formatSourceType(rawValue: string, language: Language): string {
+  const key = SOURCE_TYPE_KEYS[rawValue]
+  return key ? getText(language, key) : rawValue
+}
+
 export function SourceSection({ source, language, variant = 'detail' }: SourceSectionProps) {
   return (
     <section className="detail-section">
@@ -21,7 +37,7 @@ export function SourceSection({ source, language, variant = 'detail' }: SourceSe
         <div className={`source-attribution source-attribution--${variant}`}>
           <div>
             <span>{getText(language, 'sourceType')}</span>
-            <strong>{source.sourceType}</strong>
+            <strong>{formatSourceType(source.sourceType, language)}</strong>
           </div>
           <div>
             <span>{getText(language, 'sourceName')}</span>
