@@ -233,6 +233,14 @@ export function DashboardView({
       <CoachBriefCard selectedTrack={selectedTrack} language={language} />
       </div>
 
+      <ActionCenterPanel
+        selectedTrack={selectedTrack}
+        isInteractive={isInteractive}
+        language={language}
+        onReqStatusChange={onReqStatusChange}
+        onDocStatusChange={onDocStatusChange}
+      />
+
       <section
         className="readiness-snapshot"
         aria-label={getText(language, 'readinessSnapshot')}
@@ -337,14 +345,6 @@ export function DashboardView({
           ))}
         </div>
       </article>
-
-      <ActionCenterPanel
-        selectedTrack={selectedTrack}
-        isInteractive={isInteractive}
-        language={language}
-        onReqStatusChange={onReqStatusChange}
-        onDocStatusChange={onDocStatusChange}
-      />
 
       <article className="analysis-cta-panel">
         <div>

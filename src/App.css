@@ -2731,9 +2731,9 @@
   }
 
   .mission-card {
-    gap: 12px;
+    gap: 10px;
     grid-template-columns: 1fr;
-    padding: 14px;
+    padding: 12px;
   }
 
   .mission-score {
@@ -2742,12 +2742,33 @@
   }
 
   .mission-title-row h3 {
-    font-size: 1.12rem;
+    font-size: 1.04rem;
+    line-height: 1.22;
   }
 
   .mission-status-control {
     min-width: 0;
     width: 100%;
+  }
+
+  .mission-card-main {
+    gap: 9px;
+  }
+
+  .mission-kicker-row,
+  .mission-title-row,
+  .mission-control-row,
+  .mission-meta {
+    gap: 7px;
+  }
+
+  .mission-kicker {
+    font-size: 0.7rem;
+    letter-spacing: 0;
+  }
+
+  .mission-meta {
+    font-size: 0.76rem;
   }
 
   .analysis-cta-panel {
@@ -2844,8 +2865,70 @@
   }
 
   .coach-brief-line {
+    display: -webkit-box;
     font-size: 0.84rem;
     line-height: 1.35;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .blockers-strip {
+    gap: 7px;
+    padding: 9px 10px;
+  }
+
+  .blockers-strip-header,
+  .blocker-item-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .blockers-list {
+    grid-template-columns: 1fr;
+  }
+
+  .next-actions-list {
+    gap: 8px;
+  }
+
+  .next-action-item {
+    padding: 9px 10px;
+  }
+
+  .readiness-snapshot {
+    gap: 6px;
+  }
+
+  .readiness-snapshot-card {
+    padding: 8px 9px;
+  }
+
+  .readiness-snapshot-card:first-child {
+    display: none;
+  }
+
+  .readiness-snapshot-card span {
+    font-size: 0.68rem;
+    line-height: 1.2;
+  }
+
+  .readiness-snapshot-card strong {
+    font-size: 0.92rem;
+  }
+
+  .milestone-progress-panel {
+    gap: 9px;
+    padding: 12px;
+  }
+
+  .milestone-list {
+    gap: 7px;
+  }
+
+  .milestone-row {
+    gap: 8px;
+    padding: 10px;
   }
 
   .requirement-coach-panel,
