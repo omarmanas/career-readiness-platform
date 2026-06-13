@@ -326,12 +326,18 @@
 
 .summary-panel,
 .panel,
-.metric-card,
 .track-card {
   background: rgba(17, 24, 39, 0.9);
   border: 1px solid rgba(51, 65, 85, 0.68);
   border-radius: 8px;
   box-shadow: var(--shadow);
+}
+
+.metric-card {
+  background: rgba(11, 17, 32, 0.82);
+  border: 1px solid rgba(51, 65, 85, 0.52);
+  border-radius: 8px;
+  box-shadow: none;
 }
 
 .summary-panel {
