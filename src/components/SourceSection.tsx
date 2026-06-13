@@ -9,19 +9,27 @@ interface SourceSectionProps {
 
 const CONFIDENCE_LEVEL_KEYS: Record<string, string> = {
   official: 'confidenceOfficial',
+  high: 'confidenceHigh',
+  medium: 'confidenceMedium',
+  low: 'confidenceLow',
   informed: 'confidenceInformed',
   estimated: 'confidenceEstimated',
 }
 
 const SOURCE_TYPE_KEYS: Record<string, string> = {
   official: 'sourceTypeOfficial',
+  official_regulatory: 'sourceTypeOfficialRegulatory',
   Official: 'sourceTypeOfficial',
   'Training Provider': 'sourceTypeTrainingProvider',
   'User Provided': 'sourceTypeUserProvided',
   bestPractice: 'sourceTypeBestPractice',
+  best_practice: 'sourceTypeBestPractice',
   employer: 'sourceTypeEmployer',
+  employer_requirement: 'sourceTypeEmployerRequirement',
   educational: 'sourceTypeEducational',
   regulatory: 'sourceTypeRegulatory',
+  informed: 'sourceTypeInformed',
+  estimated: 'sourceTypeEstimated',
 }
 
 function formatSourceType(rawValue: string, language: Language): string {

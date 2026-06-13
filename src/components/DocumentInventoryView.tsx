@@ -3,6 +3,7 @@ import { Badge } from './Badge'
 import { SourceSection } from './SourceSection'
 import { getPriorityText, getStatusText, getText, type Language } from '../i18n'
 import type { CareerTrack, DocumentItem, DocumentStatus, GuidanceSource } from '../types'
+import { mapLegacySourceToGuidanceSource } from '../utils/sourceMapping'
 import {
   documentImportanceTone,
   documentTone,
@@ -37,15 +38,7 @@ function sortByUrgency(docs: DocumentItem[]): DocumentItem[] {
 
 function getDocumentSource(item: DocumentItem): GuidanceSource | null {
   if (item.source) return item.source
-  if (!item.sourceName) return null
-
-  return {
-    sourceName: item.sourceName,
-    sourceUrl: item.sourceUrl,
-    sourceType: 'official',
-    lastReviewed: item.lastReviewed,
-    rationale: item.notes,
-  }
+  return mapLegacySourceToGuidanceSource(item)
 }
 
 

@@ -64,14 +64,25 @@ export type SourceType =
  */
 export type GuidanceSourceType =
   | 'official'
+  | 'official_regulatory'
   | 'employer'
+  | 'employer_requirement'
   | 'regulatory'
   | 'educational'
   | 'bestPractice'
+  | 'best_practice'
+  | 'informed'
+  | 'estimated'
 
 export type LegacyConfidenceLevel = 'High' | 'Medium' | 'Low'
 
-export type ConfidenceLevel = 'official' | 'informed' | 'estimated'
+export type ConfidenceLevel =
+  | 'official'
+  | 'high'
+  | 'medium'
+  | 'low'
+  | 'informed'
+  | 'estimated'
 
 export interface GuidanceSource {
   sourceType: GuidanceSourceType

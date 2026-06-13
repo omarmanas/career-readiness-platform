@@ -14,6 +14,7 @@ import type {
   RequirementStatus,
   TrackRequirement,
 } from '../types'
+import { mapLegacySourceToGuidanceSource } from '../utils/sourceMapping'
 import {
   priorityTone,
   requirementStatusTone,
@@ -31,15 +32,7 @@ const REQUIREMENT_STATUSES: RequirementStatus[] = [
 
 function getRequirementSource(req: TrackRequirement): GuidanceSource | null {
   if (req.source) return req.source
-  if (!req.sourceName) return null
-
-  return {
-    sourceName: req.sourceName,
-    sourceUrl: req.sourceUrl,
-    sourceType: 'official',
-    lastReviewed: req.lastReviewed,
-    rationale: req.notes,
-  }
+  return mapLegacySourceToGuidanceSource(req)
 }
 
 
