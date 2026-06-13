@@ -122,10 +122,14 @@ Do not inflate confidence to make the app look more complete.
 
 ## Verification Notes
 
+- Seeded preview sources are being progressively verified; remaining preview
+  records may still need manual URL review before pilot or public release.
 - All official source URLs should be manually checked before pilot or public
   release.
 - A source URL should not be marked as official if it points only to a generic
   homepage and not to the relevant requirement page.
+- Homepage-only sources should be treated as source-aware guidance, not fully
+  verified official requirements.
 - Estimated items must never be presented as official requirements.
 
 ## Future Data Expectations

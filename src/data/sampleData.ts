@@ -88,21 +88,21 @@ export const uscgSourceRegistry: SourceEntry[] = [
 ]
 
 const policeOfficialSource = {
-  sourceName: 'Demo official municipal police academy source',
+  sourceName: 'Demo municipal police academy source',
   sourceUrl: 'https://example.gov/demo/police-academy',
-  sourceType: 'Official',
+  sourceType: 'User Provided',
   lastReviewed: '2026-05-28',
   jurisdiction: 'Demo municipality',
-  confidenceLevel: 'Medium',
+  confidenceLevel: 'Low',
 } as const
 
 const emtOfficialSource = {
-  sourceName: 'Demo official state EMS training source',
+  sourceName: 'Demo state EMS training source',
   sourceUrl: 'https://example.gov/demo/state-ems',
-  sourceType: 'Official',
+  sourceType: 'User Provided',
   lastReviewed: '2026-05-28',
   jurisdiction: 'Demo state EMS office',
-  confidenceLevel: 'Medium',
+  confidenceLevel: 'Low',
 } as const
 
 const trainingProviderSource = {
@@ -115,39 +115,39 @@ const trainingProviderSource = {
 } as const
 
 const fireOfficialSource = {
-  sourceName: 'Demo official fire department recruitment source',
+  sourceName: 'Demo fire department recruitment source',
   sourceUrl: 'https://example.gov/demo/fire-recruitment',
-  sourceType: 'Official',
+  sourceType: 'User Provided',
   lastReviewed: '2026-05-28',
   jurisdiction: 'Demo city fire department',
-  confidenceLevel: 'Medium',
+  confidenceLevel: 'Low',
 } as const
 
 const emergencyManagementSource = {
-  sourceName: 'Demo official emergency management source',
+  sourceName: 'Demo emergency management source',
   sourceUrl: 'https://example.gov/demo/emergency-management',
-  sourceType: 'Official',
+  sourceType: 'User Provided',
   lastReviewed: '2026-05-28',
   jurisdiction: 'Demo county emergency management office',
-  confidenceLevel: 'Medium',
+  confidenceLevel: 'Low',
 } as const
 
 const maritimeOfficialSource = {
-  sourceName: 'Demo official maritime credentialing source',
+  sourceName: 'Demo maritime credentialing source',
   sourceUrl: 'https://example.gov/demo/maritime-credentials',
-  sourceType: 'Official',
+  sourceType: 'User Provided',
   lastReviewed: '2026-05-28',
   jurisdiction: 'United States maritime demo',
-  confidenceLevel: 'Medium',
+  confidenceLevel: 'Low',
 } as const
 
 const securityOfficialSource = {
-  sourceName: 'Demo official protective services licensing source',
+  sourceName: 'Demo protective services licensing source',
   sourceUrl: 'https://example.gov/demo/security-licensing',
-  sourceType: 'Official',
+  sourceType: 'User Provided',
   lastReviewed: '2026-05-28',
   jurisdiction: 'Demo state licensing office',
-  confidenceLevel: 'Medium',
+  confidenceLevel: 'Low',
 } as const
 
 const turkeyCareerPilotSource = {
@@ -891,7 +891,7 @@ export const careerTracks: CareerTrack[] = [
           sourceUrl: 'https://www.iskur.gov.tr',
           lastReviewed: '2026-06-11',
           rationale: 'Kariyer hedefi belirleme, İŞKUR kariyer danışmanlığı kılavuzlarında etkili iş arama sürecinin temel adımı olarak tanımlanmaktadır.',
-          confidenceLevel: 'official',
+          confidenceLevel: 'informed',
         },
       }),
       makeRequirement({
@@ -968,7 +968,7 @@ export const careerTracks: CareerTrack[] = [
           sourceUrl: 'https://www.osym.gov.tr',
           lastReviewed: '2026-06-11',
           rationale: 'Türkiye iş piyasasında yabancı dil yeterliliği için ÖSYM sınav kriterleri yaygın referans noktası olarak kullanılmaktadır.',
-          confidenceLevel: 'official',
+          confidenceLevel: 'informed',
         },
       }),
       makeRequirement({
@@ -1036,7 +1036,7 @@ export const careerTracks: CareerTrack[] = [
           sourceUrl: 'https://www.iskur.gov.tr',
           lastReviewed: '2026-06-11',
           rationale: 'İş arama sürecinin pratik ve lojistik hazırlık boyutları, İŞKUR kariyer danışmanlığı kılavuzlarında aday hazırlığının bütünleyici unsurları olarak ele alınmaktadır.',
-          confidenceLevel: 'official',
+          confidenceLevel: 'informed',
         },
       }),
     ],
@@ -1231,12 +1231,12 @@ export const careerTracks: CareerTrack[] = [
         privacyLevel: 'Private',
         notes: 'Belge içeriği saklanmaz; yalnızca hazır olma durumu izlenir.',
         source: {
-          sourceType: 'official',
+          sourceType: 'informed',
           sourceName: 'YÖK – Yükseköğretim Kurulu',
           sourceUrl: 'https://www.yok.gov.tr',
           lastReviewed: '2026-06-13',
           rationale: 'YÖK, Türkiye\'deki yükseköğretim kurumlarını ve diploma geçerlilik standartlarını yöneten resmi düzenleyici kurumdur.',
-          confidenceLevel: 'official',
+          confidenceLevel: 'informed',
         },
       },
       {
@@ -1258,12 +1258,12 @@ export const careerTracks: CareerTrack[] = [
         privacyLevel: 'Recruiter Visible',
         notes: 'Hangi sertifikaların CV içinde öne çıkarılacağı seçilmeli.',
         source: {
-          sourceType: 'official',
+          sourceType: 'informed',
           sourceName: 'MYK – Mesleki Yeterlilik Kurumu',
           sourceUrl: 'https://www.myk.gov.tr',
           lastReviewed: '2026-06-13',
           rationale: 'MYK, Türkiye\'deki mesleki sertifika ve yeterlilik standartlarını tanımlayan ve denetleyen resmi kurumdur.',
-          confidenceLevel: 'official',
+          confidenceLevel: 'informed',
         },
       },
       {
@@ -1339,7 +1339,7 @@ export const careerTracks: CareerTrack[] = [
         privacyLevel: 'Private',
         notes: 'Düzenli başvuru rutini için ana takip kaydı.',
         source: {
-          sourceType: 'official',
+          sourceType: 'informed',
           sourceName: 'İŞKUR – Türkiye İş Kurumu',
           sourceUrl: 'https://www.iskur.gov.tr',
           lastReviewed: '2026-06-13',
@@ -1398,7 +1398,7 @@ export const careerTracks: CareerTrack[] = [
           sourceUrl: 'https://www.osym.gov.tr',
           lastReviewed: '2026-06-13',
           rationale: 'ÖSYM, Türkiye\'de yabancı dil yeterlilik sınavlarını (YDS, YÖKDİL) yöneten resmi kurum olup iş piyasasında İngilizce düzeyi için yaygın referans sağlamaktadır.',
-          confidenceLevel: 'official',
+          confidenceLevel: 'informed',
         },
       },
     ],
