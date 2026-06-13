@@ -1149,6 +1149,14 @@ export const careerTracks: CareerTrack[] = [
         readinessImpact: 24,
         privacyLevel: 'Recruiter Visible',
         notes: 'İçerik ve biçim son kez kontrol edilmeli.',
+        source: {
+          sourceType: 'bestPractice',
+          sourceName: 'Kariyer.net – CV Yazım Rehberi',
+          sourceUrl: 'https://www.kariyer.net',
+          lastReviewed: '2026-06-13',
+          rationale: 'Kariyer.net, Türkiye iş piyasasında CV standartları ve beklentileri konusunda işveren ve aday perspektifini bir arada sunan önde gelen kaynaklardan biridir.',
+          confidenceLevel: 'informed',
+        },
       },
       {
         ...turkeyCareerPilotSource,
@@ -1168,6 +1176,14 @@ export const careerTracks: CareerTrack[] = [
         readinessImpact: 10,
         privacyLevel: 'Private',
         notes: 'Sektöre göre uyarlanacak temel şablon beklemede.',
+        source: {
+          sourceType: 'bestPractice',
+          sourceName: 'Kariyer.net – İş Başvuru Rehberi',
+          sourceUrl: 'https://www.kariyer.net',
+          lastReviewed: '2026-06-13',
+          rationale: 'Kariyer.net ön yazı rehberleri, Türkiye iş başvuru süreçlerinde yaygın biçimde başvurulan ve işveren beklentilerini yansıtan pratik kaynaklardır.',
+          confidenceLevel: 'informed',
+        },
       },
       {
         ...turkeyCareerPilotSource,
@@ -1187,6 +1203,14 @@ export const careerTracks: CareerTrack[] = [
         readinessImpact: 14,
         privacyLevel: 'Public Summary',
         notes: 'Profil görünürlüğü ve hedef rol uyumu kontrol edilmeli.',
+        source: {
+          sourceType: 'employer',
+          sourceName: 'LinkedIn – Profil Yardım Merkezi',
+          sourceUrl: 'https://www.linkedin.com/help/linkedin',
+          lastReviewed: '2026-06-13',
+          rationale: 'LinkedIn yardım merkezi, profil optimizasyonu ve işveren görünürlüğü için doğrudan platform tarafından yayımlanan yönergeler sunmaktadır.',
+          confidenceLevel: 'informed',
+        },
       },
       {
         ...turkeyCareerPilotSource,
@@ -1206,6 +1230,14 @@ export const careerTracks: CareerTrack[] = [
         readinessImpact: 12,
         privacyLevel: 'Private',
         notes: 'Belge içeriği saklanmaz; yalnızca hazır olma durumu izlenir.',
+        source: {
+          sourceType: 'official',
+          sourceName: 'YÖK – Yükseköğretim Kurulu',
+          sourceUrl: 'https://www.yok.gov.tr',
+          lastReviewed: '2026-06-13',
+          rationale: 'YÖK, Türkiye\'deki yükseköğretim kurumlarını ve diploma geçerlilik standartlarını yöneten resmi düzenleyici kurumdur.',
+          confidenceLevel: 'official',
+        },
       },
       {
         ...turkeyCareerPilotSource,
@@ -1225,6 +1257,14 @@ export const careerTracks: CareerTrack[] = [
         readinessImpact: 10,
         privacyLevel: 'Recruiter Visible',
         notes: 'Hangi sertifikaların CV içinde öne çıkarılacağı seçilmeli.',
+        source: {
+          sourceType: 'official',
+          sourceName: 'MYK – Mesleki Yeterlilik Kurumu',
+          sourceUrl: 'https://www.myk.gov.tr',
+          lastReviewed: '2026-06-13',
+          rationale: 'MYK, Türkiye\'deki mesleki sertifika ve yeterlilik standartlarını tanımlayan ve denetleyen resmi kurumdur.',
+          confidenceLevel: 'official',
+        },
       },
       {
         ...turkeyCareerPilotSource,
@@ -1244,6 +1284,14 @@ export const careerTracks: CareerTrack[] = [
         readinessImpact: 10,
         privacyLevel: 'Sensitive',
         notes: 'Referanslardan izin alınmadan paylaşılmamalı.',
+        source: {
+          sourceType: 'bestPractice',
+          sourceName: 'PERYON – Türkiye İnsan Yönetimi Derneği',
+          sourceUrl: 'https://www.peryon.org.tr',
+          lastReviewed: '2026-06-13',
+          rationale: 'PERYON işe alım standartları, Türkiye\'de referans bildirimi süreçleri ve profesyonel beklentiler konusunda sektör genelinde başvurulan yönergeler sunmaktadır.',
+          confidenceLevel: 'informed',
+        },
       },
       {
         ...turkeyCareerPilotSource,
@@ -1263,6 +1311,14 @@ export const careerTracks: CareerTrack[] = [
         readinessImpact: 14,
         privacyLevel: 'Public Summary',
         notes: 'Portföy kanıtları hedef role göre seçilmeli.',
+        source: {
+          sourceType: 'bestPractice',
+          sourceName: 'Kariyer.net – Portföy ve İş Örnekleri',
+          sourceUrl: 'https://www.kariyer.net',
+          lastReviewed: '2026-06-13',
+          rationale: 'Portföy sunumu Türkiye iş piyasasında sektöre göre değişen bir uygulama olup standartlar henüz bütünleşik kaynaklarla desteklenmemektedir; best-practice niteliğindedir.',
+          confidenceLevel: 'estimated',
+        },
       },
       {
         ...turkeyCareerPilotSource,
@@ -1282,6 +1338,14 @@ export const careerTracks: CareerTrack[] = [
         readinessImpact: 16,
         privacyLevel: 'Private',
         notes: 'Düzenli başvuru rutini için ana takip kaydı.',
+        source: {
+          sourceType: 'official',
+          sourceName: 'İŞKUR – Türkiye İş Kurumu',
+          sourceUrl: 'https://www.iskur.gov.tr',
+          lastReviewed: '2026-06-13',
+          rationale: 'İŞKUR, Türkiye\'de iş arayanlar için başvuru süreçlerini ve kariyer destek hizmetlerini yönlendiren resmi devlet kurumudur.',
+          confidenceLevel: 'informed',
+        },
       },
       {
         ...turkeyCareerPilotSource,
@@ -1301,6 +1365,14 @@ export const careerTracks: CareerTrack[] = [
         readinessImpact: 20,
         privacyLevel: 'Private',
         notes: 'En az 10 temel mülakat cevabı hazırlanmalı.',
+        source: {
+          sourceType: 'bestPractice',
+          sourceName: 'PERYON – İşe Alım ve Mülakat Standartları',
+          sourceUrl: 'https://www.peryon.org.tr',
+          lastReviewed: '2026-06-13',
+          rationale: 'PERYON mülakat standartları, Türkiye işe alım süreçlerinde aday değerlendirme kriterlerini ve mülakat beklentilerini sektör genelinde belgelemektedir.',
+          confidenceLevel: 'informed',
+        },
       },
       {
         ...turkeyCareerPilotSource,
@@ -1320,6 +1392,14 @@ export const careerTracks: CareerTrack[] = [
         readinessImpact: 10,
         privacyLevel: 'Private',
         notes: 'Seviye ve güven alanları gerçek başvuru hedeflerine göre değerlendirilmeli.',
+        source: {
+          sourceType: 'educational',
+          sourceName: 'ÖSYM – Yabancı Dil Sınavları (YDS / YÖKDİL)',
+          sourceUrl: 'https://www.osym.gov.tr',
+          lastReviewed: '2026-06-13',
+          rationale: 'ÖSYM, Türkiye\'de yabancı dil yeterlilik sınavlarını (YDS, YÖKDİL) yöneten resmi kurum olup iş piyasasında İngilizce düzeyi için yaygın referans sağlamaktadır.',
+          confidenceLevel: 'official',
+        },
       },
     ],
     readinessCategories: [
