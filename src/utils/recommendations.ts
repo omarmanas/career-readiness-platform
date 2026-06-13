@@ -231,21 +231,3 @@ export function getRecommendationSet(
 
   return { blockers, nextActions, projectedImprovementPts }
 }
-
-// ── Sanity check (development assertion) ─────────────────────────────────
-// Confirms blockers surface ahead of non-blocking actions and ordering is stable.
-
-export function assertRecommendationOrder(set: RecommendationSet): boolean {
-  // Blockers must be non-empty if any Blocking req is incomplete
-  // (caller responsibility — engine guarantees blockers are separate)
-
-  // Next actions must be sorted: rankScore desc is guaranteed by sort above.
-  // Verify stability: re-running must return same ordered ids.
-  const ids = set.nextActions.map((a) => a.id).join(',')
-  const rerun = set.nextActions.map((a) => a.id).join(',')
-  const stable = ids === rerun
-  if (!stable) {
-    console.error('Recommendation ordering is not stable.')
-  }
-  return stable
-}
