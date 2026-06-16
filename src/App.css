@@ -3181,3 +3181,28 @@
     font-size: 0.78rem;
   }
 }
+
+/* ── Status left-border accents ──────────────────────────────────────
+   :not(.requirement-card--mission) excludes mission-queue cards, which
+   already use the green container border from
+   .requirement-mission-section--primary .requirement-card.          */
+
+.requirement-card:not(.requirement-card--mission)[data-status="Completed"],
+.document-card[data-status="Verified"],
+.document-card[data-status="Available"] {
+  border-left: 3px solid rgba(34, 197, 94, 0.50);
+}
+
+.requirement-card:not(.requirement-card--mission)[data-status="In Progress"],
+.requirement-card:not(.requirement-card--mission)[data-status="Needs Review"],
+.document-card[data-status="Pending"],
+.document-card[data-status="Needs Review"] {
+  border-left: 3px solid rgba(245, 158, 11, 0.50);
+}
+
+.requirement-card:not(.requirement-card--mission)[data-status="Not Started"],
+.requirement-card:not(.requirement-card--mission)[data-status="Missing"],
+.document-card[data-status="Missing"],
+.document-card[data-status="Expired"] {
+  border-left: 3px solid rgba(239, 68, 68, 0.45);
+}

@@ -124,6 +124,7 @@ export function RequirementInventoryView({
         className={
           isMission ? 'requirement-card requirement-card--mission' : 'requirement-card'
         }
+        data-status={req.status}
         key={req.id}
       >
         <div className="card-primary-tier">

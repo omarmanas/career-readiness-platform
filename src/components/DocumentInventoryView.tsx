@@ -95,7 +95,7 @@ export function DocumentInventoryView({
     const isExpiringSoon = isDocumentExpiringSoon(item.expirationDate)
 
     return (
-      <article className="document-card" key={item.id}>
+      <article className="document-card" data-status={item.status} key={item.id}>
         <div className="card-primary-tier">
           <div className="card-left-col">
             <strong className="card-item-title">{item.title}</strong>
