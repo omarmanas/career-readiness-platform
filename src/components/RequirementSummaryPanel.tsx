@@ -30,6 +30,9 @@ export function RequirementSummaryPanel({
       <article className="metric-card">
         <span>{getText(language, 'totalRequirements')}</span>
         <strong>{coverage.total}</strong>
+        <div className="progress-bar" aria-hidden="true">
+          <span style={{ width: `${coverage.percentage}%` }} />
+        </div>
         <p>
           {coverage.percentage}% {getText(language, 'requiredCoverage')}
         </p>

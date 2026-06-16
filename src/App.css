@@ -1824,6 +1824,11 @@
   height: 100%;
 }
 
+.progress-bar--mini {
+  height: 3px;
+  margin-top: 3px;
+}
+
 /* ── Blockers strip ──────────────────────────────────────────────── */
 
 .blockers-strip {

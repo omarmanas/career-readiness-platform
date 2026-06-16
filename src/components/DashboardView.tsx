@@ -249,6 +249,9 @@ export function DashboardView({
         <article className="metric-card readiness-snapshot-card">
           <span>{getText(language, 'readiness')}</span>
           <strong>{readinessScore}%</strong>
+          <div className="progress-bar" aria-hidden="true">
+            <span style={{ width: `${readinessScore}%` }} />
+          </div>
         </article>
         <article className="metric-card readiness-snapshot-card">
           <span>{getText(language, 'requirementsComplete')}</span>
@@ -256,6 +259,9 @@ export function DashboardView({
             {getCompletedRequirementCount(selectedTrack.requirements)} /{' '}
             {selectedTrack.requirements.length}
           </strong>
+          <div className="progress-bar" aria-hidden="true">
+            <span style={{ width: `${selectedTrack.requirements.length > 0 ? Math.round(getCompletedRequirementCount(selectedTrack.requirements) / selectedTrack.requirements.length * 100) : 0}%` }} />
+          </div>
         </article>
         <article className="metric-card readiness-snapshot-card">
           <span>{getText(language, 'trainingsComplete')}</span>
@@ -263,6 +269,9 @@ export function DashboardView({
             {getCompletedTrainingCount(selectedTrack.trainingPlan)} /{' '}
             {selectedTrack.trainingPlan.length}
           </strong>
+          <div className="progress-bar" aria-hidden="true">
+            <span style={{ width: `${selectedTrack.trainingPlan.length > 0 ? Math.round(getCompletedTrainingCount(selectedTrack.trainingPlan) / selectedTrack.trainingPlan.length * 100) : 0}%` }} />
+          </div>
         </article>
         <article className="metric-card readiness-snapshot-card">
           <span>{getText(language, 'documentsAvailable')}</span>
@@ -270,6 +279,9 @@ export function DashboardView({
             {getAvailableDocumentCount(selectedTrack.documentChecklist)} /{' '}
             {selectedTrack.documentChecklist.length}
           </strong>
+          <div className="progress-bar" aria-hidden="true">
+            <span style={{ width: `${selectedTrack.documentChecklist.length > 0 ? Math.round(getAvailableDocumentCount(selectedTrack.documentChecklist) / selectedTrack.documentChecklist.length * 100) : 0}%` }} />
+          </div>
         </article>
         <article className="metric-card readiness-snapshot-card">
           <span>{getText(language, 'milestonesComplete')}</span>
@@ -277,6 +289,9 @@ export function DashboardView({
             {getCompletedMilestoneCount(selectedTrack.milestones)} /{' '}
             {selectedTrack.milestones.length}
           </strong>
+          <div className="progress-bar" aria-hidden="true">
+            <span style={{ width: `${selectedTrack.milestones.length > 0 ? Math.round(getCompletedMilestoneCount(selectedTrack.milestones) / selectedTrack.milestones.length * 100) : 0}%` }} />
+          </div>
         </article>
       </section>
 
@@ -290,6 +305,9 @@ export function DashboardView({
             label={`${remainingMilestones} ${getText(language, 'remainingMilestones')}`}
             tone={remainingMilestones === 0 ? 'success' : 'warning'}
           />
+        </div>
+        <div className="progress-bar" aria-hidden="true">
+          <span style={{ width: `${totalMilestones > 0 ? Math.round(completedMilestones / totalMilestones * 100) : 0}%` }} />
         </div>
 
         <div className="milestone-progress-summary">

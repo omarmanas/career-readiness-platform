@@ -49,6 +49,9 @@ export function CareerTracksView({
               <span className="track-list-name">
                 {getTrackDisplayName(track, language)}
               </span>
+              <div className="progress-bar progress-bar--mini" aria-hidden="true">
+                <span style={{ width: `${score}%` }} />
+              </div>
               <span className="track-list-meta">
                 {isPreview && (
                   <Badge label={getText(language, 'preview')} tone="neutral" />
