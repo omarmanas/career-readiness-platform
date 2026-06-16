@@ -1847,6 +1847,15 @@
   margin-top: 3px;
 }
 
+@keyframes value-update {
+  0%   { color: #86efac; }
+  100% { color: var(--text-strong); }
+}
+
+.readiness-snapshot-card strong {
+  animation: value-update 700ms ease-out;
+}
+
 /* ── Blockers strip ──────────────────────────────────────────────── */
 
 .blockers-strip {

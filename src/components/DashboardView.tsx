@@ -248,14 +248,14 @@ export function DashboardView({
       >
         <article className="metric-card readiness-snapshot-card">
           <span>{getText(language, 'readiness')}</span>
-          <strong>{readinessScore}%</strong>
+          <strong key={readinessScore}>{readinessScore}%</strong>
           <div className="progress-bar" aria-hidden="true">
             <span style={{ width: `${readinessScore}%` }} />
           </div>
         </article>
         <article className="metric-card readiness-snapshot-card">
           <span>{getText(language, 'requirementsComplete')}</span>
-          <strong>
+          <strong key={getCompletedRequirementCount(selectedTrack.requirements)}>
             {getCompletedRequirementCount(selectedTrack.requirements)} /{' '}
             {selectedTrack.requirements.length}
           </strong>
@@ -265,7 +265,7 @@ export function DashboardView({
         </article>
         <article className="metric-card readiness-snapshot-card">
           <span>{getText(language, 'trainingsComplete')}</span>
-          <strong>
+          <strong key={getCompletedTrainingCount(selectedTrack.trainingPlan)}>
             {getCompletedTrainingCount(selectedTrack.trainingPlan)} /{' '}
             {selectedTrack.trainingPlan.length}
           </strong>
@@ -275,7 +275,7 @@ export function DashboardView({
         </article>
         <article className="metric-card readiness-snapshot-card">
           <span>{getText(language, 'documentsAvailable')}</span>
-          <strong>
+          <strong key={getAvailableDocumentCount(selectedTrack.documentChecklist)}>
             {getAvailableDocumentCount(selectedTrack.documentChecklist)} /{' '}
             {selectedTrack.documentChecklist.length}
           </strong>
@@ -285,7 +285,7 @@ export function DashboardView({
         </article>
         <article className="metric-card readiness-snapshot-card">
           <span>{getText(language, 'milestonesComplete')}</span>
-          <strong>
+          <strong key={getCompletedMilestoneCount(selectedTrack.milestones)}>
             {getCompletedMilestoneCount(selectedTrack.milestones)} /{' '}
             {selectedTrack.milestones.length}
           </strong>
