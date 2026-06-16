@@ -977,7 +977,12 @@
   font: inherit;
   padding: 10px 12px;
   text-align: left;
+  transition: background-color 140ms ease, border-color 140ms ease;
   width: 100%;
+}
+
+.requirement-section-heading--button h4 {
+  transition: color 140ms ease;
 }
 
 .requirement-section-heading--button:hover h4,
