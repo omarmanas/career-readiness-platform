@@ -385,6 +385,12 @@
   padding: 6px 9px;
 }
 
+@property --score {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
 .score-ring {
   align-items: center;
   aspect-ratio: 1;
@@ -397,6 +403,7 @@
   font-weight: 800;
   justify-content: center;
   position: relative;
+  transition: --score 600ms ease;
 }
 
 .score-ring::before {
