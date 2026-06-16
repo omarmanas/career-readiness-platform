@@ -58,6 +58,11 @@ export function TrainingTrackerView({
 
   const sorted = sortByUrgency(selectedTrack.trainingPlan)
   const activeItems = sorted.filter((item) => item.status !== 'Completed')
+  const visibleActiveItems = activeItems.slice(0, 1)
+  const additionalActiveTrainingCount = Math.max(
+    0,
+    activeItems.length - visibleActiveItems.length,
+  )
   const completedItems = sorted.filter((item) => item.status === 'Completed')
 
   function renderTrainingRow(item: TrainingItem) {
@@ -114,7 +119,12 @@ export function TrainingTrackerView({
             <span>{activeItems.length}</span>
           </div>
           <div className="data-table">
-            {activeItems.map((item) => renderTrainingRow(item))}
+            {visibleActiveItems.map((item) => renderTrainingRow(item))}
+            {additionalActiveTrainingCount > 0 && (
+              <p className="detail-muted-note">
+                {additionalActiveTrainingCount} additional active trainings
+              </p>
+            )}
           </div>
         </section>
       )}
