@@ -4,6 +4,7 @@ import { SourceSection } from './SourceSection'
 import { getPriorityText, getStatusText, getText, type Language } from '../i18n'
 import type { CareerTrack, DocumentItem, DocumentStatus, GuidanceSource } from '../types'
 import { mapLegacySourceToGuidanceSource } from '../utils/sourceMapping'
+import { isDocumentExpiringSoon } from '../utils/documents'
 import {
   documentImportanceTone,
   documentTone,
@@ -91,8 +92,7 @@ export function DocumentInventoryView({
     const source = getDocumentSource(item)
     const actionText = getText(language, getDocumentActionKey(item.status))
     const reasonText = getText(language, getDocumentReasonKey(item.status))
-    // TODO: replace string comparison with real date logic
-    const isExpiringSoon = item.expirationDate === 'Next 30 days'
+    const isExpiringSoon = isDocumentExpiringSoon(item.expirationDate)
 
     return (
       <article className="document-card" key={item.id}>

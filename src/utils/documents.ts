@@ -18,8 +18,27 @@ function isCovered(document: DocumentItem) {
   return coveredStatuses.includes(document.status)
 }
 
+// @deprecated label — all expirationDate values in seed data are human-readable
+// labels, not ISO dates. When real ISO dates are introduced, remove this list
+// and rely solely on the date-comparison branch below.
+const LEGACY_EXPIRING_LABELS = ['Next 30 days']
+
+export function isDocumentExpiringSoon(
+  expirationDate: string,
+  withinDays = 30,
+): boolean {
+  // Try ISO date first (YYYY-MM-DD or full ISO string)
+  const parsed = Date.parse(expirationDate)
+  if (!isNaN(parsed)) {
+    const cutoff = Date.now() + withinDays * 24 * 60 * 60 * 1000
+    return parsed <= cutoff
+  }
+  // Legacy label fallback
+  return LEGACY_EXPIRING_LABELS.includes(expirationDate)
+}
+
 function isExpiringSoon(document: DocumentItem) {
-  return document.expirationDate === 'Next 30 days'
+  return isDocumentExpiringSoon(document.expirationDate)
 }
 
 export function getDocumentCoverage(track: CareerTrack) {
