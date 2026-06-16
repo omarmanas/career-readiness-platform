@@ -82,6 +82,11 @@ export function RequirementInventoryView({
   const activeRequirements = incompleteRequirements.filter(
     (req) => !missionIds.has(req.id),
   )
+  const visibleActiveRequirements = activeRequirements.slice(0, 2)
+  const additionalActiveRequirementCount = Math.max(
+    0,
+    activeRequirements.length - visibleActiveRequirements.length,
+  )
   const completedExemptRequirements = selectedTrack.requirements.filter(
     (req) => req.status === 'Completed' || req.status === 'Waived',
   )
@@ -288,7 +293,12 @@ export function RequirementInventoryView({
           </button>
           {isActiveOpen && (
             <div className="requirement-list">
-              {activeRequirements.map((req) => renderRequirementCard(req))}
+              {visibleActiveRequirements.map((req) => renderRequirementCard(req))}
+              {additionalActiveRequirementCount > 0 && (
+                <p className="detail-muted-note">
+                  {additionalActiveRequirementCount} additional requirements available
+                </p>
+              )}
             </div>
           )}
         </section>
