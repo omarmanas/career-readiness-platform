@@ -9,6 +9,10 @@ import {
 } from '../utils/readiness'
 import { generateNextActions, getImmediateAction } from '../utils/actions'
 import { getTopGaps, getTopUnresolvedGap } from '../utils/gaps'
+import {
+  getCategoryDisplayName,
+  getTrackDisplayName,
+} from '../utils/localizedDisplay'
 
 interface CareerTracksViewProps {
   careerTracks: CareerTrack[]
@@ -42,7 +46,9 @@ export function CareerTracksView({
               onClick={() => onSelectTrack(track.id)}
               aria-pressed={isSelected}
             >
-              <span className="track-list-name">{track.title}</span>
+              <span className="track-list-name">
+                {getTrackDisplayName(track, language)}
+              </span>
               <span className="track-list-meta">
                 {isPreview && (
                   <Badge label={getText(language, 'preview')} tone="neutral" />
@@ -115,7 +121,9 @@ function TrackDetailPanel({
           {isPreview && (
             <Badge label={getText(language, 'preview')} tone="neutral" />
           )}
-          <h3 className="track-detail-title">{track.title}</h3>
+          <h3 className="track-detail-title">
+            {getTrackDisplayName(track, language)}
+          </h3>
         </div>
         {track.description && (
           <p className="track-detail-description">{track.description}</p>
@@ -161,7 +169,7 @@ function TrackDetailPanel({
           <div className="breakdown-list">
             {topCategories.map((category) => (
               <div className="breakdown-row" key={category.id}>
-                <span>{category.name}</span>
+                <span>{getCategoryDisplayName(category.name, language)}</span>
                 <strong>{category.score}%</strong>
               </div>
             ))}

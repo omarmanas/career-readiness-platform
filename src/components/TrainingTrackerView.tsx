@@ -8,6 +8,7 @@ import {
 } from '../i18n'
 import type { CareerTrack, Priority, TrainingItem, TrainingStatus } from '../types'
 import { priorityTone, trainingTone } from '../utils/display'
+import { getCategoryDisplayName } from '../utils/localizedDisplay'
 
 const TRAINING_STATUSES: TrainingStatus[] = [
   'Planned',
@@ -64,7 +65,7 @@ export function TrainingTrackerView({
       <article className="table-row training-table-row" key={item.id}>
         <div>
           <strong>{item.title}</strong>
-          <p>{item.category}</p>
+          <p>{getCategoryDisplayName(item.category, language)}</p>
         </div>
         <span>{item.dueLabel}</span>
         <Badge

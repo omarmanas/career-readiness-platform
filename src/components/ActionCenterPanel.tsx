@@ -16,6 +16,7 @@ import {
   priorityTone,
   requirementStatusTone,
 } from '../utils/display'
+import { getCategoryDisplayName } from '../utils/localizedDisplay'
 import { getRecommendationSet } from '../utils/recommendations'
 import { calculateReadinessScore } from '../utils/readiness'
 
@@ -201,7 +202,9 @@ export function ActionCenterPanel({
                   <div className="blocker-item-title-row">
                     <span className="blocker-item-title">{blocker.title}</span>
                     {blocker.category && (
-                      <span className="blocker-item-category">{blocker.category}</span>
+                      <span className="blocker-item-category">
+                        {getCategoryDisplayName(blocker.category, language)}
+                      </span>
                     )}
                   </div>
                   <div className="badge-pair">

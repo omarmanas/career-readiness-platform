@@ -3,6 +3,7 @@ import { getPriorityText, getStatusText, getText, type Language } from '../i18n'
 import type { CareerTrack } from '../types'
 import { gapSeverityTone, gapStatusTone } from '../utils/display'
 import { getTopGaps } from '../utils/gaps'
+import { getCategoryDisplayName } from '../utils/localizedDisplay'
 
 interface GapAnalysisPanelProps {
   selectedTrack: CareerTrack
@@ -56,7 +57,8 @@ export function GapAnalysisPanel({
                 {getPriorityText(language, gap.recommendedAction.effort)}
               </span>
               <span>
-                {getText(language, 'category')}: {gap.category}
+                {getText(language, 'category')}:{' '}
+                {getCategoryDisplayName(gap.category, language)}
               </span>
             </div>
           </article>

@@ -24,6 +24,7 @@ import {
   trackTone,
 } from '../utils/display'
 import { getRecommendationSet } from '../utils/recommendations'
+import { getTrackDisplayName } from '../utils/localizedDisplay'
 import {
   calculateReadinessScore,
   getAvailableDocumentCount,
@@ -143,7 +144,7 @@ export function DashboardView({
           </div>
 
           <div className="mission-meta">
-            <span>{selectedTrack.title}</span>
+            <span>{getTrackDisplayName(selectedTrack, language)}</span>
             {missionAction && (
               <span className="next-action-impact">
                 +{missionAction.reason.scoreContributionPts}{' '}

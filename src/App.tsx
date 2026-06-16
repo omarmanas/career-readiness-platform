@@ -15,6 +15,7 @@ import {
   setStoredLanguage,
   setStoredSelectedTrackId,
 } from './utils/preferences'
+import { getTrackDisplayName } from './utils/localizedDisplay'
 
 type Screen =
   | 'dashboard'
@@ -131,8 +132,11 @@ function App() {
                 {careerTracks.map((track) => (
                   <option key={track.id} value={track.id}>
                     {track.maturity === 'preview'
-                      ? `${track.title} (${getText(language, 'preview')})`
-                      : track.title}
+                      ? `${getTrackDisplayName(track, language)} (${getText(
+                          language,
+                          'preview',
+                        )})`
+                      : getTrackDisplayName(track, language)}
                   </option>
                 ))}
               </select>

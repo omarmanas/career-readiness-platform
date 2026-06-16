@@ -16,6 +16,7 @@ import {
   getTopRiskFlags,
   getTrackHealthSummary,
 } from '../utils/readiness'
+import { getCategoryDisplayName } from '../utils/localizedDisplay'
 
 interface AnalysisCenterViewProps {
   selectedTrack: CareerTrack
@@ -54,7 +55,7 @@ export function AnalysisCenterView({
           {readinessCategories.map((category) => (
             <article className="category-card" key={category.id}>
               <div className="card-header">
-                <strong>{category.name}</strong>
+                <strong>{getCategoryDisplayName(category.name, language)}</strong>
                 <Badge
                   label={category.status}
                   tone={readinessCategoryTone[category.status]}
@@ -101,11 +102,15 @@ export function AnalysisCenterView({
           <div className="health-grid">
             <div>
               <span>{getText(language, 'strongestArea')}</span>
-              <strong>{trackHealth.strongestArea.name}</strong>
+              <strong>
+                {getCategoryDisplayName(trackHealth.strongestArea.name, language)}
+              </strong>
             </div>
             <div>
               <span>{getText(language, 'weakestArea')}</span>
-              <strong>{trackHealth.weakestArea.name}</strong>
+              <strong>
+                {getCategoryDisplayName(trackHealth.weakestArea.name, language)}
+              </strong>
             </div>
             <div>
               <span>{getText(language, 'categoriesOnTarget')}</span>

@@ -72,6 +72,9 @@ status overrides. It does not write to a remote service.
   the publisher or make manual source verification harder.
 - Generic career track display labels may use localized wording when it improves
   comprehension and does not change the meaning.
+- Track display labels and generic category labels are localized through the
+  display helper in `src/utils/localizedDisplay.ts`, leaving the seed records and
+  official source labels intact.
 - Requirement and document titles may be localized only when the item is generic
   and not source-specific.
 - When a term is official but unfamiliar, prefer adding a short localized helper
