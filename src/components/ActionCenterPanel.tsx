@@ -58,8 +58,8 @@ export function ActionCenterPanel({
   const currentScore = calculateReadinessScore(selectedTrack)
   const projectedScore = Math.min(100, currentScore + projectedImprovementPts)
   const queuedActions = nextActions.slice(1)
-  const visibleQueuedActions = queuedActions.slice(0, 2)
-  const overflowQueuedActions = queuedActions.slice(2)
+  const visibleQueuedActions = queuedActions.slice(0, 1)
+  const overflowQueuedActions = queuedActions.slice(1)
 
   function renderAction(action: (typeof nextActions)[number], idx: number) {
     const isGapOnly = action.itemId === null
@@ -290,7 +290,7 @@ export function ActionCenterPanel({
           {overflowQueuedActions.length > 0 && (
             <details className="next-actions-more">
               <summary>
-                {overflowQueuedActions.length} {getText(language, 'moreQueuedActions')}
+                {overflowQueuedActions.length} additional actions available
               </summary>
               <ol className="next-actions-list next-actions-list--compact">
                 {overflowQueuedActions.map((action, idx) =>

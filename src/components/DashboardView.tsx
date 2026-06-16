@@ -97,6 +97,9 @@ export function DashboardView({
 }: DashboardViewProps) {
   const readinessScore = calculateReadinessScore(selectedTrack)
   const nextMilestone = getNextMilestone(selectedTrack.milestones)
+  const remainingMilestoneItems = selectedTrack.milestones.filter(
+    (milestone) => milestone.id !== nextMilestone?.id,
+  )
   const completedMilestones = getCompletedMilestoneCount(selectedTrack.milestones)
   const totalMilestones = selectedTrack.milestones.length
   const remainingMilestones = Math.max(0, totalMilestones - completedMilestones)
@@ -321,31 +324,31 @@ export function DashboardView({
         </div>
 
         <div className="milestone-list">
-          {selectedTrack.milestones.map((milestone) => (
-            <div className="milestone-row" key={milestone.id}>
+          {nextMilestone && (
+            <div className="milestone-row" key={nextMilestone.id}>
               <div className="milestone-row-main">
-                <strong>{milestone.title}</strong>
-                <span>{milestone.targetDateLabel}</span>
+                <strong>{nextMilestone.title}</strong>
+                <span>{nextMilestone.targetDateLabel}</span>
                 <details className="inline-source-details">
                   <summary>{getText(language, 'details')}</summary>
                   <div className="inline-detail-sections">
-                    <SourceSection source={milestone.source} language={language} variant="inline" />
+                    <SourceSection source={nextMilestone.source} language={language} variant="inline" />
                   </div>
                 </details>
               </div>
               {isInteractive ? (
                 <select
                   className="status-control milestone-status-control"
-                  data-status={milestone.status}
-                  value={milestone.status}
+                  data-status={nextMilestone.status}
+                  value={nextMilestone.status}
                   onChange={(e) =>
                     onMilestoneStatusChange(
-                      milestone.id,
+                      nextMilestone.id,
                       e.target.value as TrackMilestone['status'],
                     )
                   }
                   aria-label={`${getText(language, 'milestoneStatus')}: ${
-                    milestone.title
+                    nextMilestone.title
                   }`}
                 >
                   {MILESTONE_STATUSES.map((status) => (
@@ -356,12 +359,62 @@ export function DashboardView({
                 </select>
               ) : (
                 <Badge
-                  label={getMilestoneStatusText(language, milestone.status)}
-                  tone={getMilestoneTone(milestone.status)}
+                  label={getMilestoneStatusText(language, nextMilestone.status)}
+                  tone={getMilestoneTone(nextMilestone.status)}
                 />
               )}
             </div>
-          ))}
+          )}
+          {remainingMilestoneItems.length > 0 && (
+            <details className="next-actions-more">
+              <summary>
+                {remainingMilestoneItems.length} additional milestones available
+              </summary>
+              <div className="milestone-list">
+                {remainingMilestoneItems.map((milestone) => (
+                  <div className="milestone-row" key={milestone.id}>
+                    <div className="milestone-row-main">
+                      <strong>{milestone.title}</strong>
+                      <span>{milestone.targetDateLabel}</span>
+                      <details className="inline-source-details">
+                        <summary>{getText(language, 'details')}</summary>
+                        <div className="inline-detail-sections">
+                          <SourceSection source={milestone.source} language={language} variant="inline" />
+                        </div>
+                      </details>
+                    </div>
+                    {isInteractive ? (
+                      <select
+                        className="status-control milestone-status-control"
+                        data-status={milestone.status}
+                        value={milestone.status}
+                        onChange={(e) =>
+                          onMilestoneStatusChange(
+                            milestone.id,
+                            e.target.value as TrackMilestone['status'],
+                          )
+                        }
+                        aria-label={`${getText(language, 'milestoneStatus')}: ${
+                          milestone.title
+                        }`}
+                      >
+                        {MILESTONE_STATUSES.map((status) => (
+                          <option key={status} value={status}>
+                            {getMilestoneStatusText(language, status)}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <Badge
+                        label={getMilestoneStatusText(language, milestone.status)}
+                        tone={getMilestoneTone(milestone.status)}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </details>
+          )}
         </div>
       </article>
 
