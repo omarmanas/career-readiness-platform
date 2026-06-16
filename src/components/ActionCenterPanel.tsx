@@ -192,69 +192,72 @@ export function ActionCenterPanel({
           </div>
           <Badge label={`${blockers.length} ${getText(language, 'gating')}`} tone="danger" />
         </div>
-        <div className="blockers-list">
-          {blockers.map((blocker) => {
-            const req = selectedTrack.requirements.find((r) => r.id === blocker.id)
-            const currentStatus = req?.status ?? 'Not Started'
-            return (
-              <article className="blocker-item" key={blocker.id}>
-                <div className="blocker-item-header">
-                  <div className="blocker-item-title-row">
-                    <span className="blocker-item-title">{blocker.title}</span>
-                    {blocker.category && (
-                      <span className="blocker-item-category">
-                        {getCategoryDisplayName(blocker.category, language)}
-                      </span>
+        <details className="next-actions-more">
+          <summary>{blockers.length} blocker details available</summary>
+          <div className="blockers-list">
+            {blockers.map((blocker) => {
+              const req = selectedTrack.requirements.find((r) => r.id === blocker.id)
+              const currentStatus = req?.status ?? 'Not Started'
+              return (
+                <article className="blocker-item" key={blocker.id}>
+                  <div className="blocker-item-header">
+                    <div className="blocker-item-title-row">
+                      <span className="blocker-item-title">{blocker.title}</span>
+                      {blocker.category && (
+                        <span className="blocker-item-category">
+                          {getCategoryDisplayName(blocker.category, language)}
+                        </span>
+                      )}
+                    </div>
+                    <div className="badge-pair">
+                      <Badge
+                        label={getPriorityText(language, blocker.priority)}
+                        tone={
+                          blocker.priority === 'Critical' ? 'danger' : 'warning'
+                        }
+                      />
+                      <Badge label={getText(language, 'blocking')} tone="danger" />
+                    </div>
+                  </div>
+                  <p className="blocker-item-desc">{blocker.description}</p>
+                  <div className="status-control-row">
+                    <span className="status-control-label">
+                      {getText(language, 'status')}
+                    </span>
+                    {isInteractive ? (
+                      <select
+                        className="status-control"
+                        value={currentStatus}
+                        onChange={(e) =>
+                          onReqStatusChange(
+                            blocker.id,
+                            e.target.value as RequirementStatus,
+                          )
+                        }
+                        aria-label={`Status for ${blocker.title}`}
+                      >
+                        {REQUIREMENT_STATUSES.map((s) => (
+                          <option key={s} value={s}>
+                            {getStatusText(language, s)}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <Badge
+                        label={getStatusText(language, currentStatus)}
+                        tone={requirementStatusTone[currentStatus]}
+                      />
                     )}
                   </div>
-                  <div className="badge-pair">
-                    <Badge
-                      label={getPriorityText(language, blocker.priority)}
-                      tone={
-                        blocker.priority === 'Critical' ? 'danger' : 'warning'
-                      }
-                    />
-                    <Badge label={getText(language, 'blocking')} tone="danger" />
-                  </div>
-                </div>
-                <p className="blocker-item-desc">{blocker.description}</p>
-                <div className="status-control-row">
-                  <span className="status-control-label">
-                    {getText(language, 'status')}
-                  </span>
-                  {isInteractive ? (
-                    <select
-                      className="status-control"
-                      value={currentStatus}
-                      onChange={(e) =>
-                        onReqStatusChange(
-                          blocker.id,
-                          e.target.value as RequirementStatus,
-                        )
-                      }
-                      aria-label={`Status for ${blocker.title}`}
-                    >
-                      {REQUIREMENT_STATUSES.map((s) => (
-                        <option key={s} value={s}>
-                          {getStatusText(language, s)}
-                        </option>
-                      ))}
-                    </select>
-                  ) : (
-                    <Badge
-                      label={getStatusText(language, currentStatus)}
-                      tone={requirementStatusTone[currentStatus]}
-                    />
-                  )}
-                </div>
-              </article>
-            )
-          })}
-        </div>
-        <p className="intel-note">
-          {getText(language, 'verifyOfficialSourceRecruiter')}.{' '}
-          {getText(language, 'requirementsMayChange')}.
-        </p>
+                </article>
+              )
+            })}
+          </div>
+          <p className="intel-note">
+            {getText(language, 'verifyOfficialSourceRecruiter')}.{' '}
+            {getText(language, 'requirementsMayChange')}.
+          </p>
+        </details>
       </section>
     )
 
@@ -311,19 +314,14 @@ export function ActionCenterPanel({
               <strong className="next-actions-projected">
                 {projectedScore}%
               </strong>
-              <span className="next-actions-gain">
-                +{projectedImprovementPts} {getText(language, 'pointAbbrev')}{' '}
-                {getText(language, 'estimated')}
-              </span>
-            </div>
-            <p className="intel-note">
-              {getText(language, 'projectionEstimateNote')}{' '}
-              {getText(language, 'verifyOfficialSourceRecruiter')}.
-              {getText(language, 'requirementsMayChange')}.
-            </p>
+            <span className="next-actions-gain">
+              +{projectedImprovementPts} {getText(language, 'pointAbbrev')}{' '}
+              {getText(language, 'estimated')}
+            </span>
           </div>
-        </>
-      )}
+        </div>
+      </>
+    )}
     </article>
   )
 

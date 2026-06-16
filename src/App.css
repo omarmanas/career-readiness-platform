@@ -1100,6 +1100,15 @@
   font-size: 1.1rem;
 }
 
+.dashboard-briefing-summary {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.readiness-snapshot-details {
+  display: grid;
+  gap: 10px;
+}
+
 .list-row,
 .table-row,
 .category-card,

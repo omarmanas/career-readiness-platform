@@ -1,7 +1,7 @@
 import { getText, type Language } from '../i18n'
 import type { CareerTrack } from '../types'
 import { getRecommendationSet } from '../utils/recommendations'
-import { calculateReadinessScore, getNextMilestone } from '../utils/readiness'
+import { getNextMilestone } from '../utils/readiness'
 
 interface CoachBriefCardProps {
   selectedTrack: CareerTrack
@@ -13,14 +13,11 @@ function fill(template: string, vars: Record<string, string>): string {
 }
 
 export function CoachBriefCard({ selectedTrack, language }: CoachBriefCardProps) {
-  const score = calculateReadinessScore(selectedTrack)
   const { blockers, nextActions } = getRecommendationSet(selectedTrack, 5, language)
   const nextMilestone = getNextMilestone(selectedTrack.milestones)
 
   const primaryBlocker = blockers[0]
   const nextAction = nextActions[0]
-
-  const readinessLine = fill(getText(language, 'coachReadinessLine'), { score: String(score) })
 
   const blockerLine = primaryBlocker
     ? fill(getText(language, 'coachBlockerLine'), { blocker: primaryBlocker.title })
@@ -40,7 +37,6 @@ export function CoachBriefCard({ selectedTrack, language }: CoachBriefCardProps)
   return (
     <article className="coach-brief-card" aria-label={getText(language, 'coachBrief')}>
       <span className="coach-brief-kicker">{getText(language, 'coachBrief')}</span>
-      <p className="coach-brief-line">{readinessLine}</p>
       <p className="coach-brief-line">{blockerLine}</p>
       <p className="coach-brief-line">{focusLine}</p>
     </article>

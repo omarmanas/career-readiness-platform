@@ -24,7 +24,6 @@ import {
   trackTone,
 } from '../utils/display'
 import { getRecommendationSet } from '../utils/recommendations'
-import { getTrackDisplayName } from '../utils/localizedDisplay'
 import {
   calculateReadinessScore,
   getAvailableDocumentCount,
@@ -101,8 +100,25 @@ export function DashboardView({
     (milestone) => milestone.id !== nextMilestone?.id,
   )
   const completedMilestones = getCompletedMilestoneCount(selectedTrack.milestones)
+  const completedRequirements = getCompletedRequirementCount(selectedTrack.requirements)
+  const completedTraining = getCompletedTrainingCount(selectedTrack.trainingPlan)
+  const availableDocuments = getAvailableDocumentCount(selectedTrack.documentChecklist)
   const totalMilestones = selectedTrack.milestones.length
   const remainingMilestones = Math.max(0, totalMilestones - completedMilestones)
+  const requirementsProgress =
+    selectedTrack.requirements.length > 0
+      ? Math.round((completedRequirements / selectedTrack.requirements.length) * 100)
+      : 0
+  const trainingProgress =
+    selectedTrack.trainingPlan.length > 0
+      ? Math.round((completedTraining / selectedTrack.trainingPlan.length) * 100)
+      : 0
+  const documentProgress =
+    selectedTrack.documentChecklist.length > 0
+      ? Math.round((availableDocuments / selectedTrack.documentChecklist.length) * 100)
+      : 0
+  const milestoneProgress =
+    totalMilestones > 0 ? Math.round((completedMilestones / totalMilestones) * 100) : 0
   const { nextActions } = getRecommendationSet(selectedTrack, 5, language)
   const missionAction = nextActions[0]
   const missionPriority = missionAction?.reason.priorityLevel as Priority | undefined
@@ -146,9 +162,8 @@ export function DashboardView({
             )}
           </div>
 
-          <div className="mission-meta">
-            <span>{getTrackDisplayName(selectedTrack, language)}</span>
-            {missionAction && (
+          {missionAction && (
+            <div className="mission-meta">
               <span className="next-action-impact">
                 +{missionAction.reason.scoreContributionPts}{' '}
                 {getText(
@@ -159,8 +174,8 @@ export function DashboardView({
                 )}{' '}
                 {getText(language, 'readiness')}
               </span>
-            )}
-          </div>
+            </div>
+          )}
 
           {missionAction && missionAction.itemId && missionStatus && (
             <div className="mission-control-row">
@@ -245,57 +260,86 @@ export function DashboardView({
         onDocStatusChange={onDocStatusChange}
       />
 
-      <section
-        className="readiness-snapshot"
-        aria-label={getText(language, 'readinessSnapshot')}
-      >
-        <article className="metric-card readiness-snapshot-card">
-          <span>{getText(language, 'readiness')}</span>
-          <strong key={readinessScore}>{readinessScore}%</strong>
-          <div className="progress-bar" aria-hidden="true">
-            <span style={{ width: `${readinessScore}%` }} />
+      <section aria-label={getText(language, 'readinessSnapshot')}>
+        <div className="compact-metric-row dashboard-briefing-summary">
+          <div>
+            <span>{getText(language, 'readiness')}</span>
+            <strong>{readinessScore}%</strong>
           </div>
-        </article>
-        <article className="metric-card readiness-snapshot-card">
-          <span>{getText(language, 'requirementsComplete')}</span>
-          <strong key={getCompletedRequirementCount(selectedTrack.requirements)}>
-            {getCompletedRequirementCount(selectedTrack.requirements)} /{' '}
-            {selectedTrack.requirements.length}
-          </strong>
-          <div className="progress-bar" aria-hidden="true">
-            <span style={{ width: `${selectedTrack.requirements.length > 0 ? Math.round(getCompletedRequirementCount(selectedTrack.requirements) / selectedTrack.requirements.length * 100) : 0}%` }} />
+          <div>
+            <span>{getText(language, 'requirementsComplete')}</span>
+            <strong>
+              {completedRequirements} / {selectedTrack.requirements.length}
+            </strong>
           </div>
-        </article>
-        <article className="metric-card readiness-snapshot-card">
-          <span>{getText(language, 'trainingsComplete')}</span>
-          <strong key={getCompletedTrainingCount(selectedTrack.trainingPlan)}>
-            {getCompletedTrainingCount(selectedTrack.trainingPlan)} /{' '}
-            {selectedTrack.trainingPlan.length}
-          </strong>
-          <div className="progress-bar" aria-hidden="true">
-            <span style={{ width: `${selectedTrack.trainingPlan.length > 0 ? Math.round(getCompletedTrainingCount(selectedTrack.trainingPlan) / selectedTrack.trainingPlan.length * 100) : 0}%` }} />
+          <div>
+            <span>{getText(language, 'trainingsComplete')}</span>
+            <strong>
+              {completedTraining} / {selectedTrack.trainingPlan.length}
+            </strong>
           </div>
-        </article>
-        <article className="metric-card readiness-snapshot-card">
-          <span>{getText(language, 'documentsAvailable')}</span>
-          <strong key={getAvailableDocumentCount(selectedTrack.documentChecklist)}>
-            {getAvailableDocumentCount(selectedTrack.documentChecklist)} /{' '}
-            {selectedTrack.documentChecklist.length}
-          </strong>
-          <div className="progress-bar" aria-hidden="true">
-            <span style={{ width: `${selectedTrack.documentChecklist.length > 0 ? Math.round(getAvailableDocumentCount(selectedTrack.documentChecklist) / selectedTrack.documentChecklist.length * 100) : 0}%` }} />
+          <div>
+            <span>{getText(language, 'documentsAvailable')}</span>
+            <strong>
+              {availableDocuments} / {selectedTrack.documentChecklist.length}
+            </strong>
           </div>
-        </article>
-        <article className="metric-card readiness-snapshot-card">
-          <span>{getText(language, 'milestonesComplete')}</span>
-          <strong key={getCompletedMilestoneCount(selectedTrack.milestones)}>
-            {getCompletedMilestoneCount(selectedTrack.milestones)} /{' '}
-            {selectedTrack.milestones.length}
-          </strong>
-          <div className="progress-bar" aria-hidden="true">
-            <span style={{ width: `${selectedTrack.milestones.length > 0 ? Math.round(getCompletedMilestoneCount(selectedTrack.milestones) / selectedTrack.milestones.length * 100) : 0}%` }} />
+          <div>
+            <span>{getText(language, 'milestonesComplete')}</span>
+            <strong>
+              {completedMilestones} / {selectedTrack.milestones.length}
+            </strong>
           </div>
-        </article>
+        </div>
+
+        <details className="next-actions-more readiness-snapshot-details">
+          <summary>{getText(language, 'readinessSnapshot')}</summary>
+          <div className="readiness-snapshot">
+            <article className="metric-card readiness-snapshot-card">
+              <span>{getText(language, 'readiness')}</span>
+              <strong key={readinessScore}>{readinessScore}%</strong>
+              <div className="progress-bar" aria-hidden="true">
+                <span style={{ width: `${readinessScore}%` }} />
+              </div>
+            </article>
+            <article className="metric-card readiness-snapshot-card">
+              <span>{getText(language, 'requirementsComplete')}</span>
+              <strong key={completedRequirements}>
+                {completedRequirements} / {selectedTrack.requirements.length}
+              </strong>
+              <div className="progress-bar" aria-hidden="true">
+                <span style={{ width: `${requirementsProgress}%` }} />
+              </div>
+            </article>
+            <article className="metric-card readiness-snapshot-card">
+              <span>{getText(language, 'trainingsComplete')}</span>
+              <strong key={completedTraining}>
+                {completedTraining} / {selectedTrack.trainingPlan.length}
+              </strong>
+              <div className="progress-bar" aria-hidden="true">
+                <span style={{ width: `${trainingProgress}%` }} />
+              </div>
+            </article>
+            <article className="metric-card readiness-snapshot-card">
+              <span>{getText(language, 'documentsAvailable')}</span>
+              <strong key={availableDocuments}>
+                {availableDocuments} / {selectedTrack.documentChecklist.length}
+              </strong>
+              <div className="progress-bar" aria-hidden="true">
+                <span style={{ width: `${documentProgress}%` }} />
+              </div>
+            </article>
+            <article className="metric-card readiness-snapshot-card">
+              <span>{getText(language, 'milestonesComplete')}</span>
+              <strong key={completedMilestones}>
+                {completedMilestones} / {selectedTrack.milestones.length}
+              </strong>
+              <div className="progress-bar" aria-hidden="true">
+                <span style={{ width: `${milestoneProgress}%` }} />
+              </div>
+            </article>
+          </div>
+        </details>
       </section>
 
       <article className="milestone-progress-panel">
@@ -310,17 +354,7 @@ export function DashboardView({
           />
         </div>
         <div className="progress-bar" aria-hidden="true">
-          <span style={{ width: `${totalMilestones > 0 ? Math.round(completedMilestones / totalMilestones * 100) : 0}%` }} />
-        </div>
-
-        <div className="milestone-progress-summary">
-          <div>
-            <span>{getText(language, 'nextMilestone')}</span>
-            <strong>
-              {nextMilestone?.title ?? getText(language, 'noUpcomingMilestone')}
-            </strong>
-            {nextMilestone && <p>{nextMilestone.targetDateLabel}</p>}
-          </div>
+          <span style={{ width: `${milestoneProgress}%` }} />
         </div>
 
         <div className="milestone-list">
