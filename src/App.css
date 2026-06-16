@@ -1818,10 +1818,16 @@
   overflow: hidden;
 }
 
+@keyframes bar-fill {
+  from { width: 0; }
+}
+
 .progress-bar span {
+  animation: bar-fill 600ms ease-out both;
   background: linear-gradient(90deg, #22c55e, #38bdf8);
   display: block;
   height: 100%;
+  transition: width 400ms ease;
 }
 
 .progress-bar--mini {
