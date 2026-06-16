@@ -75,6 +75,11 @@ export function DocumentInventoryView({
 
   const sorted = sortByUrgency(selectedTrack.documentChecklist)
   const needsAttentionDocs = sorted.filter((d) => URGENCY_TIER[d.status] < 2)
+  const visibleNeedsAttentionDocs = needsAttentionDocs.slice(0, 2)
+  const additionalNeedsAttentionCount = Math.max(
+    0,
+    needsAttentionDocs.length - visibleNeedsAttentionDocs.length,
+  )
   const completedDocs = sorted.filter((d) => URGENCY_TIER[d.status] === 2)
   const firstDocumentAction = needsAttentionDocs[0]
 
@@ -243,7 +248,12 @@ export function DocumentInventoryView({
             <span>{needsAttentionDocs.length}</span>
           </div>
           <div className="document-inventory-list">
-            {needsAttentionDocs.map((item) => renderDocumentCard(item))}
+            {visibleNeedsAttentionDocs.map((item) => renderDocumentCard(item))}
+            {additionalNeedsAttentionCount > 0 && (
+              <p className="detail-muted-note">
+                {additionalNeedsAttentionCount} additional documents require attention
+              </p>
+            )}
           </div>
         </section>
       )}
