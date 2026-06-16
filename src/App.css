@@ -3191,24 +3191,32 @@
 /* ── Status left-border accents ──────────────────────────────────────
    :not(.requirement-card--mission) excludes mission-queue cards, which
    already use the green container border from
-   .requirement-mission-section--primary .requirement-card.          */
+   .requirement-mission-section--primary .requirement-card.
+   border-left-width is pinned to 3px on the base rule so only
+   border-left-color transitions — no width snap on status change.    */
+
+.document-card,
+.requirement-card {
+  border-left: 3px solid rgba(31, 41, 55, 0.82);
+  transition: border-left-color 200ms ease;
+}
 
 .requirement-card:not(.requirement-card--mission)[data-status="Completed"],
 .document-card[data-status="Verified"],
 .document-card[data-status="Available"] {
-  border-left: 3px solid rgba(34, 197, 94, 0.50);
+  border-left-color: rgba(34, 197, 94, 0.50);
 }
 
 .requirement-card:not(.requirement-card--mission)[data-status="In Progress"],
 .requirement-card:not(.requirement-card--mission)[data-status="Needs Review"],
 .document-card[data-status="Pending"],
 .document-card[data-status="Needs Review"] {
-  border-left: 3px solid rgba(245, 158, 11, 0.50);
+  border-left-color: rgba(245, 158, 11, 0.50);
 }
 
 .requirement-card:not(.requirement-card--mission)[data-status="Not Started"],
 .requirement-card:not(.requirement-card--mission)[data-status="Missing"],
 .document-card[data-status="Missing"],
 .document-card[data-status="Expired"] {
-  border-left: 3px solid rgba(239, 68, 68, 0.45);
+  border-left-color: rgba(239, 68, 68, 0.45);
 }
