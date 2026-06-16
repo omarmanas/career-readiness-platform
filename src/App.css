@@ -1128,9 +1128,9 @@
 }
 
 .badge-neutral {
-  background: rgba(31, 41, 55, 0.68);
-  border-color: rgba(51, 65, 85, 0.62);
-  color: #cbd5e1;
+  background: rgba(31, 41, 55, 0.20);
+  border-color: rgba(51, 65, 85, 0.40);
+  color: #94a3b8;
 }
 
 .badge-success {
