@@ -304,7 +304,7 @@ export function RequirementInventoryView({
             <span>{completedExemptRequirements.length}</span>
           </button>
           {isCompletedOpen && (
-            <div className="requirement-list">
+            <div className="requirement-list completed-section-list">
               {completedExemptRequirements.map((req) => renderRequirementCard(req))}
             </div>
           )}

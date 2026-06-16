@@ -260,7 +260,7 @@ export function DocumentInventoryView({
             <span>{completedDocs.length}</span>
           </button>
           {isCompletedOpen && (
-            <div className="document-inventory-list">
+            <div className="document-inventory-list completed-section-list">
               {completedDocs.map((item) => renderDocumentCard(item))}
             </div>
           )}

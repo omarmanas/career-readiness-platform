@@ -131,7 +131,7 @@ export function TrainingTrackerView({
             <span>{completedItems.length}</span>
           </button>
           {isCompletedOpen && (
-            <div className="data-table">
+            <div className="data-table completed-section-list">
               {completedItems.map((item) => renderTrainingRow(item))}
             </div>
           )}

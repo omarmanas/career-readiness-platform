@@ -2642,6 +2642,13 @@
   padding-top: 12px;
 }
 
+.completed-section-list .document-card,
+.completed-section-list .requirement-card,
+.completed-section-list .list-row,
+.completed-section-list .table-row {
+  opacity: 0.58;
+}
+
 .card-item-desc {
   color: var(--text-soft);
   font-size: 0.85rem;
